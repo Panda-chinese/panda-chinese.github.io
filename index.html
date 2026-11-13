@@ -735,6 +735,21 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
 .lp-next b{font-size:16px}
 .lp-next span{font-size:12px}
 .lp-next:hover{background:#FDE3E0}
+
+/* name and share */
+.lp-hi{margin:10px 0 0;color:var(--muted)}
+.lp-hi b{color:var(--ink)}
+.lp-hi .link{margin-left:6px}
+.nm-card{margin:12px 0 0;padding:12px 14px;border:1px solid var(--line);border-left:4px solid var(--jade);border-radius:10px;background:var(--surface)}
+.nm-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.nm-in{max-width:240px;flex:1 1 160px;font-family:var(--ui)}
+.wl-name{display:flex;flex-direction:column;gap:6px;margin:14px 0 4px}
+.wl-name .nm-in{max-width:none}
+.set-line .nm-in{max-width:220px}
+.sh-box{max-width:520px}
+.sh-name{display:flex;align-items:center;gap:10px;margin:6px 0 12px;flex-wrap:wrap}
+.sh-prev{background:var(--sunk);border-radius:12px;padding:10px;text-align:center}
+.sh-prev img{width:100%;max-width:380px;height:auto;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.15);aspect-ratio:1080/1350;background:#FBF4E6}
 /* tutorial */
 .tut{position:fixed;inset:0;z-index:100;pointer-events:none}
 .tut-dim{position:fixed;inset:0;width:100%;height:100%}
@@ -785,7 +800,7 @@ body.tut-on .lp-pal{z-index:1}
   <nav class="subtabs" id="subtabs" aria-label="Pages" hidden></nav>
 </header>
 <main id="main"></main>
-<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.2 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
+<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.4 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
 <div class="drawer-bg" id="drawer-bg" hidden></div><aside class="drawer" id="drawer" aria-label="Menu" hidden></aside>
 <button type="button" class="icon-btn show-hdr show-hdr2" data-showhdr aria-label="Show the header" title="Show the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
 <button type="button" class="icon-btn show-hdr" data-drawer aria-label="Open the menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -1831,6 +1846,20 @@ const PY_ALT = { '哪里': 'nǎlǐ|nǎli|náli', '一点儿': 'yìdiǎnr|yīdiǎ
 /* ================= speech ================= */
 let voices = [];
 const hasSpeech = 'speechSynthesis' in window;
+/* ----- recorded voice: audio/index.json + mp3 files made with Microsoft Azure (see make_audio.py) ----- */
+const REC = { st: 'idle', idx: null, ctx: null, bufs: {}, src: null };
+const fnv = t => { let h = 0x811c9dc5; for (const b of new TextEncoder().encode(t)) h = Math.imul(h ^ b, 0x01000193) >>> 0; return h.toString(16).padStart(8, '0'); };
+function recLoad() {
+  if (REC.st !== 'idle') return;
+  if (!/^https?:$/.test(location.protocol) || !window.fetch) { REC.st = 'none'; return; }
+  REC.st = 'loading';
+  fetch('audio/index.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(j => { REC.idx = j; REC.st = j && j.clips ? 'ready' : 'none'; renderVoice(); })
+    .catch(() => { REC.st = 'none'; renderVoice(); });
+}
+const recWanted = () => !(S.settings && S.settings.recVoice === false);
+const recOn = () => REC.st === 'ready' && recWanted();
+const canListen = () => hasSpeech || (recWanted() && (REC.st === 'ready' || REC.st === 'loading'));
 function loadVoices() { try { voices = speechSynthesis.getVoices() || []; } catch (e) { voices = []; } renderVoice(); }
 const voicePref = () => { try { return (S.settings && S.settings.voice) || ''; } catch (e) { return ''; } };
 const voiceRate = () => { try { return (S.settings && S.settings.rate) || 0.6; } catch (e) { return 0.6; } };
@@ -1838,39 +1867,78 @@ const zhVoices = () => voices.filter(v => /^(zh|cmn)/i.test(v.lang) || /chinese|
 const vScore = v => (/zh[-_]?CN|cmn/i.test(v.lang) ? 4 : 0) + (/natural|neural|online|enhanced|premium/i.test(v.name) ? 3 : 0) + (/google/i.test(v.name) ? 2 : 0) - (/HK|TW|yue|cantonese/i.test(v.lang + ' ' + v.name) ? 6 : 0);
 const zhVoice = () => { const all = zhVoices(), p = voicePref(), pick = p ? all.find(v => v.name === p) : null; return pick || all.slice().sort((x, y) => vScore(y) - vScore(x))[0]; };
 function voiceNote() {
+  if (recOn()) return 'Audio: a natural recorded Chinese voice (made with Microsoft Azure text-to-speech). You can switch to your device’s voice in Settings.';
   if (!hasSpeech) return 'Audio: this browser has no speech synthesis, so listening exercises won’t play.';
   const v = zhVoice();
   return v ? `Audio: using the Chinese voice “${v.name}”.` : 'Audio: no Chinese voice found yet. If nothing plays, add a Chinese (Mandarin) voice in your system’s speech settings or try Chrome or Edge.';
 }
 if (hasSpeech) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+recLoad();
 function renderVoice() {
   const n = $('#voice-note'); if (!n) return;
-  const short = !hasSpeech ? 'Audio: not supported in this browser' : (zhVoice() ? 'Audio: Chinese voice ready' : 'Audio: no Chinese voice found');
+  const short = recOn() ? 'Audio: recorded voice ready' : !hasSpeech ? 'Audio: not supported in this browser' : (zhVoice() ? 'Audio: Chinese voice ready' : 'Audio: no Chinese voice found');
+  const dv = $('#dev-voice'); if (dv) dv.hidden = recOn();
   n.innerHTML = `${esc(short)} <button type="button" class="link" data-voicemore>Details</button><span id="voice-more" hidden> ${esc(voiceNote())}</span>`;
 }
-function speak(text) {
-  seqTok++;
-  if (!hasSpeech) { toast('Speech isn’t available in this browser.'); return; }
-  speechSynthesis.cancel();
+function recCtx() {
+  if (!REC.ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; try { REC.ctx = new AC(); } catch (e) { return null; } }
+  if (REC.ctx.state === 'suspended') { try { REC.ctx.resume(); } catch (e) { /* ignore */ } }
+  return REC.ctx;
+}
+document.addEventListener('pointerdown', () => { if (recOn()) recCtx(); }, true);
+function recClip(text) {
+  const r = voiceRate(), sp = r <= 0.7 ? 's' : r < 1 ? 'm' : 'n', k = fnv(String(text).trim()), cl = REC.idx.clips;
+  const c = (cl[sp] || {})[k] || (cl.n || {})[k];
+  return c ? { file: REC.idx.files[c[0]], a: c[1] / 1000, z: c[2] / 1000, rate: 1 } : null;
+}
+function recBuf(file) {
+  if (!REC.bufs[file]) {
+    REC.bufs[file] = fetch('audio/' + file).then(r => r.ok ? r.arrayBuffer() : Promise.reject(r.status))
+      .then(a => new Promise((ok, no) => REC.ctx.decodeAudioData(a, ok, no)));
+    REC.bufs[file].catch(() => { delete REC.bufs[file]; });
+  }
+  return REC.bufs[file];
+}
+function ttsOne(text, done) {
+  if (!hasSpeech) { toast('Speech isn’t available in this browser.'); return done(); }
   const u = new SpeechSynthesisUtterance(text); u.lang = 'zh-CN';
   const v = zhVoice(); if (v) u.voice = v;
-  u.rate = voiceRate(); speechSynthesis.speak(u);
+  u.rate = voiceRate(); u.onend = () => done(); u.onerror = () => done();
+  speechSynthesis.speak(u);
 }
+// Plays one text: the recorded clip when there is one, otherwise the device's voice. Resolves when it ends.
+function sayOne(text, tok) {
+  text = String(text).trim();
+  return new Promise(done => {
+    const c = recOn() && recCtx() && recClip(text);
+    if (!c) return ttsOne(text, done);
+    recBuf(c.file).then(buf => {
+      if (tok !== seqTok) return done();
+      const s = REC.ctx.createBufferSource(); s.buffer = buf; s.playbackRate.value = c.rate; s.connect(REC.ctx.destination);
+      s.onended = () => { if (REC.src === s) REC.src = null; done(); };
+      REC.src = s; const z = Math.min(buf.duration, c.z); s.start(0, c.a, Math.max(0.05, z - c.a));
+    }).catch(() => { if (tok === seqTok) ttsOne(text, done); else done(); });
+  });
+}
+function stopAudio() {
+  seqTok++;
+  if (REC.src) { try { REC.src.stop(); } catch (e) { /* ignore */ } REC.src = null; }
+  if (hasSpeech) { try { speechSynthesis.cancel(); } catch (e) { /* ignore */ } }
+  if (seqBtn) { seqBtn.classList.remove('playing'); seqBtn = null; }
+}
+function speak(text) { stopAudio(); sayOne(text, seqTok); }
 let seqTok = 0, seqBtn = null;
 const splitSent = t => (String(t).match(/[^。！？!?]+[。！？!?]?/g) || [t]).map(s => s.trim()).filter(Boolean);
 function playSeq(parts, btn) {
-  if (!hasSpeech) { toast('Speech isn’t available in this browser.'); return; }
-  speechSynthesis.cancel(); if (seqBtn) seqBtn.classList.remove('playing');
-  const tok = ++seqTok; const segs = [];
+  stopAudio(); const tok = seqTok; const segs = [];
   parts.forEach(p => { const ss = splitSent(p.t); ss.forEach((s, k) => segs.push({ t: s, gap: k === ss.length - 1 ? p.gap : 250 })); });
-  let i = 0; seqBtn = btn || null; if (btn) btn.classList.add('playing');
+  seqBtn = btn || null; if (btn) btn.classList.add('playing');
+  let i = 0;
   const next = () => {
     if (tok !== seqTok) return;
-    if (i >= segs.length) { if (btn) btn.classList.remove('playing'); return; }
-    const s = segs[i++]; const u = new SpeechSynthesisUtterance(s.t); u.lang = 'zh-CN';
-    const v = zhVoice(); if (v) u.voice = v; u.rate = voiceRate();
-    u.onend = () => setTimeout(next, s.gap); u.onerror = () => setTimeout(next, s.gap);
-    speechSynthesis.speak(u);
+    if (i >= segs.length) { if (btn) btn.classList.remove('playing'); if (seqBtn === btn) seqBtn = null; return; }
+    const s = segs[i++];
+    sayOne(s.t, tok).then(() => setTimeout(next, s.gap));
   };
   next();
 }
@@ -2103,8 +2171,8 @@ const CDESC = {
     p: 'You see the English meaning and type the word in characters with your Chinese keyboard. This is the closest to how the exam asks you to write. Turn on “Show pinyin hint” if you only want to practise choosing the right characters.',
     s: 'On screen: the meaning, an answer box, Check / Next (Enter), and the “Show pinyin hint” switch at the top.' },
   listen: { t: 'Listen and type', short: 'Hear a word, type it in characters.',
-    p: 'Your browser’s Chinese voice says a word and you type it in characters. Listen as often as you like. It trains the link between sound and characters, like the listening part of the exam.',
-    s: 'On screen: “Play again”, an answer box and Check / Next (Enter). Needs a Chinese voice on your device (see the note at the bottom of the page).' },
+    p: 'The app says a word and you type it in characters. Listen as often as you like. It trains the link between sound and characters, like the listening part of the exam.',
+    s: 'On screen: “Play again”, an answer box and Check / Next (Enter).' },
   list: { t: 'Word list', short: 'All selected words in one table. Tap a word to see how it’s written.',
     p: 'Every word of your selection in one table with pinyin, meaning, where it comes from in the book and an audio button. It also shows how often you got each word right or wrong in the other modes, so you can see your weak spots. Tap any word to open it: each character is written stroke by stroke as an animation, and “Practise writing” takes you straight to the Writing tab.',
     s: 'On screen: a search box (characters, pinyin or English) and the table.' }
@@ -2221,7 +2289,7 @@ function renderList() {
 }
 
 /* ================= Book exercises tab ================= */
-const CATS = [['fill', 'Fill in the blanks'], ['order', 'Arrange words into sentences'], ['rewrite', 'Rewrite sentences (negatives, questions, substitution)'], ['translate', 'Translate into Chinese'], ['choose', 'Choose, true or false, comprehension'], ['read', 'Reading'], ['pinyin', 'Pinyin and tones'], ['chars', 'Characters (radicals, words, pinyin → characters)'], ['listen', 'Listening (browser voice)'], ['open', 'Write about yourself']];
+const CATS = [['fill', 'Fill in the blanks'], ['order', 'Arrange words into sentences'], ['rewrite', 'Rewrite sentences (negatives, questions, substitution)'], ['translate', 'Translate into Chinese'], ['choose', 'Choose, true or false, comprehension'], ['read', 'Reading'], ['pinyin', 'Pinyin and tones'], ['chars', 'Characters (radicals, words, pinyin → characters)'], ['listen', 'Listening'], ['open', 'Write about yourself']];
 const B = { unit: 'all', set: null };
 const CAT_DESC = {
   fill: 'Sentences with gaps and a word bank: type the missing word into each gap.',
@@ -2232,7 +2300,7 @@ const CAT_DESC = {
   read: 'A short text or business card with questions about it.',
   pinyin: 'Type pinyin with tones (marks or numbers), match pinyin to characters, or choose the right tone.',
   chars: 'Radicals, building words from a character, writing pinyin as characters and guessing what sentences mean.',
-  listen: 'Your browser’s voice reads a word, sentence or phone number; choose or type what you hear.',
+  listen: 'The app reads a word, sentence or phone number; choose or type what you hear.',
   open: 'Free writing about yourself: write, then compare with a model answer and mark yourself.'
 };
 function visibleSets() { return SETS.filter(s => (B.unit === 'all' || s.u === +B.unit) && (!B.fav || favUnitsOf(s).some(u => isFav(u.key))) && !(noListenOn() && isListenSet(s))); }
@@ -2351,7 +2419,7 @@ function renderResults() {
   const pct = max ? Math.round((got / max) * 100) : 0;
   $('#t-count').textContent = ''; $('#t-bar').style.width = '100%';
   $('#t-run').insertAdjacentHTML('afterbegin', `<div class="t-result"><div class="t-score">${pct}%</div><div><b>${got} of ${max}</b> points. Every question is listed below with the correct answers.</div><label class="small"><input type="checkbox" id="t-onlywrong"> Show only questions with mistakes</label></div>`);
-  $('#t-act').innerHTML = `<button type="button" class="btn primary" data-t="again">New test</button><button type="button" class="btn" data-t="setup">Change settings</button>`;
+  $('#t-act').innerHTML = `<button type="button" class="btn primary" data-t="again">New test</button><button type="button" class="btn" data-t="setup">Change settings</button><button type="button" class="btn" data-share="test" data-pct="${pct}" data-pts="${got} of ${max} points">Share result</button>`;
   $('#t-onlywrong').addEventListener('change', e => { $$('.tq').forEach(el => { el.hidden = e.target.checked && !el.classList.contains('q-wrong'); }); });
   window.scrollTo({ top: 0 });
 }
@@ -2620,11 +2688,12 @@ function mkItem(it) {
 function mkResultHtml() {
   const parts = [['Part I  Listening (1–26)', 1, 26], ['Part II (27–40)', 27, 40], ['Part III  Reading & writing (41–50)', 41, 50]];
   let got = 0, pend = 0; MK.test.items.forEach(it => { got += mkGrade(it); if (mkPending(it)) pend += it.pts; });
+  MK.score = { got, total: MK.test.items.reduce((s, it) => s + (it.skip ? 0 : it.pts), 0) };
   const rows = parts.map(([l, a, b]) => { let g = 0, m = 0; MK.test.items.filter(it => it.n >= a && it.n <= b).forEach(it => { g += mkGrade(it); m += it.skip ? 0 : it.pts; }); return `<tr><td>${l}</td><td>${m ? `${g} / ${m}` : 'skipped'}</td></tr>`; }).join('');
   return `<section class="mk-result"><div class="big">${got} / ${MK.test.items.reduce((s, it) => s + (it.skip ? 0 : it.pts), 0)}</div><p>${pend ? `<span class="pendl">${pend} points still to grade:</span> compare your sentences in questions 46–50 with the model answers and mark them, as the teacher does by hand.` : 'All questions graded.'}</p><table>${rows}</table><p class="muted small">Every question below shows the correct answer; listening questions also show what the audio said, with an English translation.</p></section>`;
 }
 function mkBarHtml() {
-  if (MK.done) return `<button type="button" class="btn primary" data-mkstart>New mock test</button><button type="button" class="btn" data-mkact="menu">Back to menu</button>`;
+  if (MK.done) { const sc = MK.score || { got: 0, total: 0 }, pc = sc.total ? Math.round(100 * sc.got / sc.total) : 0; return `<button type="button" class="btn primary" data-mkstart>New mock test</button><button type="button" class="btn" data-mkact="menu">Back to menu</button><button type="button" class="btn" data-share="mock" data-pct="${pc}" data-pts="${sc.got} of ${sc.total} points">Share result</button>`; }
   if (MK.bar === 'confirmSubmit') return `<span class="pendl">${MK.missing} question${MK.missing === 1 ? ' is' : 's are'} not answered.</span><button type="button" class="btn primary" data-mkact="force">Submit anyway</button><button type="button" class="btn" data-mkact="back">Keep working</button>`;
   if (MK.bar === 'confirmLeave') return `<span class="pendl">Leave the test? Your answers will be lost.</span><button type="button" class="btn" data-mkact="leave">Leave</button><button type="button" class="btn primary" data-mkact="back">Stay</button>`;
   return `<button type="button" class="btn primary" data-mkact="submit">Finish and submit</button><button type="button" class="btn" data-mkact="quit">Leave test</button>${MK.timerId ? '<span class="mk-timer" id="mk-timer"></span>' : ''}<span class="mk-count" id="mk-count"></span>`;
@@ -2638,7 +2707,7 @@ function mkUpdateCount() {
 function mkMenu() {
   main.innerHTML = `<h1 class="view-title">Midterm mock test</h1>
     <details class="howto" data-howto="h5"${howOpen('h5')}><summary>How it works</summary><p>A full practice test in exactly the format of your Winter Semester midterm: 50 questions, 100 points, in three parts (listening; grammar and vocabulary; reading and writing). Every time you start, a new test is built from a pool of about 170 questions written only with vocabulary from the midterm units, and the answers are shuffled.</p>
-      <p><b>Listening:</b> press Play at each question. Words and sentences are read twice, then the question; the paragraph for true / false is read twice, like in the exam. The voice is your browser’s Chinese voice.</p>
+      <p><b>Listening:</b> press Play at each question. Words and sentences are read twice, then the question; the paragraph for true / false is read twice, like in the exam.</p>
       <p><b>Answering:</b> pinyin with tone marks or numbers (lao3), the neutral tone without a number or with 0; characters with your Chinese keyboard; in part 6 the letters A–E. The numbered boxes at the top show which questions you’ve answered; tap one to jump to it.</p>
       <p><b>After submitting:</b> your score per part, every question marked green or red with the correct answer, and the text and translation of every listening item. The five sentences in part 9 are graded by hand in the real exam, so here you compare them with model answers and give yourself 3, 1.5 or 0 points.</p></details>
     <div class="menu-grid"><div class="mcard"><h2>New mock test</h2><p>50 questions, 100 points. Takes about 45–60 minutes.</p>
@@ -2670,7 +2739,7 @@ function mkSubmit(force, auto) {
   if (!MK.test || MK.done) return;
   const missing = MK.test.items.filter(it => !mkAnswered(it)).length;
   if (!auto && missing && !force) { MK.bar = 'confirmSubmit'; MK.missing = missing; return mkBar(); }
-  MK.done = true; MK.bar = ''; mkStopTimer(); if (hasSpeech) speechSynthesis.cancel();
+  MK.done = true; MK.bar = ''; mkStopTimer(); stopAudio();
   const now = new Date();
   MK.attempt = { when: now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), got: 0, pending: 15 };
   MK.hist.unshift(MK.attempt); mkSaveAttempt();
@@ -2917,10 +2986,11 @@ function openSettings() {
   m.innerHTML = `<div class="modal-box help-box set-box" role="dialog" aria-modal="true" aria-label="Settings">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <h1 class="view-title">Settings</h1>
+    <label class="set-line"><span>Your name</span>${nameInput('opt-name', 'Your name')}</label>
     <h2>Display</h2>
     <label class="set-opt"><input type="checkbox" id="opt-py" ${S.settings.pinyin ? 'checked' : ''}><span><b>Pinyin under Chinese</b><small>Shows the pinyin under Chinese sentences in the exercises.</small></span></label>
     <label class="set-opt"><input type="checkbox" id="opt-strict" ${S.settings.strict ? 'checked' : ''}><span><b>Tones must be right</b><small>When this is on, a pinyin answer with a wrong tone counts as a mistake.</small></span></label>
-    <label class="set-opt"><input type="checkbox" id="opt-nolisten" ${S.settings.noListen ? 'checked' : ''}><span><b>No listening exercises</b><small>Hides the exercises where you have to listen. Useful when you can’t use sound, or your device has no Chinese voice.</small></span></label>
+    <label class="set-opt"><input type="checkbox" id="opt-nolisten" ${S.settings.noListen ? 'checked' : ''}><span><b>No listening exercises</b><small>Hides the exercises where you have to listen. Useful when you can’t use sound right now.</small></span></label>
     ${voiceSettingsHtml()}
 
     <h2>Your progress</h2>
@@ -2997,7 +3067,7 @@ function estSet(set) {
 }
 let qcSeq = 0;
 function qcWordTask(v) {
-  const kinds = ['pinyin', 'meaning', 'hz']; if (hasSpeech && !noListenOn()) kinds.push('listen');
+  const kinds = ['pinyin', 'meaning', 'hz']; if (canListen() && !noListenOn()) kinds.push('listen');
   const k = kinds[Math.floor(Math.random() * kinds.length)], id = 'syn:qc' + (++qcSeq); let set;
   if (k === 'pinyin') set = { id, type: 'pinyin', title: 'Type the pinyin (tone marks or numbers).', items: [{ h: v.h, a: PY_ALT[v.h] || v.p }] };
   else if (k === 'meaning') {
@@ -3136,7 +3206,7 @@ function qcFinish() {
   main.insertAdjacentHTML('afterbegin', `<section class="qc-result ${band}" id="qc-result">${pandaSvg(band, 'qc-final ' + anim)}
     <div class="qc-pct">${pct}%</div><p class="qc-msg">${esc(MSG[band])}</p>
     <p class="muted">${right} of ${counted} tasks fully correct (${got} of ${max} points), in about ${mins} min.${sub ? ` ${sub} submitted or skipped without a score.` : ''}</p>
-    <div class="card-actions qc-endbtns"><button type="button" class="btn primary" data-qc="again">New challenge</button><button type="button" class="btn" data-qc="menu">Change settings</button>${run ? '<button type="button" class="btn" data-qc="review">Review answers</button>' : ''}</div></section>`);
+    <div class="card-actions qc-endbtns"><button type="button" class="btn primary" data-qc="again">New challenge</button><button type="button" class="btn" data-qc="menu">Change settings</button>${run ? '<button type="button" class="btn" data-qc="review">Review answers</button>' : ''}<button type="button" class="btn" data-share="qc" data-pct="${pct}" data-pts="${got} of ${max} points">Share result</button></div></section>`);
   setFocus(false); window.scrollTo({ top: 0 });
 }
 function qcStart() {
@@ -3709,6 +3779,7 @@ function lPath() {
   const doneN = LEVELS.filter(l => prog[l.id]).length, starsN = LEVELS.reduce((s, l) => s + ((prog[l.id] || {}).stars || 0), 0);
   main.innerHTML = `<div class="lp-head"><div><h1 class="view-title">Learn</h1><p class="lead">Learn Chinese step by step. Every level first shows you something new, then checks it with a short quiz.</p></div>
       <div class="lp-stats"><span class="lp-stat"><b>★ ${starsN}</b> of ${LEVELS.length * 3}</span><span class="lp-stat"><b>${doneN}</b> of ${LEVELS.length} levels</span></div></div>
+    ${learnHello()}
     <details class="howto" data-howto="learn"${howOpen('learn')}><summary>How it works</summary>
       <p>Each level has two parts. First you <b>learn</b>: a few cards show new sounds, characters or a rule, with audio and stroke animations. Then a short <b>quiz</b> checks what you just learned, plus a couple of questions from earlier levels so you don’t forget. Mistakes come back at the end of the quiz.</p>
       <p>Questions marked ${LTAG} need sound; you can skip them with “Can’t listen now”, or hide them all in Settings.</p>
@@ -3838,7 +3909,7 @@ function lBuildQuiz(lv) {
   let items;
   if (lv.checkpoint) { const nd = shuffle(prev.filter(q => q.t !== 'draw')).slice(0, 11), dr = shuffle(prev.filter(q => q.t === 'draw')).slice(0, 1); items = shuffle([...nd, ...dr]); }
   else items = [...lv.quiz, ...shuffle(prev.filter(q => q.t !== 'draw' && q.t !== 'match')).slice(0, 2).map(q => ({ ...q, review: true }))];
-  if (noListenOn() || !hasSpeech) items = items.filter(q => !lNeedsAudio(q));
+  if (noListenOn() || !canListen()) items = items.filter(q => !lNeedsAudio(q));
   const draws = items.filter(q => q.t === 'draw'), rest = shuffle(items.filter(q => q.t !== 'draw'));
   return [...rest, ...draws].map((q, k) => {
     const o = { ...q, uid: k };
@@ -3994,10 +4065,10 @@ function openAbout() {
   m.innerHTML = `<div class="modal-box help-box" role="dialog" aria-modal="true" aria-label="About this app">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <h1 class="view-title">About this app</h1>
-    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, made for classmates and other learners. Version 0.7.2 beta, 13 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
+    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, made for classmates and other learners. Version 0.7.4 beta, 13 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
     <h2>Privacy</h2><p>The app collects no data. Your progress and favourites stay in your own browser.</p>
-    <h2>Content</h2><p>The exercises in Book exercises and the vocabulary follow the textbook <i>Contemporary Chinese</i> (当代中文); all rights to the textbook belong to its authors and publisher. The Learn levels, the Test questions, the grammar explanations and the practice tests were written for this app with the help of AI (Claude by Anthropic).</p>
-    <h2>Credits</h2><p>Made by <b>Damjan Raunić</b> (draunic@gmail.com). Stroke animations: <b>Hanzi Writer</b> by David Chanin (MIT License). Stroke data: <b>hanzi-writer-data</b>, based on <b>Make Me a Hanzi</b> (Arphic Public License). Fonts: <b>Fira Sans</b> and <b>Noto Serif SC</b> (SIL Open Font License). Speech uses your device’s built-in voices.</p>
+    <h2>Content</h2><p>The exercises in Book exercises and the vocabulary follow the textbook <i>Contemporary Chinese</i> (当代中文); all rights to the textbook belong to its authors and publisher. The Learn levels, the Test questions, the grammar explanations and the practice tests were written for this app with the help of AI (Claude by Anthropic). The Chinese voice recordings were made with Microsoft Azure text-to-speech.</p>
+    <h2>Credits</h2><p>Made by <b>Damjan Raunić</b> (draunic@gmail.com). Stroke animations: <b>Hanzi Writer</b> by David Chanin (MIT License). Stroke data: <b>hanzi-writer-data</b>, based on <b>Make Me a Hanzi</b> (Arphic Public License). Fonts: <b>Fira Sans</b> and <b>Noto Serif SC</b> (SIL Open Font License). If the recordings can’t load, the app uses your device’s built-in voice.</p>
   </div>`;
   m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
 }
@@ -4060,7 +4131,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
 
 /* ================= navigation, course, version ================= */
-const APP_VERSION = '0.7.2';
+const APP_VERSION = '0.7.4';
 const PANDA_SM = '<svg class="tab-panda" viewBox="0 0 40 36" aria-hidden="true"><circle cx="9" cy="8" r="6" fill="#222"/><circle cx="31" cy="8" r="6" fill="#222"/><ellipse cx="20" cy="20" rx="15" ry="13.5" fill="#fff" stroke="#222" stroke-width="1.6"/><ellipse cx="14" cy="19" rx="4" ry="5" fill="#222" transform="rotate(30 14 19)"/><ellipse cx="26" cy="19" rx="4" ry="5" fill="#222" transform="rotate(-30 26 19)"/><circle cx="14.6" cy="18.6" r="1.5" fill="#fff"/><circle cx="25.4" cy="18.6" r="1.5" fill="#fff"/><ellipse cx="20" cy="24" rx="2.2" ry="1.5" fill="#222"/></svg>';
 const SECTIONS = [
   { id: 'learn', hz: '学', label: 'Learn', pages: [['learn', 'Learn']] },
@@ -4109,6 +4180,8 @@ function closeDrawer() {
 
 /* ----- patch notes and welcome ----- */
 const NOTES = [
+  { v: '0.7.4', date: '13 November 2026', items: ['Tell the panda your name! It greets you on the Learn page. You can change it in Settings.', 'Share a picture of your result after a Mock exam, Practice test or Quick challenge, or of your progress on the Learn page any time.', 'Clearer Settings: the device voice options only show when you switch the recorded voice off.'] },
+  { v: '0.7.3', date: '13 November 2026', items: ['A new, natural Chinese voice! It’s recorded for the app, so it sounds the same on every phone and computer.', 'Three speeds, Slow, Medium and Normal, each recorded at its own pace.', 'Prefer your device’s voice? Switch it in Settings.'] },
   { v: '0.7.2', date: '13 November 2026', items: ['A new Learn board: one unit at a time, in rows, so there’s much less scrolling.', 'Your main settings at a glance under the buttons at the top: listening, pinyin, tones and voice speed. Tap it to change them.', 'A short tutorial that shows you around the app. Watch it again any time from the ☰ menu or from Info.', 'Help is now called Info.'] },
   { v: '0.7.1', date: '13 November 2026', items: ['New name and a new home: Panda Chinese now lives at panda-chinese.github.io.', 'The voice is slow by default, which is easier for beginners. You can change it in Settings.', 'Shorter Help and Settings.', 'A button to report a mistake or a bug.'] },
   { v: '0.7', date: '13 November 2026', items: ['A tidier menu: three sections, Learn, Practice and Tests, with their pages underneath.', 'On phones, ☰ in the top-left corner opens a side menu with everything in one place.', 'Choose your course at the top. HSK is coming soon.', 'Settings: pick the Chinese voice and its speed. “Slow” is great for beginners.', 'This “What’s new” window, and the version number at the bottom of the page.'] },
@@ -4136,8 +4209,9 @@ function openWelcome() {
   m.innerHTML = `<div class="modal-box help-box nt-box" role="dialog" aria-modal="true" aria-label="Welcome">
     <div class="nt-hero">${pandaSvg('yay', 'nt-panda jump-loop')}<div><h1 class="view-title">欢迎! Welcome!</h1><p class="muted">A free app for learning Chinese with <i>Contemporary Chinese 1</i>. Version ${APP_VERSION} beta.</p></div></div>
     <ol class="wl-steps"><li><b>Learn</b>: start here. Each level shows you something new, then a short quiz.</li><li><b>Practice</b>: Quick challenge, words, writing, grammar and the exercises from your books.</li><li><b>Tests</b>: a practice test and a mock exam.</li></ol>
-    <p class="small muted">Tip: in Settings (⚙) you can choose a slower voice and switch listening off. Your progress stays in this browser only.</p>
-    <div class="card-actions"><button type="button" class="btn primary big" data-modalclose>Let’s start</button></div></div>`;
+    <label class="wl-name"><b>What should the panda call you?</b> ${nameInput('wl-name', 'Your name (optional)')}</label>
+    <p class="small muted">Tip: in Settings (⚙) you can change the voice speed and switch listening off. Your progress stays in this browser only.</p>
+    <div class="card-actions"><button type="button" class="btn primary big" data-wlstart>Let’s start</button></div></div>`;
   m.hidden = false; document.body.classList.add('modal-open');
 }
 function checkNotes() {
@@ -4173,8 +4247,8 @@ function tutSteps() {
     { el: () => hdrBtn('favs'), title: 'Favourites', text: 'Tap <b>☆</b> next to any word or task to save it. <b>★</b> up here lists all your favourites, and “Only favourites” lets you practise just those.' },
     { el: () => $$('.hdr-st').find(e => e.getClientRects().length), before: () => window.scrollTo({ top: 0 }), title: 'Your settings at a glance', text: 'This small line shows what’s switched on: listening exercises, pinyin, tones and the voice speed. Anything switched off is shown in orange.' },
     { el: () => hdrBtn('settings'), click: true, title: 'Settings', text: 'Tap <b>⚙</b> to open Settings.' },
-    { before: tutSet, el: () => { const x = $('#opt-nolisten'); return x && x.closest('.set-opt'); }, scroll: true, title: 'Bad voice? Switch listening off', text: 'If the Chinese voice sounds bad, or you can’t use sound, turn on <b>No listening exercises</b>. They disappear from the whole app. In a single exercise you can also tap “Can’t listen now”.' },
-    { before: tutSet, el: () => { const x = $('#opt-voice'); return x && x.closest('.set-line'); }, scroll: true, title: 'Voice and speed', text: 'Choose the Chinese voice and its speed (<b>Slow</b> is the default). “How to get a better voice” explains how to get a natural one; Microsoft Edge on a computer works best.' },
+    { before: tutSet, el: () => { const x = $('#opt-nolisten'); return x && x.closest('.set-opt'); }, scroll: true, title: 'No sound? Switch listening off', text: 'If you can’t use sound right now, turn on <b>No listening exercises</b>. They disappear from the whole app. In a single exercise you can also tap “Can’t listen now”.' },
+    { before: tutSet, el: () => { const x = $('#modal [data-rate]'); return x && x.closest('.set-line'); }, scroll: true, title: 'Voice speed', text: 'The app speaks with a natural recorded Chinese voice. Choose how fast it talks: <b>Slow</b> is the default and great for beginners.' },
     { before: tutSet, el: () => $('#modal .bk-panel'), scroll: true, title: 'Backup', text: 'Your progress is saved <b>only in this browser</b>. Save a backup file now and then; load it on another device to move your progress there.' },
     { el: () => hdrBtn('hidehdr'), before: () => closeModal(), title: 'More room', text: '<b>⌃</b> hides the header so you have more room. It also hides by itself when an exercise starts; <b>⌄</b> brings it back.' },
     { el: () => hdrBtn('help'), title: 'Info', text: 'Info explains every page. Found a mistake? Report it from there. You can watch this tutorial again from Info or the ☰ menu.' },
@@ -4307,6 +4381,131 @@ window.addEventListener('keydown', e => {
 window.addEventListener('resize', () => { if (TUT.on) TUT.last = ''; });
 document.addEventListener('click', e => { const t = e.target.closest('[data-tutorial]'); if (t && !TUT.on) { closeModal(); closeDrawer(); setTimeout(tutStart, 250); } });
 
+/* ----- your name ----- */
+const userName = () => String((S.settings && S.settings.name) || '').trim();
+function setName(v) { S.settings.name = String(v || '').trim().slice(0, 24); S.nameAsked = true; save(); }
+function nameInput(id, ph = 'Your name') { return `<input class="in nm-in" id="${id}" maxlength="24" autocomplete="given-name" placeholder="${ph}" value="${esc(userName())}">`; }
+function learnHello() {
+  const n = userName();
+  if (n) return `<p class="lp-hi"><span class="hzf">你好</span>, <b>${esc(n)}</b>! Your progress is saved in this browser. <button type="button" class="link" data-share="learn">Share my progress</button></p>`;
+  if (!S.nameAsked) return `<div class="nm-card"><label for="nm-learn"><b>What should the panda call you?</b> <span class="muted small">It’s only saved in this browser.</span></label><div class="nm-row">${nameInput('nm-learn')}<button type="button" class="btn primary sm" data-nmsave="nm-learn">Save</button><button type="button" class="link" data-nmskip>No thanks</button></div></div>`;
+  return `<p class="lp-hi"><button type="button" class="link" data-share="learn">Share my progress</button></p>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return; const d = t.dataset;
+  if (d.nmsave) { const i = $('#' + d.nmsave); if (!i || !i.value.trim()) { if (i) i.focus(); return; } setName(i.value); toast(`Nice to meet you, ${userName()}!`); if (view === 'learn' && LN.phase === 'path') lPath(); return; }
+  if (d.nmskip !== undefined) { S.nameAsked = true; save(); if (view === 'learn' && LN.phase === 'path') lPath(); return; }
+  if (d.wlstart !== undefined) { const i = $('#wl-name'); if (i) setName(i.value); closeModal(); if (view === 'learn' && LN.phase === 'path') lPath(); return; }
+  if (d.share) return openShare(d.share, d);
+  if (d.shdl !== undefined) return shareSave(false);
+  if (d.shsend !== undefined) return shareSave(true);
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || e.isComposing) return;
+  const id = e.target && e.target.id;
+  if (id === 'nm-learn') { e.preventDefault(); const b = $('[data-nmsave="nm-learn"]'); if (b) b.click(); }
+  if (id === 'wl-name') { e.preventDefault(); const b = $('[data-wlstart]'); if (b) b.click(); }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'opt-name') { setName(e.target.value); hdrStatus(); if (view === 'learn' && LN.phase === 'path') lPath(); }
+});
+
+/* ----- share cards: a picture of your result or progress, made in the browser ----- */
+const SH = { kind: '', data: null, blob: null, url: '' };
+const SH_MOOD = p => p >= 90 ? 'ecstatic' : p >= 75 ? 'yay' : p >= 60 ? 'happy' : p >= 40 ? 'notbad' : 'awkward';
+const SH_SAY = { ecstatic: ['太棒了！', 'tài bàng le', 'Amazing!'], yay: ['很好！', 'hěn hǎo', 'Very good!'], happy: ['不错！', 'bú cuò', 'Not bad at all!'], notbad: ['加油！', 'jiāyóu', 'Keep going!'], awkward: ['加油！', 'jiāyóu', 'Practice makes perfect!'] };
+function pandaImg(mood) {
+  const svg = pandaSvg(mood, '').replace('<svg class="panda "', '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="424"').replace('aria-hidden="true">', 'aria-hidden="true"><style>.v{display:none}.v.on{display:inline}</style>');
+  return new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = no; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); });
+}
+function shareData(kind, d) {
+  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  if (kind === 'learn') {
+    const prog = S.learn || {}, units = [...new Set(LEVELS.map(l => l.unit))].map(u => {
+      const ls = LEVELS.filter(l => l.unit === u);
+      return { name: `Unit ${u}`, stars: ls.reduce((s, l) => s + ((prog[l.id] || {}).stars || 0), 0), max: ls.length * 3, done: ls.filter(l => prog[l.id]).length, total: ls.length };
+    });
+    const stars = units.reduce((s, u) => s + u.stars, 0), max = units.reduce((s, u) => s + u.max, 0), done = units.reduce((s, u) => s + u.done, 0);
+    const mood = done === LEVELS.length ? 'ecstatic' : 'yay';
+    return { kind, sub: `My progress · ${today}`, units, stars, done, mood, say: SH_SAY[done === LEVELS.length ? 'ecstatic' : 'notbad'] };
+  }
+  const pct = Math.max(0, Math.min(100, Math.round(+d.pct || 0))), mood = SH_MOOD(pct);
+  const title = { mock: 'Mock exam', test: 'Practice test', qc: 'Quick challenge' }[kind] || 'Result';
+  return { kind, sub: `${title} · ${today}`, pct, pts: d.pts || '', mood, say: SH_SAY[mood] };
+}
+async function drawShare(D) {
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
+  try { await document.fonts.ready; } catch (e) { /* ignore */ }
+  const UI = '"Fira Sans","Segoe UI",system-ui,-apple-system,sans-serif', HZ = '"Noto Serif SC","Songti SC","STSong","SimSun","Noto Serif CJK SC",serif';
+  const rr = (x, y, w, h, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); };
+  const txt = (s, x, y, size, color, weight = 400, align = 'left', font = UI) => { g.font = `${weight} ${size}px ${font}`; g.fillStyle = color; g.textAlign = align; g.textBaseline = 'alphabetic'; g.fillText(s, x, y); };
+  const fit = (s, maxW, size, weight) => { let z = size; g.font = `${weight} ${z}px ${UI}`; while (z > 20 && g.measureText(s).width > maxW) { z -= 2; g.font = `${weight} ${z}px ${UI}`; } return z; };
+  g.fillStyle = '#FBF4E6'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#1C6A55'; g.fillRect(0, 0, W, 184);
+  g.fillStyle = '#fff'; rr(60, 48, 88, 88, 8); g.fill(); txt('汉', 104, 116, 58, '#1C6A55', 700, 'center', HZ);
+  txt('Panda Chinese', 176, 92, 48, '#fff', 700); txt(D.sub, 176, 140, 30, '#CFE6DD');
+  const name = userName();
+  const panda = await pandaImg(D.mood).catch(() => null);
+  if (D.kind === 'learn') {
+    txt(name || 'I’m', 100, 320, fit(name || 'I’m', 560, 68, 800), '#18211E', 800);
+    txt(name ? 'is learning Chinese' : 'learning Chinese', 100, 392, 38, '#5A4A2E');
+    txt(`★ ${D.stars}`, 100, 540, 112, '#E0A100', 800); txt(`${D.done} level${D.done === 1 ? '' : 's'} done`, 100, 600, 34, '#5A4A2E');
+    if (panda) g.drawImage(panda, 660, 220, 340, 360);
+    const n = D.units.length, rowH = Math.min(124, 440 / Math.max(1, n)), y0 = 680, bx = 280, bw = 600;
+    D.units.forEach((u, i) => {
+      const y = y0 + i * rowH, big = rowH >= 100;
+      txt(u.name, 100, y + 40, big ? 38 : 28, '#7A2420', 700);
+      g.fillStyle = '#EBDDBF'; rr(bx, y + 6, bw, big ? 44 : 30, big ? 22 : 15); g.fill();
+      const w = Math.max(u.stars ? (big ? 44 : 30) : 0, bw * u.stars / u.max); if (w) { g.fillStyle = '#E0A100'; rr(bx, y + 6, w, big ? 44 : 30, big ? 22 : 15); g.fill(); }
+      txt(`★ ${u.stars}/${u.max}`, bx + bw + 24, y + 40, big ? 32 : 24, '#5A4A2E');
+      if (big) txt(`${u.done} of ${u.total} levels`, bx, y + 90, 26, '#8A7A5A');
+    });
+  } else {
+    const who = name ? `${name} scored` : 'I scored';
+    txt(who, W / 2, 300, fit(who, 900, 52, 400), '#5A4A2E', 400, 'center');
+    txt(`${D.pct}%`, W / 2, 500, 220, '#C2392F', 800, 'center');
+    if (D.pts) txt(D.pts, W / 2, 584, 40, '#5A4A2E', 400, 'center');
+    if (panda) g.drawImage(panda, W / 2 - 200, 620, 400, 424);
+  }
+  // phrase pill: 太棒了！ tài bàng le · Amazing!
+  const [hz, py, en] = D.say; g.font = `700 46px ${HZ}`; const w1 = g.measureText(hz).width; g.font = `italic 400 32px ${UI}`; const w2 = g.measureText(py).width; g.font = `700 44px ${UI}`; const w3 = g.measureText(en).width;
+  const pw = w1 + w2 + w3 + 40 + 36 + 96, px = (W - pw) / 2, py0 = 1086;
+  g.fillStyle = '#fff'; rr(px, py0, pw, 104, 52); g.fill(); g.strokeStyle = '#E6D8BB'; g.lineWidth = 2; g.stroke();
+  let x = px + 48; txt(hz, x, py0 + 68, 46, '#1C6A55', 700, 'left', HZ); x += w1 + 20; txt(py, x, py0 + 66, 32, '#5A7A70', 'italic 400', 'left'); x += w2 + 36; txt(en, x, py0 + 68, 44, '#1C6A55', 700);
+  txt('panda-chinese.github.io', W / 2, 1296, 30, '#8A7A5A', 400, 'center');
+  return c;
+}
+async function openShare(kind, d) {
+  SH.kind = kind; SH.data = { pct: d.pct, pts: d.pts };
+  const m = $('#modal');
+  m.innerHTML = `<div class="modal-box help-box sh-box" role="dialog" aria-modal="true" aria-label="Share">
+    <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
+    <h1 class="view-title">${kind === 'learn' ? 'Share my progress' : 'Share your result'}</h1>
+    <label class="sh-name"><span>Name on the picture</span>${nameInput('opt-sharename', 'Your name')}</label>
+    <div class="sh-prev"><img id="sh-img" alt="Preview of the picture"></div>
+    <div class="card-actions">${navigator.canShare ? '<button type="button" class="btn primary" data-shsend>Share…</button>' : ''}<button type="button" class="btn${navigator.canShare ? '' : ' primary'}" data-shdl>Download picture</button></div>
+    <p class="small muted">The picture is made on your device. Nothing is uploaded.</p></div>`;
+  m.hidden = false; document.body.classList.add('modal-open');
+  await shareRender();
+}
+async function shareRender() {
+  const c = await drawShare(shareData(SH.kind, SH.data));
+  SH.blob = await new Promise(ok => c.toBlob(ok, 'image/png'));
+  if (SH.url) URL.revokeObjectURL(SH.url); SH.url = URL.createObjectURL(SH.blob);
+  const im = $('#sh-img'); if (im) im.src = SH.url;
+}
+let shT = 0;
+document.addEventListener('input', e => { if (e.target.id === 'opt-sharename') { clearTimeout(shT); const v = e.target.value; shT = setTimeout(() => { setName(v); shareRender(); if (view === 'learn' && LN.phase === 'path') lPath(); }, 300); } });
+async function shareSave(send) {
+  if (!SH.blob) return;
+  const file = new File([SH.blob], `panda-chinese-${SH.kind}-${new Date().toISOString().slice(0, 10)}.png`, { type: 'image/png' });
+  if (send && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: 'Panda Chinese', text: 'panda-chinese.github.io' }); return; }
+    catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  const a = document.createElement('a'); a.href = SH.url; a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); toast('Picture downloaded.');
+}
+
 /* ----- settings at a glance, under the header buttons ----- */
 function hdrStatus() {
   const st = S.settings || {}, rate = voiceRate();
@@ -4317,21 +4516,24 @@ function hdrStatus() {
 }
 
 /* ----- voice settings ----- */
-const VOICE_RATES = [['Slow', 0.6], ['Normal', 0.85], ['Fast', 1]];
+const VOICE_RATES = [['Slow', 0.6], ['Medium', 0.85], ['Normal', 1]];
 function voiceSettingsHtml() {
   const vs = zhVoices(), cur = voicePref(), rate = voiceRate();
   return `<h2>Voice</h2>
-    <label class="set-line"><span>Chinese voice</span><select class="in" id="opt-voice">${vs.length ? `<option value="">Automatic: best available</option>${vs.map(v => `<option value="${esc(v.name)}"${v.name === cur ? ' selected' : ''}>${esc(v.name)}</option>`).join('')}` : '<option value="">No Chinese voice found on this device</option>'}</select></label>
+    <label class="set-opt"><input type="checkbox" id="opt-rec" ${recWanted() ? 'checked' : ''}><span><b>Recorded voice (recommended)</b><small>A natural Chinese voice recorded for this app. It sounds the same on every device.${REC.st === 'none' ? ' <b>Not available right now</b> (are you offline?), so your device’s voice is used.' : ''} Turn it off to use your device’s own voice.</small></span></label>
     <div class="set-line"><span>Speed</span><div class="seg" role="group" aria-label="Speed">${VOICE_RATES.map(([l, r]) => `<button type="button" aria-pressed="${rate === r}" data-rate="${r}">${l}</button>`).join('')}</div></div>
     <p><button type="button" class="btn sm" data-voicetest>${ICON}<span>Test the voice</span></button></p>
-    <details class="more"><summary>How to get a better voice</summary><ul>
+    <div id="dev-voice"${recOn() ? ' hidden' : ''}>
+    <label class="set-line"><span>Device voice</span><select class="in" id="opt-voice">${vs.length ? `<option value="">Automatic: best available</option>${vs.map(v => `<option value="${esc(v.name)}"${v.name === cur ? ' selected' : ''}>${esc(v.name)}</option>`).join('')}` : '<option value="">No Chinese voice found on this device</option>'}</select></label>
+    <details class="more"><summary>How to get a better device voice</summary><ul>
       <li><b>Computer:</b> open the app in <b>Microsoft Edge</b>. It has free, natural-sounding Chinese voices; their names end in “Online (Natural)”.</li>
       <li><b>Android:</b> in Settings, search for “Text-to-speech”, choose Google’s engine and install the Chinese (Mandarin) voice.</li>
       <li><b>iPhone and iPad:</b> Settings → Accessibility → Spoken Content → Voices → Chinese, and download a voice.</li>
-      <li>Then restart the browser and choose the voice above.</li></ul></details>`;
+      <li>Then restart the browser and choose the voice above.</li></ul></details></div>`;
 }
 document.addEventListener('change', e => {
   const x = e.target;
+  if (x.id === 'opt-rec') { S.settings.recVoice = x.checked; save(); renderVoice(); const dv = $('#dev-voice'); if (dv) dv.hidden = recOn(); speak('你好！很高兴认识你。'); }
   if (x.id === 'opt-voice') { S.settings.voice = x.value; save(); renderVoice(); speak('你好！很高兴认识你。'); }
   if (x.dataset && x.dataset.course !== undefined) { S.settings.course = x.value; save(); $$('[data-course]').forEach(s => { s.value = x.value; }); toast('Course changed.'); }
 });
@@ -4355,7 +4557,7 @@ function go() {
   const h = location.hash.replace('#', '');
   view = VIEWS[h] ? h : 'learn';
   closeDrawer(); renderNav();
-  if (window.speechSynthesis) speechSynthesis.cancel();
+  stopAudio();
   VIEWS[view]();
 }
 window.addEventListener('hashchange', go);
