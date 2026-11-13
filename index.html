@@ -697,10 +697,6 @@ body.drawer-open{overflow:hidden}
 .hl li{font-size:15px;line-height:1.55;margin:3px 0}
 .help-end{margin-top:16px}
 .help-end a.btn{text-decoration:none}
-.moved{max-width:1000px;margin:12px auto 0;padding:10px 16px;background:#FFF4D6;border:1px solid #F2C94C;border-radius:10px;font-size:15px;color:#5A4A2E}
-.moved[hidden]{display:none}
-.moved a{color:#B8302A}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .moved{background:#3A3018;border-color:#7A6420;color:#F1E3C0}:root:not([data-theme="light"]) .moved a{color:#F08A80}}
 footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;color:var(--muted);display:flex;gap:10px 22px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line)}
 #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translate(-50%,20px);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50;max-width:90vw}
 #toast.on{opacity:1;transform:translate(-50%,0)}
@@ -717,6 +713,54 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
   .toggles{width:100%}
 }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
+
+
+/* settings at a glance (header) */
+.hdr-st{margin-left:auto;align-self:center;border:0;background:none;padding:4px 8px 4px 2px;font:inherit;font-size:12px;color:var(--muted);cursor:pointer;white-space:nowrap;display:inline-flex;gap:3px;align-items:baseline}
+.hdr-st b{font-weight:600;color:var(--ink)}
+.hdr-st b.off{color:var(--warn)}
+.hdr-st .dot{opacity:.5;margin:0 3px}
+.hdr-st u{color:var(--jade);margin-left:8px;text-underline-offset:2px}
+.hdr-st:hover u{text-decoration-thickness:2px}
+.hdr-st-m{display:none}
+@media (max-width:720px){.hdr-st-m .ins{display:none}.hdr-st-m .dot{margin:0 1px}.hdr-st-m{display:flex;justify-content:flex-end;width:100%;max-width:1040px;margin:0 auto;padding:0 14px 6px;font-size:11px;overflow:hidden}.hdr-st-m u{margin-left:6px}}
+/* snake board */
+.lp-map{max-width:920px}
+.lp-banner.sm .lp-roll{height:66px;width:12px}
+.lp-banner.sm .lp-bt{height:56px;min-width:190px;padding:4px 16px}
+.lp-banner.sm .lp-bt b{font-size:18px}
+.lp-banner.sm .lp-bt span{font-size:12px}
+.lp-pal.sm{width:48px}
+.lp-next{position:absolute;transform:translate(-50%,-50%);border:2px dashed #C2392F;background:#FFF8E7;color:#7A2420;border-radius:16px;padding:8px 14px;display:flex;flex-direction:column;align-items:center;cursor:pointer;z-index:3;line-height:1.25;font:inherit}
+.lp-next b{font-size:16px}
+.lp-next span{font-size:12px}
+.lp-next:hover{background:#FDE3E0}
+/* tutorial */
+.tut{position:fixed;inset:0;z-index:100;pointer-events:none}
+.tut-dim{position:fixed;inset:0;width:100%;height:100%}
+.tut-shade{fill:rgba(8,14,12,.68)}
+.tut-hole{position:fixed;border-radius:12px;transition:left .35s ease,top .35s ease,width .35s ease,height .35s ease}
+.tut-hole.ring::after{content:"";position:absolute;inset:-4px;border:3px solid #FFC83D;border-radius:14px;animation:tutPulse 1.6s ease-in-out infinite}
+.tut-hole.live::after{border-color:#FF8F5A}
+@keyframes tutPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.035)}}
+.tut-bub{font-family:var(--ui);position:fixed;left:0;top:0;width:min(360px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border-radius:14px;padding:14px 16px 12px;box-shadow:0 12px 40px rgba(0,0,0,.35);pointer-events:auto;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s,left .35s ease,top .35s ease}
+.tut-bub.wait{visibility:hidden;transition:none}
+.tut-bub.in{opacity:1;transform:none}
+.tut-arr{position:absolute;width:16px;height:16px;background:var(--surface);transform:translateX(-50%) rotate(45deg);display:none}
+.tut-bub[data-side="top"] .tut-arr{display:block;top:-8px;animation:tutBobUp 1.2s ease-in-out infinite}
+.tut-bub[data-side="bottom"] .tut-arr{display:block;bottom:-8px;animation:tutBobDn 1.2s ease-in-out infinite}
+@keyframes tutBobUp{0%,100%{margin-top:0}50%{margin-top:-4px}}
+@keyframes tutBobDn{0%,100%{margin-bottom:0}50%{margin-bottom:-4px}}
+.tut-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.tut-top .tab-panda{width:26px;height:24px;flex:none;margin:0}
+.tut-top b{font-size:17px;flex:1}
+.tut-tx{margin:0 0 12px;line-height:1.5;font-size:15px}
+.tut-hint{display:block;margin-top:8px;font-weight:600;color:var(--jade)}
+.tut-act{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tut-sp{flex:1}
+.tut-act [hidden]{display:none}
+body.tut-on .lp-pal{z-index:1}
+@media (prefers-reduced-motion: reduce){.tut-hole,.tut-bub{transition:none}.tut-hole.ring::after,.tut-arr{animation:none!important}}
 </style>
 </head>
 <body>
@@ -727,7 +771,7 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
     <div class="hdr-right">
       <button type="button" class="icon-btn" data-hidehdr aria-label="Hide the header" title="Hide the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>
       <button type="button" class="icon-btn" data-favs aria-label="Favourites" title="Favourites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button>
-      <button type="button" class="icon-btn" data-help aria-label="Help" title="Help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M9.3 9.3a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.4-2.7 4"/><path d="M12 17.6h.01"/></svg></button>
+      <button type="button" class="icon-btn" data-help aria-label="Info" title="Info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M9.3 9.3a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.4-2.7 4"/><path d="M12 17.6h.01"/></svg></button>
       <button type="button" class="icon-btn" data-settings aria-label="Settings and backup" title="Settings and backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </div>
   </div>
@@ -735,12 +779,13 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
     <button type="button" class="tab" data-sec="learn"><span class="tab-hz" aria-hidden="true">学</span>Learn</button>
     <button type="button" class="tab" data-sec="practice"><span class="tab-hz" aria-hidden="true">练</span>Practice</button>
     <button type="button" class="tab" data-sec="tests"><span class="tab-hz" aria-hidden="true">考</span>Tests</button>
+    <button type="button" class="hdr-st" data-settings title="Your main settings. Tap to change them."></button>
   </nav>
+  <button type="button" class="hdr-st hdr-st-m" data-settings title="Your main settings. Tap to change them."></button>
   <nav class="subtabs" id="subtabs" aria-label="Pages" hidden></nav>
 </header>
-<div class="moved" id="moved" role="note" hidden></div>
 <main id="main"></main>
-<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.1 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
+<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.2 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
 <div class="drawer-bg" id="drawer-bg" hidden></div><aside class="drawer" id="drawer" aria-label="Menu" hidden></aside>
 <button type="button" class="icon-btn show-hdr show-hdr2" data-showhdr aria-label="Show the header" title="Show the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
 <button type="button" class="icon-btn show-hdr" data-drawer aria-label="Open the menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -1690,7 +1735,7 @@ const KEY = 'hz-midterm-v1';
 const DEF = { settings: { pinyin: true, strict: true, noListen: false }, sets: {}, cards: {}, chars: {}, favs: {}, learn: {} };
 let S = JSON.parse(JSON.stringify(DEF));
 try { const raw = localStorage.getItem(KEY); if (raw) { const o = JSON.parse(raw); S = { ...S, ...o, settings: { ...DEF.settings, ...(o.settings || {}) } }; } } catch (e) { /* storage unavailable */ }
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } hdrStatus(); };
 function setFocus(on) { document.body.classList.toggle('focus', !!on); }
 const HOW = {};
 function howOpen(k) { return HOW[k] ? ' open' : ''; }
@@ -2075,7 +2120,7 @@ function renderChars() {
   if (C.screen === 'menu') {
     const n = deck().length;
     main.innerHTML = `<h1 class="view-title">Characters and words</h1>
-      <details class="howto" data-howto="h0"${howOpen('h0')}><summary>How it works</summary><p>Here you learn what every word from Units 0–2 means and how it’s read. First choose which words to practise, then start one of the six ways of practising below.</p><p>Every round goes through your selection in random order. Words you get wrong come back later in the same round, and your record for each word is saved, so “Words I missed” can later give you only your weak words.</p></details>
+      <details class="howto" data-howto="h0"${howOpen('h0')}><summary>How it works</summary><p>Here you learn what every word from your units means and how it’s read. First choose which words to practise, then start one of the six ways of practising below.</p><p>Every round goes through your selection in random order. Words you get wrong come back later in the same round, and your record for each word is saved, so “Words I missed” can later give you only your weak words.</p></details>
       ${charFilters()}
       <p class="sel-count">${n} words selected.</p>
       <div class="menu-grid">${CMODES.filter(([k]) => !(k === 'listen' && noListenOn())).map(([k]) => { const d = CDESC[k]; return `<div class="mcard"><h2>${k === 'listen' ? LTAG : ''}${esc(d.t)}</h2><p>${esc(d.short)}</p><details class="more"><summary>More</summary><p>${esc(d.p)}</p><p class="onscreen">${esc(d.s)}</p></details><button type="button" class="btn primary" data-cstart="${k}" ${n ? '' : 'disabled'}>${k === 'list' ? 'Open' : 'Start'}</button></div>`; }).join('')}</div>`;
@@ -2195,7 +2240,7 @@ function renderBook() {
   if (B.set) return renderBookSet();
   const vis = visibleSets();
   main.innerHTML = `<h1 class="view-title">Exercises from your books</h1>
-    <details class="howto" data-howto="h1"${howOpen('h1')}><summary>How it works</summary><p>Every exercise from the textbook, exercise book and character book for Units 0–2 that works without the recordings, with the book’s own instructions, grouped by type. Pick one to start; the label on the left shows its unit and the badge on the right your last score.</p><p>Inside an exercise, type answers in characters with your Chinese keyboard (Enter jumps to the next box) or in pinyin where asked. “Check answers” marks every item green or red and shows the right answer, “Show answers” only reveals them, and “Try again” clears the page. Answers are checked against the key at the back of the exercise book, including its alternative answers.</p></details>
+    <details class="howto" data-howto="h1"${howOpen('h1')}><summary>How it works</summary><p>Every exercise from the textbook, exercise book and character book for every unit that works without the recordings, with the book’s own instructions, grouped by type. Pick one to start; the label on the left shows its unit and the badge on the right your last score.</p><p>Inside an exercise, type answers in characters with your Chinese keyboard (Enter jumps to the next box) or in pinyin where asked. “Check answers” marks every item green or red and shows the right answer, “Show answers” only reveals them, and “Try again” clears the page. Answers are checked against the key at the back of the exercise book, including its alternative answers.</p></details>
     <div class="frow"><span class="flabel">Show</span>${chip('All units', B.unit === 'all', 'data-bunit="all"')}${[0, 1, 2].map(u => chip(UNIT_NAMES[u], B.unit === String(u), `data-bunit="${u}"`)).join('')}${chip('★ Only favourites', !!B.fav, 'data-bfav')}</div>${B.fav && !vis.length ? '<p class="empty">No favourite book exercises yet. Tap ☆ next to a task to save it.</p>' : ''}
     ${CATS.map(([k, label]) => { const ss = vis.filter(s => s.cat === k); if (!ss.length) return ''; return `<section class="cat"><h2>${esc(label)}</h2><p class="cat-desc">${esc(CAT_DESC[k] || '')}</p>${ss.map(s => { const st = S.sets[s.id]; const n = s.items.reduce((a, it) => a + Math.max(1, inputsOf(s, it).length), 0); return `<button type="button" class="set-row" data-open-set="${s.id}"><span class="u-tag">U${s.u}</span><span><span class="set-src">${esc(s.src)}</span><span class="set-title">${isListenSet(s) ? LTAG : ''}${esc(s.title)}</span></span><span class="badge ${st && st.got === st.max ? 'full' : ''}">${st ? `${st.got}/${st.max}` : `${n} q`}</span></button>`; }).join('')}</section>`; }).join('')}`;
 }
@@ -2356,7 +2401,7 @@ function renderWriting() {
     W.screen = 'menu';
     const all = groups.every(g => W.sel.has(g.id));
     main.innerHTML = `<h1 class="view-title">Writing characters</h1>
-      <details class="howto" data-howto="h4"${howOpen('h4')}><summary>How it works</summary><p>Learn to write every character from Units 0–2 in the correct stroke order. First choose which characters to practise (pick as many groups as you like, or All), then start one of the four modes below. A good order is: Watch, then Trace the outline, then Write from memory.</p><p>In every mode you move with Previous, Random and Next, or tap any character in the strip above the drawing box, and you can switch mode without going back. “Colour the radical” shows the radical in red, and “Relaxed checking” makes the stroke check more tolerant of shaky lines. It works best with a finger or stylus.</p></details>
+      <details class="howto" data-howto="h4"${howOpen('h4')}><summary>How it works</summary><p>Learn to write every character from your units in the correct stroke order. First choose which characters to practise (pick as many groups as you like, or All), then start one of the four modes below. A good order is: Watch, then Trace the outline, then Write from memory.</p><p>In every mode you move with Previous, Random and Next, or tap any character in the strip above the drawing box, and you can switch mode without going back. “Colour the radical” shows the radical in red, and “Relaxed checking” makes the stroke check more tolerant of shaky lines. It works best with a finger or stylus.</p></details>
       <div class="frow wrap"><span class="flabel">Characters</span>${chip('★ Only favourite words', !!W.fav, 'data-wfav')}${chip('All', all, 'data-wall')}${groups.map(g => chip(`${esc(g.label)} <span class="cnt">${g.list.length}</span>`, W.sel.has(g.id), `data-wgroup="${g.id}"`)).join('')}</div>
       <p class="sel-count">${list.length} characters selected${W.fav ? ' from your favourite words' : ''}.${W.fav && !list.length ? ' Star some words in Characters first.' : ''}</p>
       <div class="menu-grid">${WMODES.map(([k, l]) => `<div class="mcard"><h2>${esc(l)}</h2><p>${esc(WDESC[k].short)}</p><details class="more"><summary>More</summary><p>${esc(WDESC[k].p)}</p><p class="onscreen">${esc(WDESC[k].s)}</p></details><button type="button" class="btn primary" data-wstart="${k}" ${list.length ? '' : 'disabled'}>Start</button></div>`).join('')}</div>`;
@@ -2592,7 +2637,7 @@ function mkUpdateCount() {
 }
 function mkMenu() {
   main.innerHTML = `<h1 class="view-title">Midterm mock test</h1>
-    <details class="howto" data-howto="h5"${howOpen('h5')}><summary>How it works</summary><p>A full practice test in exactly the format of your Winter Semester midterm: 50 questions, 100 points, in three parts (listening; grammar and vocabulary; reading and writing). Every time you start, a new test is built from a pool of about 170 questions written only with Unit 0–2 vocabulary, and the answers are shuffled.</p>
+    <details class="howto" data-howto="h5"${howOpen('h5')}><summary>How it works</summary><p>A full practice test in exactly the format of your Winter Semester midterm: 50 questions, 100 points, in three parts (listening; grammar and vocabulary; reading and writing). Every time you start, a new test is built from a pool of about 170 questions written only with vocabulary from the midterm units, and the answers are shuffled.</p>
       <p><b>Listening:</b> press Play at each question. Words and sentences are read twice, then the question; the paragraph for true / false is read twice, like in the exam. The voice is your browser’s Chinese voice.</p>
       <p><b>Answering:</b> pinyin with tone marks or numbers (lao3), the neutral tone without a number or with 0; characters with your Chinese keyboard; in part 6 the letters A–E. The numbered boxes at the top show which questions you’ve answered; tap one to jump to it.</p>
       <p><b>After submitting:</b> your score per part, every question marked green or red with the correct answer, and the text and translation of every listening item. The five sentences in part 9 are graded by hand in the real exam, so here you compare them with model answers and give yourself 3, 1.5 or 0 points.</p></details>
@@ -2808,9 +2853,9 @@ function renderFavs() {
 let BK_PENDING = null;
 function openHelp() {
   const m = $('#modal');
-  m.innerHTML = `<div class="modal-box help-box" role="dialog" aria-modal="true" aria-label="Help">
+  m.innerHTML = `<div class="modal-box help-box" role="dialog" aria-modal="true" aria-label="Info">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
-    <h1 class="view-title">Help</h1>
+    <h1 class="view-title">Info</h1>
     <h2>The sections</h2>
     <ul class="hl">
       <li><b>Learn</b>: step-by-step levels. Each shows you something new, then a short quiz.</li>
@@ -2831,7 +2876,7 @@ function openHelp() {
     </ul>
     <h2>Saving your progress</h2>
     <ul class="hl"><li>Your progress is saved in this browser on this device. You can make a backup in Settings (⚙).</li></ul>
-    <div class="card-actions help-end"><button type="button" class="btn" data-about>About this app</button><a class="btn" href="mailto:draunic@gmail.com?subject=Panda%20Chinese%200.7.1%3A%20mistake%20or%20bug" target="_blank" rel="noopener">Report a mistake or bug</a></div>
+    <div class="card-actions help-end"><button type="button" class="btn primary" data-tutorial>▶ Tutorial</button><button type="button" class="btn" data-about>About this app</button><a class="btn" href="mailto:draunic@gmail.com?subject=Panda%20Chinese%20${APP_VERSION}%3A%20mistake%20or%20bug" target="_blank" rel="noopener">Report a mistake or bug</a></div>
     <p class="small muted">Found something wrong? Write to <b>draunic@gmail.com</b>. Please say which page and which exercise.</p>
   </div>`;
   m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
@@ -3648,7 +3693,7 @@ const GATE_SVG = `<svg viewBox="0 0 240 172" width="230" aria-hidden="true"><pat
 MOODS.sleep = ['arm-l', 'arm-r', 'e-closed', 'm-smile'];
 
 /* ----- state ----- */
-const LN = { phase: 'path', lv: null, ci: 0, queue: [], total: 0, doneN: 0, first: {}, sel: null, answered: false, tiles: [], m: null, writer: null, result: null };
+const LN = { unit: null, phase: 'path', lv: null, ci: 0, queue: [], total: 0, doneN: 0, first: {}, sel: null, answered: false, tiles: [], m: null, writer: null, result: null };
 const lRec = () => LEVELS.find(lv => !(S.learn && S.learn[lv.id])) || null;
 const lNeedsAudio = q => q.t === 'tone' || q.t === 'listen';
 function renderLearn() {
@@ -3668,53 +3713,76 @@ function lPath() {
       <p>Each level has two parts. First you <b>learn</b>: a few cards show new sounds, characters or a rule, with audio and stroke animations. Then a short <b>quiz</b> checks what you just learned, plus a couple of questions from earlier levels so you don’t forget. Mistakes come back at the end of the quiz.</p>
       <p>Questions marked ${LTAG} need sound; you can skip them with “Can’t listen now”, or hide them all in Settings.</p>
       <p>You get up to 3 stars: 3 if at least 90% is right the first time, 2 from 70%. All levels are open; the panda shows the recommended next one. Want more practice? The other tabs follow your textbook more closely.</p></details>
-    <nav class="lp-jump" id="lp-jump" aria-label="Jump to a unit">${[...new Set(LEVELS.map(l => l.unit))].map(u => { const ls = LEVELS.filter(l => l.unit === u), got = ls.reduce((s, l) => s + ((prog[l.id] || {}).stars || 0), 0); return `<button type="button" class="lp-jb" data-lunit="${u}"><b>Unit ${u}</b><span>★ ${got}/${ls.length * 3}</span></button>`; }).join('')}</nav>
+    <nav class="lp-jump" id="lp-jump" aria-label="Units">${[...new Set(LEVELS.map(l => l.unit))].map(u => { const ls = LEVELS.filter(l => l.unit === u), got = ls.reduce((s, l) => s + ((prog[l.id] || {}).stars || 0), 0); return `<button type="button" class="lp-jb" data-lunit="${u}"><b>Unit ${u}</b><span>★ ${got}/${ls.length * 3}</span></button>`; }).join('')}</nav>
     <div class="lp-wrap"><div class="lp-map" id="lp-map"></div></div>`;
   lLayout(); lJumpActive();
-  const r = $('.lp-node.rec'), ri = LEVELS.indexOf(lRec());
-  if (r && ri > 1) setTimeout(() => r.scrollIntoView({ block: 'center' }), 60);
+  const r = $('.lp-node.rec');
+  if (r) setTimeout(() => { const b = r.getBoundingClientRect(); if (b.bottom > innerHeight - 40) r.scrollIntoView({ block: 'center' }); }, 60);
 }
 const lvHasListen = lv => (lv.checkpoint ? LEVELS.filter(x => x.unit === lv.unit && !x.checkpoint) : [lv]).some(x => x.quiz.some(q => q.t === 'tone' || q.t === 'listen'));
+// The path shows one unit at a time as a "snake" board: rows go left to right, then right to left.
+const lUnits = () => [...new Set(LEVELS.map(l => l.unit))];
+function lCurUnit() { const us = lUnits(); if (us.includes(LN.unit)) return LN.unit; const r = lRec(); return r ? r.unit : us[us.length - 1]; }
 function lLayout() {
   const map = $('#lp-map'); if (!map) return;
   const hd = $('.top'); document.documentElement.style.setProperty('--hdr-h', (hd ? hd.offsetHeight : 0) + 'px');
-  const W = map.clientWidth || 360, cx = W / 2, amp = Math.min(118, W * 0.27);
-  const OFF = [0, 0.55, 0.9, 0.5, -0.2, -0.75, -0.65, 0];
-  const prog = S.learn || {}, rec = lRec();
-  let y = 22, html = '', dec = ''; const pts = [];
-  let curU = null;
-  LEVELS.forEach((lv, i) => {
-    if (lv.unit !== curU) {
-      curU = lv.unit; if (i) { y += 24; pts.push([cx, y + 44]); }
-      html += `<div class="lp-banner" id="lp-u${lv.unit}" style="top:${y}px"><span class="lp-roll"></span><div class="lp-bt"><b>Unit ${lv.unit}</b><span>${esc(LUNITS[lv.unit] || '')}</span></div><span class="lp-roll"></span></div>`;
-      y += 168;
-    }
-    const off = OFF[i % OFF.length], x = Math.round(cx + off * amp); pts.push([x, y]);
-    const st = prog[lv.id], stars = st ? st.stars : 0;
-    html += `<button type="button" class="lp-node${st ? ' done' : ''}${lv === rec ? ' rec' : ''}${lv.checkpoint ? ' check' : ''}" style="left:${x}px;top:${y}px" data-lopen="${lv.id}" aria-label="Level ${i + 1}: ${esc(lv.title)}${st ? `, ${stars} stars` : ''}"><span class="lp-ic hzf">${esc(lv.icon)}</span></button>
-      <div class="lp-label" style="left:${x}px;top:${y + 42}px"><span class="lp-stars${st ? ' got' : ''}" aria-label="${stars} of 3 stars">${[1, 2, 3].map(k => `<i class="${k <= stars ? 'on' : ''}">${k <= stars ? '★' : '☆'}</i>`).join('')}</span><span class="lp-t">${esc(lv.title)}</span></div>`;
-    if (lv === rec) { const px = off > 0.1 ? x - 108 : x + 44; html += `<div class="lp-pal" style="left:${Math.max(4, Math.min(W - 70, px))}px;top:${y - 58}px">${pandaSvg('idle', 'sway')}<span class="lp-say">${i ? 'Next up!' : 'Start here!'}</span></div>`; }
-    const side = off > 0.15 ? -1 : off < -0.15 ? 1 : (i % 2 ? 1 : -1);
-    const dx = Math.max(34, Math.min(W - 34, cx + side * (amp * 0.95 + 44)));
-    if (!(lv === rec && Math.abs(dx - x) < 150 && Math.sign(dx - x) === Math.sign((off > 0.1 ? -1 : 1)))) dec += `<div class="lp-dec" style="left:${dx}px;top:${y + 6}px">${DECOR[DECOR_ORDER[i % DECOR_ORDER.length]]}</div>`;
-    y += 132;
+  const W = map.clientWidth || 360, us = lUnits(), u = lCurUnit(), last = u === us[us.length - 1];
+  const prog = S.learn || {}, rec = lRec(), lvs = LEVELS.filter(l => l.unit === u);
+  const cols = W >= 760 ? 5 : W >= 520 ? 4 : 3, M = Math.max(56, Math.min(80, Math.round(W / (2 * cols)))), gap = (W - 2 * M) / (cols - 1), RH = W < 520 ? 162 : 166;
+  const lw = Math.min(150, Math.round(gap - 8), 2 * M - 6);
+  let y = 0, html = '', dec = ''; const pts = [];
+  const small = W < 520;
+  html += `<div class="lp-banner${small ? ' sm' : ''}" id="lp-u${u}" style="top:16px"><span class="lp-roll"></span><div class="lp-bt"><b>Unit ${u}</b><span>${esc(LUNITS[u] || '')}</span></div><span class="lp-roll"></span></div>`;
+  if (W >= 520) { dec += `<div class="lp-dec" style="left:${M - 10}px;top:62px">${DECOR.lantern}</div><div class="lp-dec" style="left:${W - M + 10}px;top:62px">${DECOR[u % 2 ? 'blossom' : 'cloud']}</div>`; }
+  y = small ? 148 : 170;
+  const first = y;
+  lvs.forEach((lv, k) => {
+    const row = Math.floor(k / cols), c = k % cols, col = row % 2 ? cols - 1 - c : c;
+    const x = Math.round(M + col * gap), ny = first + row * RH; pts.push([x, ny]);
+    const i = LEVELS.indexOf(lv), st = prog[lv.id], stars = st ? st.stars : 0;
+    html += `<button type="button" class="lp-node${st ? ' done' : ''}${lv === rec ? ' rec' : ''}${lv.checkpoint ? ' check' : ''}" style="left:${x}px;top:${ny}px" data-lopen="${lv.id}" aria-label="Level ${i + 1}: ${esc(lv.title)}${st ? `, ${stars} stars` : ''}"><span class="lp-ic hzf">${esc(lv.icon)}</span></button>
+      <div class="lp-label" style="left:${x}px;top:${ny + 42}px;width:${lw}px"><span class="lp-stars${st ? ' got' : ''}" aria-label="${stars} of 3 stars">${[1, 2, 3].map(q => `<i class="${q <= stars ? 'on' : ''}">${q <= stars ? '★' : '☆'}</i>`).join('')}</span><span class="lp-t">${esc(lv.title)}</span></div>`;
+    if (lv === rec) { const right = x + 30 + 46 <= W; html += `<div class="lp-pal${small ? ' sm' : ''}" style="left:${right ? x + 18 : x - 18 - (small ? 46 : 54)}px;top:${ny - (small ? 74 : 84)}px">${pandaSvg('idle', 'sway')}<span class="lp-say">${i ? 'Next up!' : 'Start here!'}</span></div>`; }
+    y = ny;
   });
-  pts.push([cx, y + 40]);
-  html += `<div class="lp-end" style="top:${y + 10}px">${GATE_SVG}<div class="lp-sleep">${pandaSvg('sleep', '')}<span class="lp-z">z<i>z</i><b>z</b></span></div>
+  // empty places in the last row get a decoration
+  const n = lvs.length, rows = Math.ceil(n / cols), lastRow = rows - 1;
+  for (let k = n; k < rows * cols; k++) { const c = k % cols, col = lastRow % 2 ? cols - 1 - c : c; if (k === n && !last) continue; dec += `<div class="lp-dec" style="left:${Math.round(M + col * gap)}px;top:${first + lastRow * RH + 4}px">${DECOR[DECOR_ORDER[(k + u) % DECOR_ORDER.length]]}</div>`; }
+  // after the last level: the next free place gets a "Next unit" button; the last unit ends at the gate
+  const nr = Math.floor(n / cols), nc = n % cols, ex = Math.round(M + (nr % 2 ? cols - 1 - nc : nc) * gap), ey = first + nr * RH;
+  const nextU = us[us.indexOf(u) + 1];
+  if (last) {
+    const gy = first + lastRow * RH + 120;
+    html += `<div class="lp-end" style="top:${gy}px">${GATE_SVG}<div class="lp-sleep">${pandaSvg('sleep', '')}<span class="lp-z">z<i>z</i><b>z</b></span></div>
     <p class="lp-soon"><b>More levels coming soon</b><span>New units will appear here. <span class="hzf">敬请期待</span> jìng qǐng qīdài: stay tuned!</span></p></div>`;
-  y += 380;
-  const d = pts.map((p, i) => i ? `C ${pts[i - 1][0]} ${(pts[i - 1][1] + p[1]) / 2} ${p[0]} ${(pts[i - 1][1] + p[1]) / 2} ${p[0]} ${p[1]}` : `M ${p[0]} ${p[1]}`).join(' ');
+    pts.push([W / 2, gy + 40]);
+    y = gy + 380;
+  } else {
+    pts.push([ex, ey]);
+    html += `<button type="button" class="lp-next" style="left:${ex}px;top:${ey}px" data-lunit="${nextU}"><b>Unit ${nextU}</b><span>Next unit →</span></button>`;
+    y = first + Math.max(nr, lastRow) * RH + 118;
+  }
+  // road: straight along a row, a U-turn at the ends
+  const d = pts.map((p, k) => {
+    if (!k) return `M ${p[0]} ${p[1]}`;
+    const a = pts[k - 1];
+    if (Math.abs(a[1] - p[1]) < 2) return `L ${p[0]} ${p[1]}`;
+    if (Math.abs(a[0] - p[0]) > 2) return `C ${a[0]} ${(a[1] + p[1]) / 2} ${p[0]} ${(a[1] + p[1]) / 2} ${p[0]} ${p[1]}`;
+    const out = a[0] > W / 2 ? 1 : -1, b = Math.max(20, M - 18) * 1.33;
+    return `C ${a[0] + out * b} ${a[1]} ${p[0] + out * b} ${p[1]} ${p[0]} ${p[1]}`;
+  }).join(' ');
   map.style.height = y + 'px';
   map.innerHTML = `<svg class="lp-line" width="${W}" height="${y}" viewBox="0 0 ${W} ${y}" aria-hidden="true"><path d="${d}" class="lp-road"/><path d="${d}" class="lp-dash"/></svg>${dec}${html}`;
 }
-function lJumpOffset() { const h = $('.top'), j = $('#lp-jump'); return (h && !document.body.classList.contains('focus') ? h.offsetHeight : 0) + (j ? j.offsetHeight : 0) + 12; }
-function lJump(u) { const b = $('#lp-u' + u); if (!b) return; window.scrollTo({ top: b.getBoundingClientRect().top + window.scrollY - lJumpOffset(), behavior: 'smooth' }); }
-function lJumpActive() {
-  const bs = $$('.lp-banner'); if (!bs.length) return; const off = lJumpOffset() + 60; let cur = bs[0].id;
-  bs.forEach(b => { if (b.getBoundingClientRect().top <= off) cur = b.id; });
-  $$('.lp-jb').forEach(x => { const on = 'lp-u' + x.dataset.lunit === cur; x.classList.toggle('on', on); if (on) x.setAttribute('aria-current', 'true'); else x.removeAttribute('aria-current'); });
+function lJump(u) {
+  LN.unit = +u; lLayout(); lJumpActive();
+  const w = $('.lp-wrap'); if (w && w.getBoundingClientRect().top < lJumpOffset()) window.scrollTo({ top: w.getBoundingClientRect().top + window.scrollY - lJumpOffset(), behavior: 'smooth' });
 }
-window.addEventListener('scroll', () => { if (view === 'learn' && LN.phase === 'path') lJumpActive(); }, { passive: true });
+function lJumpOffset() { const h = $('.top'), j = $('#lp-jump'); return (h && !document.body.classList.contains('focus') ? h.offsetHeight : 0) + (j ? j.offsetHeight : 0) + 12; }
+function lJumpActive() {
+  const u = lCurUnit();
+  $$('.lp-jb').forEach(x => { const on = +x.dataset.lunit === u; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on)); });
+}
 let lResizeT = 0;
 window.addEventListener('resize', () => { clearTimeout(lResizeT); lResizeT = setTimeout(() => { if (view === 'learn' && LN.phase === 'path') lLayout(); }, 150); });
 function lOpen(id) {
@@ -3877,7 +3945,7 @@ function lDone() {
     <div class="card-actions qc-endbtns">${next ? `<button type="button" class="btn primary" data-lstart="${next.id}">Next level →</button>` : ''}<button type="button" class="btn" data-lstart="${lv.id}">Play again</button><button type="button" class="btn" data-lpath>Back to the path</button></div></section>`;
   window.scrollTo({ top: 0 });
 }
-function lExit() { if (LN.writer) { try { LN.writer.cancelQuiz(); } catch (e) { /* ignore */ } } LN.phase = 'path'; LN.lv = null; setFocus(false); renderLearn(); window.scrollTo({ top: 0 }); }
+function lExit() { if (LN.writer) { try { LN.writer.cancelQuiz(); } catch (e) { /* ignore */ } } LN.phase = 'path'; LN.lv = null; LN.unit = null; setFocus(false); renderLearn(); window.scrollTo({ top: 0 }); }
 
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return; const d = t.dataset;
@@ -3926,7 +3994,7 @@ function openAbout() {
   m.innerHTML = `<div class="modal-box help-box" role="dialog" aria-modal="true" aria-label="About this app">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <h1 class="view-title">About this app</h1>
-    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, Units 0–2, made for classmates and other learners. Version 0.7.1 beta, 13 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
+    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, made for classmates and other learners. Version 0.7.2 beta, 13 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
     <h2>Privacy</h2><p>The app collects no data. Your progress and favourites stay in your own browser.</p>
     <h2>Content</h2><p>The exercises in Book exercises and the vocabulary follow the textbook <i>Contemporary Chinese</i> (当代中文); all rights to the textbook belong to its authors and publisher. The Learn levels, the Test questions, the grammar explanations and the practice tests were written for this app with the help of AI (Claude by Anthropic).</p>
     <h2>Credits</h2><p>Made by <b>Damjan Raunić</b> (draunic@gmail.com). Stroke animations: <b>Hanzi Writer</b> by David Chanin (MIT License). Stroke data: <b>hanzi-writer-data</b>, based on <b>Make Me a Hanzi</b> (Arphic Public License). Fonts: <b>Fira Sans</b> and <b>Noto Serif SC</b> (SIL Open Font License). Speech uses your device’s built-in voices.</p>
@@ -3976,7 +4044,7 @@ function wmPlay() {
   const next = () => { if (tok !== wmTok || i >= MODAL_W.length) return; MODAL_W[i++].animateCharacter({ onComplete: () => setTimeout(next, 250) }); };
   setTimeout(next, 200);
 }
-function closeModal() { const m = $('#modal'); wmTok++; m.hidden = true; m.innerHTML = ''; MODAL_W = []; document.body.classList.remove('modal-open'); }
+function closeModal() { const m = $('#modal'); wmTok++; m.hidden = true; m.innerHTML = ''; MODAL_W = []; document.body.classList.remove('modal-open'); if (TUT_PENDING && !TUT.on) { TUT_PENDING = false; setTimeout(tutStart, 300); } }
 document.addEventListener('click', e => {
   if (e.target.id === 'modal') return closeModal();
   const t = e.target.closest('button'); if (!t) return; const d = t.dataset;
@@ -3992,7 +4060,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
 
 /* ================= navigation, course, version ================= */
-const APP_VERSION = '0.7.1';
+const APP_VERSION = '0.7.2';
 const PANDA_SM = '<svg class="tab-panda" viewBox="0 0 40 36" aria-hidden="true"><circle cx="9" cy="8" r="6" fill="#222"/><circle cx="31" cy="8" r="6" fill="#222"/><ellipse cx="20" cy="20" rx="15" ry="13.5" fill="#fff" stroke="#222" stroke-width="1.6"/><ellipse cx="14" cy="19" rx="4" ry="5" fill="#222" transform="rotate(30 14 19)"/><ellipse cx="26" cy="19" rx="4" ry="5" fill="#222" transform="rotate(-30 26 19)"/><circle cx="14.6" cy="18.6" r="1.5" fill="#fff"/><circle cx="25.4" cy="18.6" r="1.5" fill="#fff"/><ellipse cx="20" cy="24" rx="2.2" ry="1.5" fill="#222"/></svg>';
 const SECTIONS = [
   { id: 'learn', hz: '学', label: 'Learn', pages: [['learn', 'Learn']] },
@@ -4025,7 +4093,7 @@ function renderDrawer() {
     <nav class="dr-nav" aria-label="Sections">${SECTIONS.map(s => `<div class="dr-sec"><button type="button" class="dr-main${sec === s ? ' on' : ''}" data-view="${LASTPAGE[s.id] || s.pages[0][0]}"><span class="tab-hz" aria-hidden="true">${s.hz}</span>${esc(s.label)}</button>${s.pages.length > 1 ? s.pages.map(([v, l]) => `<button type="button" class="dr-sub${v === view ? ' on' : ''}" data-view="${v}">${esc(l)}</button>`).join('') : ''}</div>`).join('')}</nav>
     <div class="dr-sep"></div>
     ${document.body.classList.contains('focus') ? '<button type="button" class="dr-item" data-showhdr>Show the header</button>' : ''}
-    <button type="button" class="dr-item" data-favs>★ Favourites</button><button type="button" class="dr-item" data-help>? Help</button><button type="button" class="dr-item" data-settings>⚙ Settings and backup</button><button type="button" class="dr-item" data-about>About this app</button>
+    <button type="button" class="dr-item" data-favs>★ Favourites</button><button type="button" class="dr-item" data-help>? Info</button><button type="button" class="dr-item" data-tutorial>▶ Tutorial</button><button type="button" class="dr-item" data-settings>⚙ Settings and backup</button><button type="button" class="dr-item" data-about>About this app</button>
     <button type="button" class="dr-ver" data-notes>Version ${APP_VERSION} beta: what’s new?</button>`;
 }
 function openDrawer() {
@@ -4041,6 +4109,7 @@ function closeDrawer() {
 
 /* ----- patch notes and welcome ----- */
 const NOTES = [
+  { v: '0.7.2', date: '13 November 2026', items: ['A new Learn board: one unit at a time, in rows, so there’s much less scrolling.', 'Your main settings at a glance under the buttons at the top: listening, pinyin, tones and voice speed. Tap it to change them.', 'A short tutorial that shows you around the app. Watch it again any time from the ☰ menu or from Info.', 'Help is now called Info.'] },
   { v: '0.7.1', date: '13 November 2026', items: ['New name and a new home: Panda Chinese now lives at panda-chinese.github.io.', 'The voice is slow by default, which is easier for beginners. You can change it in Settings.', 'Shorter Help and Settings.', 'A button to report a mistake or a bug.'] },
   { v: '0.7', date: '13 November 2026', items: ['A tidier menu: three sections, Learn, Practice and Tests, with their pages underneath.', 'On phones, ☰ in the top-left corner opens a side menu with everything in one place.', 'Choose your course at the top. HSK is coming soon.', 'Settings: pick the Chinese voice and its speed. “Slow” is great for beginners.', 'This “What’s new” window, and the version number at the bottom of the page.'] },
   { v: '0.6', items: ['Learn: all of Unit 1 and Unit 2, 31 levels in total.', 'Stars under every level on the path, and a bar to jump to any unit.', 'Every exercise with sound is marked “Listening”.'] },
@@ -4072,10 +4141,179 @@ function openWelcome() {
   m.hidden = false; document.body.classList.add('modal-open');
 }
 function checkNotes() {
-  const seen = S.seenVersion; if (seen === APP_VERSION) return;
+  const seen = S.seenVersion;
+  if (!S.tutSeen) TUT_PENDING = true;
+  if (seen === APP_VERSION) { if (TUT_PENDING) { TUT_PENDING = false; setTimeout(tutStart, 400); } return; }
   const used = ['sets', 'cards', 'chars', 'learn', 'favs'].some(k => S[k] && Object.keys(S[k]).length);
   S.seenVersion = APP_VERSION; save();
   if (!seen && !used) openWelcome(); else openNotes(seen);
+}
+
+/* ----- tutorial (guided tour) ----- */
+let TUT_PENDING = false;
+const TUT = { on: false, i: 0, steps: [], el: null, ui: null, raf: 0, t0: 0, last: '', advancing: false };
+const tutMob = () => matchMedia('(max-width:720px)').matches;
+function tutNav(v) { setFocus(false); if (v === 'learn') { LN.phase = 'path'; if (LN.unit !== null) { LN.unit = null; if (view === 'learn') lPath(); } } if (v === 'challenge' && QC.phase !== 'menu') QC.phase = 'menu'; if (location.hash !== '#' + v) location.hash = v; else if (view !== v) go(); }
+const hdrBtn = k => $(`.hdr-right [data-${k}]`);
+const tutSet = () => { if ($('#modal').hidden || !$('#modal .set-box')) openSettings(); };
+function tutSteps() {
+  const mob = tutMob(), rec = lRec(), fresh = !rec || LEVELS.indexOf(rec) === 0;
+  const all = [
+    { title: 'Quick tour', text: 'Hi! I’m your panda guide. In about a minute I’ll show you where everything is. Tap <b>Next</b>, or <b>Skip tutorial</b> any time.', before: () => { closeModal(); closeDrawer(); tutNav('learn'); window.scrollTo({ top: 0 }); } },
+    { desk: true, el: () => $('.tabs'), title: 'Three sections', text: '<b>Learn</b>: step-by-step levels.<br><b>Practice</b>: revise in your own way.<br><b>Tests</b>: get ready for the exam.' },
+    { mob: true, el: () => $('header .menu-btn'), click: true, title: 'The menu', text: 'Tap <b>☰</b>. Everything in the app is in this menu.' },
+    { mob: true, el: () => $('#drawer .dr-nav'), before: () => { if (!document.body.classList.contains('drawer-open')) openDrawer(); }, title: 'Three sections', text: '<b>Learn</b>: step-by-step levels.<br><b>Practice</b>: revise in your own way.<br><b>Tests</b>: get ready for the exam.<br>Each section has its pages underneath.', wait: () => document.body.classList.contains('drawer-open') },
+    { el: () => $('.lp-node.rec') || $('.lp-node'), before: () => { closeDrawer(); tutNav('learn'); }, scroll: true, title: 'Learn', text: 'Levels that follow your textbook, one unit at a time. Each level shows you something new, then a short quiz gives you up to 3 stars. All levels are open, and the panda always points to the recommended next one.' },
+    { el: () => $('#lp-jump'), before: () => tutNav('learn'), title: 'Units', text: 'Each unit has its own board. Switch between the units here; the stars show how far you’ve got.' },
+    { desk: true, el: () => $('.tab[data-sec="practice"]'), click: true, before: () => window.scrollTo({ top: 0 }), title: 'Practice', text: 'Now tap <b>Practice</b>.' },
+    { el: () => $('#subtabs'), before: () => { if (mob) tutNav('challenge'); window.scrollTo({ top: 0 }); }, wait: () => { const x = secOf(view); return !!x && x.id === 'practice'; }, title: 'Pages in a section', text: '<b>Quick challenge</b>: a mixed round with the panda.<br><b>Words</b>: flashcards and word quizzes.<br><b>Writing</b>: stroke order.<br><b>Grammar</b>: every rule with a drill.<br><b>Book exercises</b>: the exercises from your textbook.' },
+    { el: () => $('#main .filters'), before: () => { if (view !== 'challenge') tutNav('challenge'); }, scroll: true, title: 'Where the questions come from', text: 'On most pages you choose what to practise: which units, <b>everything</b> or <b>only favourites</b>, and which kinds of tasks. Change it whenever you like.' },
+    { desk: true, el: () => $('.tab[data-sec="tests"]'), click: true, before: () => window.scrollTo({ top: 0 }), title: 'Tests', text: 'Now tap <b>Tests</b>.' },
+    { el: () => $('#subtabs'), before: () => { if (mob) tutNav('test'); window.scrollTo({ top: 0 }); }, wait: () => secOf(view) && secOf(view).id === 'tests', title: 'Tests', text: '<b>Practice test</b>: harder, exam-style questions.<br><b>Mock exam</b>: 50 questions in the format of the midterm.' },
+    { el: () => hdrBtn('favs'), title: 'Favourites', text: 'Tap <b>☆</b> next to any word or task to save it. <b>★</b> up here lists all your favourites, and “Only favourites” lets you practise just those.' },
+    { el: () => $$('.hdr-st').find(e => e.getClientRects().length), before: () => window.scrollTo({ top: 0 }), title: 'Your settings at a glance', text: 'This small line shows what’s switched on: listening exercises, pinyin, tones and the voice speed. Anything switched off is shown in orange.' },
+    { el: () => hdrBtn('settings'), click: true, title: 'Settings', text: 'Tap <b>⚙</b> to open Settings.' },
+    { before: tutSet, el: () => { const x = $('#opt-nolisten'); return x && x.closest('.set-opt'); }, scroll: true, title: 'Bad voice? Switch listening off', text: 'If the Chinese voice sounds bad, or you can’t use sound, turn on <b>No listening exercises</b>. They disappear from the whole app. In a single exercise you can also tap “Can’t listen now”.' },
+    { before: tutSet, el: () => { const x = $('#opt-voice'); return x && x.closest('.set-line'); }, scroll: true, title: 'Voice and speed', text: 'Choose the Chinese voice and its speed (<b>Slow</b> is the default). “How to get a better voice” explains how to get a natural one; Microsoft Edge on a computer works best.' },
+    { before: tutSet, el: () => $('#modal .bk-panel'), scroll: true, title: 'Backup', text: 'Your progress is saved <b>only in this browser</b>. Save a backup file now and then; load it on another device to move your progress there.' },
+    { el: () => hdrBtn('hidehdr'), before: () => closeModal(), title: 'More room', text: '<b>⌃</b> hides the header so you have more room. It also hides by itself when an exercise starts; <b>⌄</b> brings it back.' },
+    { el: () => hdrBtn('help'), title: 'Info', text: 'Info explains every page. Found a mistake? Report it from there. You can watch this tutorial again from Info or the ☰ menu.' },
+    { el: () => $('.lp-node.rec') || $('.lp-node'), before: () => tutNav('learn'), scroll: true, clickOk: true, final: true, title: fresh ? 'Where to start?' : 'Ready?',
+      text: fresh ? 'Right here: <b>Unit 0, level 1, “The four tones”</b>. Do the levels in order, revise with <b>Quick challenge</b>, and try the <b>Mock exam</b> before your test. Good luck!'
+        : `The panda suggests <b>“${esc(rec ? rec.title : '')}”</b>. Keep going level by level, revise with <b>Quick challenge</b>, and try the <b>Mock exam</b> before your test. Good luck!` }
+  ];
+  return all.filter(s => !(s.desk && mob) && !(s.mob && !mob));
+}
+function tutStart() {
+  if (TUT.on) return;
+  S.tutSeen = true; save();
+  closeModal(); closeDrawer(); setFocus(false);
+  TUT.on = true; TUT.steps = tutSteps(); TUT.i = 0; TUT.last = '';
+  const ui = document.createElement('div'); ui.id = 'tut'; ui.className = 'tut';
+  ui.innerHTML = `<svg class="tut-dim" aria-hidden="true"><defs><mask id="tut-mask"><rect width="100%" height="100%" fill="#fff"/><rect class="tut-cut" rx="12" fill="#000"/></mask></defs><rect width="100%" height="100%" class="tut-shade" mask="url(#tut-mask)"/></svg><div class="tut-hole" aria-hidden="true"></div>
+    <div class="tut-bub" role="dialog" aria-modal="true" aria-labelledby="tut-h" aria-live="polite"><span class="tut-arr" aria-hidden="true"></span>
+      <div class="tut-top">${PANDA_SM}<b id="tut-h"></b><span class="tut-n muted small"></span></div>
+      <p class="tut-tx"></p>
+      <div class="tut-act"><button type="button" class="link tut-skip" data-tutskip>Skip tutorial</button><span class="tut-sp"></span><button type="button" class="btn sm" data-tutback>Back</button><button type="button" class="btn primary" data-tutnext>Next</button></div>
+    </div>`;
+  document.body.appendChild(ui); TUT.ui = ui; document.body.classList.add('tut-on');
+  tutShow();
+  const loop = () => { if (!TUT.on) return; tutPlace(); tutCut(); TUT.raf = requestAnimationFrame(loop); };
+  TUT.raf = requestAnimationFrame(loop);
+}
+function tutEnd() {
+  if (!TUT.on) return;
+  TUT.on = false; cancelAnimationFrame(TUT.raf);
+  if (TUT.ui) TUT.ui.remove(); TUT.ui = null; TUT.el = null;
+  document.body.classList.remove('tut-on');
+}
+function tutSkip() { tutEnd(); closeModal(); closeDrawer(); }
+function tutShow() {
+  const st = TUT.steps[TUT.i]; if (!st) return tutSkip();
+  TUT.el = null; TUT.t0 = performance.now(); TUT.last = ''; TUT.advancing = false;
+  if (st.before) st.before();
+  const ui = TUT.ui, bub = $('.tut-bub', ui);
+  bub.classList.remove('in'); bub.classList.add('wait');
+  $('#tut-h', ui).textContent = st.title;
+  $('.tut-n', ui).textContent = `${TUT.i + 1} / ${TUT.steps.length}`;
+  $('.tut-tx', ui).innerHTML = st.text + (st.click ? '<span class="tut-hint">Tap the highlighted button.</span>' : '');
+  const nx = $('[data-tutnext]', ui), bk = $('[data-tutback]', ui);
+  nx.hidden = !!st.click; nx.textContent = st.final ? (st.clickOk ? 'Start this level' : 'Finish') : TUT.i ? 'Next' : 'Show me';
+  bk.hidden = TUT.i === 0 || !!st.click || !!TUT.steps[TUT.i - 1].click;
+  let fin = $('[data-tutfinish]', ui); if (fin) fin.remove();
+  if (st.final) { nx.insertAdjacentHTML('beforebegin', '<button type="button" class="btn" data-tutfinish>Finish</button>'); $('.tut-skip', ui).hidden = true; }
+  else $('.tut-skip', ui).hidden = false;
+}
+function tutTarget() {
+  const st = TUT.steps[TUT.i]; if (!st || !st.el) return null;
+  if (st.wait && !st.wait() && performance.now() - TUT.t0 < 1500) return undefined;
+  const el = st.el();
+  if (!el || !el.getClientRects().length) return performance.now() - TUT.t0 < 1500 ? undefined : null;
+  return el;
+}
+function tutPlace() {
+  const st = TUT.steps[TUT.i], ui = TUT.ui; if (!st || !ui) return;
+  const el = tutTarget(); if (el === undefined) return;
+  const bub = $('.tut-bub', ui), hole = $('.tut-hole', ui), arr = $('.tut-arr', ui);
+  if (el && el !== TUT.el) {
+    TUT.el = el;
+    if (st.scroll) el.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+  if (!el) TUT.el = null;
+  const vw = innerWidth, vh = innerHeight, pad = 6;
+  let r = el ? el.getBoundingClientRect() : null;
+  // the whole Learn path is huge: keep the spotlight to the visible part
+  if (r) { const top = Math.max(r.top, 0), bot = Math.min(r.bottom, vh); r = { left: r.left, right: r.right, top, bottom: Math.max(bot, top), width: r.width, height: Math.max(bot - top, 0) }; }
+  const bw = bub.offsetWidth, bh = bub.offsetHeight;
+  let hx, hy, hw, hh, bx, by, ax = null, side = 'none';
+  if (r) {
+    hx = r.left - pad; hy = r.top - pad; hw = r.width + pad * 2; hh = r.height + pad * 2;
+    const below = vh - (hy + hh), above = hy;
+    if (below >= bh + 20) { side = 'top'; by = hy + hh + 14; }
+    else if (above >= bh + 20) { side = 'bottom'; by = hy - bh - 14; }
+    else { side = 'none'; by = vh - bh - 12; }
+    bx = Math.max(12, Math.min(vw - bw - 12, r.left + r.width / 2 - bw / 2));
+    ax = Math.max(18, Math.min(bw - 18, r.left + r.width / 2 - bx));
+  } else {
+    hx = vw / 2; hy = vh / 2; hw = 0; hh = 0;
+    bx = (vw - bw) / 2; by = (vh - bh) / 2;
+  }
+  const key = [hx, hy, hw, hh, bx, by, side].map(v => typeof v === 'number' ? Math.round(v) : v).join(',');
+  if (key === TUT.last) return; TUT.last = key;
+  Object.assign(hole.style, { left: hx + 'px', top: hy + 'px', width: hw + 'px', height: hh + 'px' });
+  hole.classList.toggle('ring', !!r);
+  hole.classList.toggle('live', !!(st.click || st.clickOk));
+  Object.assign(bub.style, { left: bx + 'px', top: by + 'px' });
+  bub.dataset.side = side;
+  if (ax !== null) arr.style.left = ax + 'px';
+  if (bub.classList.contains('wait')) { bub.classList.remove('wait'); requestAnimationFrame(() => bub.classList.add('in')); const f = st.click ? TUT.el : $('[data-tutnext]', ui); if (f) try { f.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
+}
+// copy the (animated) spotlight box into the SVG mask every frame
+function tutCut() {
+  const h = $('.tut-hole', TUT.ui), c = $('.tut-cut', TUT.ui); if (!h || !c) return;
+  const r = h.getBoundingClientRect();
+  c.setAttribute('x', r.left); c.setAttribute('y', r.top); c.setAttribute('width', Math.max(0, r.width)); c.setAttribute('height', Math.max(0, r.height));
+}
+function tutGo(d) { TUT.i = Math.max(0, Math.min(TUT.steps.length - 1, TUT.i + d)); tutShow(); }
+// While the tour runs, only its own buttons and the highlighted element (on "tap" steps) can be used.
+function tutAllowed(e) {
+  if (!TUT.on) return true;
+  if (TUT.ui && TUT.ui.contains(e.target)) return true;
+  const st = TUT.steps[TUT.i];
+  return !!(st && (st.click || st.clickOk) && TUT.el && TUT.el.contains(e.target));
+}
+['mousedown', 'pointerdown', 'dblclick', 'contextmenu'].forEach(ev => window.addEventListener(ev, e => { if (!tutAllowed(e)) { e.preventDefault(); e.stopPropagation(); } }, true));
+window.addEventListener('click', e => {
+  if (!TUT.on) return;
+  if (!tutAllowed(e)) { e.preventDefault(); e.stopPropagation(); return; }
+  if (TUT.ui.contains(e.target)) {
+    const b = e.target.closest('button'); if (!b) return; const d = b.dataset;
+    e.stopPropagation();
+    if (d.tutskip !== undefined) return tutSkip();
+    if (d.tutfinish !== undefined) return tutEnd();
+    if (d.tutback !== undefined) { let j = TUT.i - 1; while (j > 0 && TUT.steps[j].click) j--; TUT.i = j; return tutShow(); }
+    if (d.tutnext !== undefined) { const st = TUT.steps[TUT.i]; if (st.final) { const el = TUT.el; tutEnd(); if (st.clickOk && el) el.click(); return; } return tutGo(1); }
+    return;
+  }
+  const st = TUT.steps[TUT.i];
+  if (st.clickOk) { tutEnd(); return; }
+  if (st.click && !TUT.advancing) { TUT.advancing = true; setTimeout(() => tutGo(1), 60); }
+}, true);
+window.addEventListener('keydown', e => {
+  if (!TUT.on) return;
+  if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); return tutSkip(); }
+  if ((e.key === 'Enter' || e.key === ' ') && !tutAllowed(e)) { e.preventDefault(); e.stopPropagation(); }
+}, true);
+window.addEventListener('resize', () => { if (TUT.on) TUT.last = ''; });
+document.addEventListener('click', e => { const t = e.target.closest('[data-tutorial]'); if (t && !TUT.on) { closeModal(); closeDrawer(); setTimeout(tutStart, 250); } });
+
+/* ----- settings at a glance, under the header buttons ----- */
+function hdrStatus() {
+  const st = S.settings || {}, rate = voiceRate();
+  const sp = (VOICE_RATES.find(r => r[1] === rate) || ['Custom'])[0];
+  const it = (k, on, txt) => `<span>${k}: <b class="${on ? '' : 'off'}">${txt || (on ? 'ON' : 'OFF')}</b></span>`;
+  const html = [it('Listening', !st.noListen), it('Pinyin', st.pinyin !== false), it('Tones', st.strict !== false), it('Voice', true, sp)].join('<span class="dot">·</span>') + '<u>Change<span class="ins"> in Settings</span></u>';
+  $$('.hdr-st').forEach(b => { b.innerHTML = html; b.setAttribute('aria-label', `Settings: listening exercises ${st.noListen ? 'off' : 'on'}, pinyin ${st.pinyin !== false ? 'on' : 'off'}, tones must be right ${st.strict !== false ? 'on' : 'off'}, voice speed ${sp}. Open Settings.`); });
 }
 
 /* ----- voice settings ----- */
@@ -4204,8 +4442,7 @@ document.addEventListener('change', e => {
 renderVoice();
 let rT; window.addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (view === 'writing') { const b = $('#w-box'); if (b && Math.abs(b.clientWidth - W.size) > 8 && W.mode !== 'free') mountWriter(); } }, 200); });
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (view === 'writing') renderWriting(); }); } catch (e) { /* old browser */ }
-applySettings();
-if (!/(^|\.)panda-chinese\.github\.io$/i.test(location.hostname)) { const mv = $('#moved'); if (mv) { mv.hidden = false; mv.innerHTML = 'Panda Chinese has a new home: <a href="https://panda-chinese.github.io/" target="_blank" rel="noopener"><b>panda-chinese.github.io</b></a>. To keep your progress, <button type="button" class="link" data-settings>save a backup</button> here and load it there.'; } }
+applySettings(); hdrStatus();
 go();
 checkNotes();
 })();
