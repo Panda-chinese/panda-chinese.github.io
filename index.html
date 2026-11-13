@@ -741,6 +741,8 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
 .lp-hi b{color:var(--ink)}
 .lp-hi .link{margin-left:6px}
 .nm-card{margin:12px 0 0;padding:12px 14px;border:1px solid var(--line);border-left:4px solid var(--jade);border-radius:10px;background:var(--surface)}
+.keep-card{border-left-color:#E0A100}
+.keep-card p{margin:6px 0 0}
 .nm-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
 .nm-in{max-width:240px;flex:1 1 160px;font-family:var(--ui)}
 .wl-name{display:flex;flex-direction:column;gap:6px;margin:14px 0 4px}
@@ -800,7 +802,7 @@ body.tut-on .lp-pal{z-index:1}
   <nav class="subtabs" id="subtabs" aria-label="Pages" hidden></nav>
 </header>
 <main id="main"></main>
-<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.4 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
+<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.5 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
 <div class="drawer-bg" id="drawer-bg" hidden></div><aside class="drawer" id="drawer" aria-label="Menu" hidden></aside>
 <button type="button" class="icon-btn show-hdr show-hdr2" data-showhdr aria-label="Show the header" title="Show the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
 <button type="button" class="icon-btn show-hdr" data-drawer aria-label="Open the menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -2951,19 +2953,20 @@ function openHelp() {
   m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
 }
 const backupData = () => JSON.stringify({ app: 'chinese-midterm-prep', version: 1, saved: new Date().toISOString(), progress: S, mock: MK.hist });
-function showBackupCode() { const b = $('#bk-code'); if (!b) return; b.hidden = false; const ta = $('textarea', b); ta.value = backupData(); ta.focus(); ta.select(); }
+function markBackup() { S.lastBackup = Date.now(); save(); }
+function showBackupCode() { markBackup(); const b = $('#bk-code'); if (!b) return; b.hidden = false; const ta = $('textarea', b); ta.value = backupData(); ta.focus(); ta.select(); }
 async function saveBackup() {
   const data = backupData(), filename = `panda-chinese-backup-${new Date().toISOString().slice(0, 10)}.json`;
   if (window.claude && typeof window.claude.use === 'function') {
     let dl = null; try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; }
     if (!dl) return showBackupCode();
-    try { await dl.save({ filename, data }); toast('Backup saved.'); }
+    try { await dl.save({ filename, data }); markBackup(); toast('Backup saved.'); }
     catch (e) { if (e && e.code === 'declined') toast('Backup not saved.'); else showBackupCode(); }
     return;
   }
   try {
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' })); a.download = filename;
-    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); toast('Backup downloaded.');
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); markBackup(); toast('Backup downloaded.');
   } catch (e) { showBackupCode(); }
 }
 function readBackup(text) {
@@ -3006,7 +3009,7 @@ function openSettings() {
         <li>Always open the app in the <b>same browser</b> on the same device. Your phone and your laptop each keep their own progress.</li>
         <li><b>New device:</b> on the old one press <b>Save backup file</b>, send the file to yourself (for example by email), and on the new one press <b>Load backup file</b>.</li>
         <li>Updates arrive by themselves through the link, and your progress stays.</li>
-        <li>Your progress is lost if you clear your browser’s data or use a private (incognito) window. Safari on iPhone and iPad may delete it if you don’t open the app for 7 days.</li>
+        <li>Your progress is lost if you clear your browser’s data or use a private (incognito) window. Safari (on iPhone, iPad and Mac) deletes it if you don’t open the app for 7 days of using Safari. On iPhone and iPad, add the app to your Home Screen (Share → Add to Home Screen) to avoid this, and save a backup now and then.</li>
         <li>Nobody else can see your progress.</li>
       </ul>
     </details>
@@ -4065,7 +4068,7 @@ function openAbout() {
   m.innerHTML = `<div class="modal-box help-box" role="dialog" aria-modal="true" aria-label="About this app">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <h1 class="view-title">About this app</h1>
-    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, made for classmates and other learners. Version 0.7.4 beta, 13 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
+    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, made for classmates and other learners. Version 0.7.5 beta, 13 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
     <h2>Privacy</h2><p>The app collects no data. Your progress and favourites stay in your own browser.</p>
     <h2>Content</h2><p>The exercises in Book exercises and the vocabulary follow the textbook <i>Contemporary Chinese</i> (当代中文); all rights to the textbook belong to its authors and publisher. The Learn levels, the Test questions, the grammar explanations and the practice tests were written for this app with the help of AI (Claude by Anthropic). The Chinese voice recordings were made with Microsoft Azure text-to-speech.</p>
     <h2>Credits</h2><p>Made by <b>Damjan Raunić</b> (draunic@gmail.com). Stroke animations: <b>Hanzi Writer</b> by David Chanin (MIT License). Stroke data: <b>hanzi-writer-data</b>, based on <b>Make Me a Hanzi</b> (Arphic Public License). Fonts: <b>Fira Sans</b> and <b>Noto Serif SC</b> (SIL Open Font License). If the recordings can’t load, the app uses your device’s built-in voice.</p>
@@ -4131,7 +4134,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
 
 /* ================= navigation, course, version ================= */
-const APP_VERSION = '0.7.4';
+const APP_VERSION = '0.7.5';
 const PANDA_SM = '<svg class="tab-panda" viewBox="0 0 40 36" aria-hidden="true"><circle cx="9" cy="8" r="6" fill="#222"/><circle cx="31" cy="8" r="6" fill="#222"/><ellipse cx="20" cy="20" rx="15" ry="13.5" fill="#fff" stroke="#222" stroke-width="1.6"/><ellipse cx="14" cy="19" rx="4" ry="5" fill="#222" transform="rotate(30 14 19)"/><ellipse cx="26" cy="19" rx="4" ry="5" fill="#222" transform="rotate(-30 26 19)"/><circle cx="14.6" cy="18.6" r="1.5" fill="#fff"/><circle cx="25.4" cy="18.6" r="1.5" fill="#fff"/><ellipse cx="20" cy="24" rx="2.2" ry="1.5" fill="#222"/></svg>';
 const SECTIONS = [
   { id: 'learn', hz: '学', label: 'Learn', pages: [['learn', 'Learn']] },
@@ -4180,6 +4183,7 @@ function closeDrawer() {
 
 /* ----- patch notes and welcome ----- */
 const NOTES = [
+  { v: '0.7.5', date: '13 November 2026', items: ['Using Safari? A short tip shows how to keep your progress safe: Safari deletes it after 7 days without opening the app. On iPhone and iPad, add the app to your Home Screen.', 'A gentle reminder to save a backup when your last one is more than a week old.'] },
   { v: '0.7.4', date: '13 November 2026', items: ['Tell the panda your name! It greets you on the Learn page. You can change it in Settings.', 'Share a picture of your result after a Mock exam, Practice test or Quick challenge, or of your progress on the Learn page any time.', 'Clearer Settings: the device voice options only show when you switch the recorded voice off.'] },
   { v: '0.7.3', date: '13 November 2026', items: ['A new, natural Chinese voice! It’s recorded for the app, so it sounds the same on every phone and computer.', 'Three speeds, Slow, Medium and Normal, each recorded at its own pace.', 'Prefer your device’s voice? Switch it in Settings.'] },
   { v: '0.7.2', date: '13 November 2026', items: ['A new Learn board: one unit at a time, in rows, so there’s much less scrolling.', 'Your main settings at a glance under the buttons at the top: listening, pinyin, tones and voice speed. Tap it to change them.', 'A short tutorial that shows you around the app. Watch it again any time from the ☰ menu or from Info.', 'Help is now called Info.'] },
@@ -4385,7 +4389,32 @@ document.addEventListener('click', e => { const t = e.target.closest('[data-tuto
 const userName = () => String((S.settings && S.settings.name) || '').trim();
 function setName(v) { S.settings.name = String(v || '').trim().slice(0, 24); S.nameAsked = true; save(); }
 function nameInput(id, ph = 'Your name') { return `<input class="in nm-in" id="${id}" maxlength="24" autocomplete="given-name" placeholder="${ph}" value="${esc(userName())}">`; }
+/* ----- keeping progress safe: Safari tip and backup reminder ----- */
+const UA = navigator.userAgent || '';
+const isIOS = /iPhone|iPad|iPod/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+const isMacSafari = !isIOS && /Macintosh/.test(UA) && /Safari\//.test(UA) && !/Chrome|Chromium|Edg|OPR|Firefox/.test(UA);
+const isStandalone = () => !!(navigator.standalone || (window.matchMedia && matchMedia('(display-mode: standalone)').matches));
+const DAY = 864e5;
+if (!S.since) S.since = Date.now(); // stored with the next save
+const hasProgress = () => ['sets', 'cards', 'chars', 'learn', 'favs'].some(k => S[k] && Object.keys(S[k]).length);
+function keepTip() {
+  if (!S.safariTip && isIOS && !isStandalone()) return `<div class="nm-card keep-card" id="keep-card"><b>Keep your progress safe</b><p>On iPhone and iPad, Safari deletes saved progress if you don’t open the app for 7 days. Add Panda Chinese to your <b>Home Screen</b>: tap <b>Share</b> <span aria-hidden="true">⎙</span>, then <b>Add to Home Screen</b>. Then open it from there.</p><div class="nm-row"><button type="button" class="btn primary sm" data-keepok="safariTip">Got it</button><button type="button" class="link" data-settings>Save a backup</button></div></div>`;
+  if (!S.safariTip && isMacSafari) return `<div class="nm-card keep-card" id="keep-card"><b>Keep your progress safe</b><p>Safari deletes saved progress if you don’t open the app for 7 days of using Safari. Save a backup now and then, or use Chrome, Edge or Firefox, which don’t do this.</p><div class="nm-row"><button type="button" class="btn primary sm" data-keepok="safariTip">Got it</button><button type="button" class="link" data-settings>Save a backup</button></div></div>`;
+  const last = Math.max(S.lastBackup || 0, S.since || 0, S.backupSnooze || 0);
+  if (hasProgress() && Date.now() - last > 7 * DAY) return `<div class="nm-card keep-card" id="keep-card"><b>Time for a backup?</b><p>${S.lastBackup ? 'Your last backup is more than a week old.' : 'You haven’t saved a backup yet.'} A backup keeps your progress safe and lets you move it to another device.</p><div class="nm-row"><button type="button" class="btn primary sm" data-settings>Save a backup</button><button type="button" class="link" data-keepok="backupSnooze">Remind me later</button></div></div>`;
+  return '';
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-keepok]'); if (!t) return;
+  const k = t.dataset.keepok; S[k] = k === 'backupSnooze' ? Date.now() : true; save();
+  const c = $('#keep-card'); if (c) c.remove();
+});
+try { if (navigator.storage && navigator.storage.persist && !/Firefox/.test(UA)) navigator.storage.persisted().then(p => { if (!p) navigator.storage.persist(); }).catch(() => {}); } catch (e) { /* ignore */ }
+
 function learnHello() {
+  return learnName() + keepTip();
+}
+function learnName() {
   const n = userName();
   if (n) return `<p class="lp-hi"><span class="hzf">你好</span>, <b>${esc(n)}</b>! Your progress is saved in this browser. <button type="button" class="link" data-share="learn">Share my progress</button></p>`;
   if (!S.nameAsked) return `<div class="nm-card"><label for="nm-learn"><b>What should the panda call you?</b> <span class="muted small">It’s only saved in this browser.</span></label><div class="nm-row">${nameInput('nm-learn')}<button type="button" class="btn primary sm" data-nmsave="nm-learn">Save</button><button type="button" class="link" data-nmskip>No thanks</button></div></div>`;
