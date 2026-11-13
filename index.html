@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Chinese midterm prep: Units 0–2</title>
+<title>Panda Chinese: learn Chinese step by step</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
@@ -693,6 +693,14 @@ body.drawer-open{overflow:hidden}
 .set-line{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--line)}
 .set-line select.in{max-width:100%;font-size:15px;padding:6px 8px}
 @media (max-width:720px){.tabs{display:none}.brand small{display:none}.subtabs{padding-top:2px}}
+.hl{margin:0 0 6px;padding-left:20px}
+.hl li{font-size:15px;line-height:1.55;margin:3px 0}
+.help-end{margin-top:16px}
+.help-end a.btn{text-decoration:none}
+.moved{max-width:1000px;margin:12px auto 0;padding:10px 16px;background:#FFF4D6;border:1px solid #F2C94C;border-radius:10px;font-size:15px;color:#5A4A2E}
+.moved[hidden]{display:none}
+.moved a{color:#B8302A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .moved{background:#3A3018;border-color:#7A6420;color:#F1E3C0}:root:not([data-theme="light"]) .moved a{color:#F08A80}}
 footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;color:var(--muted);display:flex;gap:10px 22px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line)}
 #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translate(-50%,20px);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50;max-width:90vw}
 #toast.on{opacity:1;transform:translate(-50%,0)}
@@ -715,7 +723,7 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
 <header class="top">
   <div class="top-in">
     <button type="button" class="icon-btn menu-btn" data-drawer aria-label="Open the menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="brand"><span class="cells" aria-hidden="true"><span class="cell">汉</span><span class="cell">语</span></span><span><b>Midterm prep <span class="beta">BETA</span></b><small id="hdr-course"></small></span></div>
+    <div class="brand"><span class="cells" aria-hidden="true"><span class="cell">汉</span><span class="cell">语</span></span><span><b>Panda Chinese <span class="beta">BETA</span></b><small id="hdr-course"></small></span></div>
     <div class="hdr-right">
       <button type="button" class="icon-btn" data-hidehdr aria-label="Hide the header" title="Hide the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>
       <button type="button" class="icon-btn" data-favs aria-label="Favourites" title="Favourites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg></button>
@@ -730,8 +738,9 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
   </nav>
   <nav class="subtabs" id="subtabs" aria-label="Pages" hidden></nav>
 </header>
+<div class="moved" id="moved" role="note" hidden></div>
 <main id="main"></main>
-<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
+<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.1 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
 <div class="drawer-bg" id="drawer-bg" hidden></div><aside class="drawer" id="drawer" aria-label="Menu" hidden></aside>
 <button type="button" class="icon-btn show-hdr show-hdr2" data-showhdr aria-label="Show the header" title="Show the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
 <button type="button" class="icon-btn show-hdr" data-drawer aria-label="Open the menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -1779,7 +1788,7 @@ let voices = [];
 const hasSpeech = 'speechSynthesis' in window;
 function loadVoices() { try { voices = speechSynthesis.getVoices() || []; } catch (e) { voices = []; } renderVoice(); }
 const voicePref = () => { try { return (S.settings && S.settings.voice) || ''; } catch (e) { return ''; } };
-const voiceRate = () => { try { return (S.settings && S.settings.rate) || 0.85; } catch (e) { return 0.85; } };
+const voiceRate = () => { try { return (S.settings && S.settings.rate) || 0.6; } catch (e) { return 0.6; } };
 const zhVoices = () => voices.filter(v => /^(zh|cmn)/i.test(v.lang) || /chinese|mandarin|普通话|中文/i.test(v.name));
 const vScore = v => (/zh[-_]?CN|cmn/i.test(v.lang) ? 4 : 0) + (/natural|neural|online|enhanced|premium/i.test(v.name) ? 3 : 0) + (/google/i.test(v.name) ? 2 : 0) - (/HK|TW|yue|cantonese/i.test(v.lang + ' ' + v.name) ? 6 : 0);
 const zhVoice = () => { const all = zhVoices(), p = voicePref(), pick = p ? all.find(v => v.name === p) : null; return pick || all.slice().sort((x, y) => vScore(y) - vScore(x))[0]; };
@@ -2802,22 +2811,35 @@ function openHelp() {
   m.innerHTML = `<div class="modal-box help-box" role="dialog" aria-modal="true" aria-label="Help">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <h1 class="view-title">Help</h1>
-    <h2>Using the app</h2>
-    <p>The app has three sections. <b>Learn</b> is a step-by-step path: each level shows you something new, then a short quiz. <b>Practice</b> has Quick challenge, Words, Writing, Grammar and the exercises from your books. <b>Tests</b> has a practice test and a mock exam. Every page has a short “How it works” you can open.</p>
-    <p>☰ in the top-left corner opens the menu with everything in one place, including the course. When you start an exercise, the header hides itself to give you room, and ☰ stays in the corner. The other header buttons are ⌃ hide the header, ★ favourites, ? this help and ⚙ settings and backup.</p>
+    <h2>The sections</h2>
+    <ul class="hl">
+      <li><b>Learn</b>: step-by-step levels. Each shows you something new, then a short quiz.</li>
+      <li><b>Quick challenge</b>: a short mixed round with the panda.</li>
+      <li><b>Words</b>: flashcards and quizzes for the vocabulary.</li>
+      <li><b>Writing</b>: stroke order and writing characters.</li>
+      <li><b>Grammar</b>: every grammar point with a drill.</li>
+      <li><b>Book exercises</b>: the exercises from your textbooks.</li>
+      <li><b>Practice test</b>: harder questions in exam style.</li>
+      <li><b>Mock exam</b>: a full 50-question exam.</li>
+      <li><b>☰</b> opens the menu, <b>⌃</b> hides the header and <b>⌄</b> brings it back.</li>
+    </ul>
     <h2>Favourites</h2>
-    <p>Tap ☆ next to a word or task to save it, and tap again to remove it. Every task you can do on its own has its own star. Exercises that only work together, like a word bank with several sentences, a text with its questions or a matching exercise, have one star for the whole thing.</p>
-    <p>Use them to collect your weak spots and drill just those before the exam. ★ in the header lists them by category, where you can open or remove them, and “Only favourites” is available in Quick challenge, Book exercises, Characters, Writing, Grammar and Test.</p>
+    <ul class="hl">
+      <li>Tap ☆ next to a word or task to save it; tap again to remove it.</li>
+      <li><b>★</b> at the top lists all your favourites by category.</li>
+      <li>“Only favourites” lets you practise just those, in most pages and in Quick challenge.</li>
+    </ul>
     <h2>Saving your progress</h2>
-    <p>Your progress is saved in this browser. To make a backup, or to move your progress to another phone or computer, open Settings (⚙). Simple instructions are there too.</p>
-    <p><button type="button" class="link" data-about>About this app and credits</button></p>
+    <ul class="hl"><li>Your progress is saved in this browser on this device. You can make a backup in Settings (⚙).</li></ul>
+    <div class="card-actions help-end"><button type="button" class="btn" data-about>About this app</button><a class="btn" href="mailto:draunic@gmail.com?subject=Panda%20Chinese%200.7.1%3A%20mistake%20or%20bug" target="_blank" rel="noopener">Report a mistake or bug</a></div>
+    <p class="small muted">Found something wrong? Write to <b>draunic@gmail.com</b>. Please say which page and which exercise.</p>
   </div>`;
   m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
 }
 const backupData = () => JSON.stringify({ app: 'chinese-midterm-prep', version: 1, saved: new Date().toISOString(), progress: S, mock: MK.hist });
 function showBackupCode() { const b = $('#bk-code'); if (!b) return; b.hidden = false; const ta = $('textarea', b); ta.value = backupData(); ta.focus(); ta.select(); }
 async function saveBackup() {
-  const data = backupData(), filename = `chinese-midterm-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  const data = backupData(), filename = `panda-chinese-backup-${new Date().toISOString().slice(0, 10)}.json`;
   if (window.claude && typeof window.claude.use === 'function') {
     let dl = null; try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; }
     if (!dl) return showBackupCode();
@@ -2857,49 +2879,22 @@ function openSettings() {
     ${voiceSettingsHtml()}
 
     <h2>Your progress</h2>
-    <p>The app remembers your scores, your progress and your favourites (★). It keeps them <b>on this device, inside this browser</b>. Nobody else can see them, not even the people you share the app with.</p>
-
+    <p>Your progress and favourites are saved <b>in this browser, on this device</b>. A backup lets you keep them safe or move them to another device.</p>
     <div class="bk-panel">
-      <p><b>Backup</b>: a small file with all your progress. With it you can get everything back if something goes wrong, or move it to another phone or computer.</p>
       <div class="card-actions"><button type="button" class="btn primary" data-bksave>Save backup file</button><button type="button" class="btn" data-bkload>Load backup file</button><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
       <div id="bk-msg" aria-live="polite"></div>
       <div id="bk-code" hidden><p class="small">Saving a file isn’t possible here, so the app shows a <b>backup code</b> instead. Copy all of it and keep it in a note or an email to yourself.</p><textarea class="in bk-ta" readonly rows="3"></textarea></div>
       <details class="more"><summary>Restore from a backup code</summary><textarea class="in bk-ta" id="bk-paste" rows="3" placeholder="Paste your backup code here"></textarea><button type="button" class="btn sm" data-bkpaste>Load from code</button></details>
     </div>
-
-    <h3>If you open the app with the link</h3>
-    <ul>
-      <li>Your progress is saved by itself. You don’t have to do anything.</li>
-      <li>New versions arrive by themselves through the same link, and your progress stays.</li>
-      <li>Always open the app in the <b>same browser</b> (for example, always Chrome) on the same device.</li>
-    </ul>
-
-    <h3>If you use the downloaded file (.html)</h3>
-    <ul><li>Your progress is saved in the browser you open the file with.</li><li>When you get a new version of the file:</li></ul>
-    <ol>
-      <li>Open the old file and press <b>Save backup file</b>.</li>
-      <li>Put the new file in the <b>same folder</b>, with the <b>same name</b>, so it replaces the old one.</li>
-      <li>Open it in the same browser as before.</li>
-      <li>If your progress is missing, press <b>Load backup file</b> and choose your backup.</li>
-    </ol>
-    <p class="tip">Tip: the link is easier, because it updates by itself.</p>
-
-    <h3>Moving to another phone or computer</h3>
-    <ol>
-      <li>On the old device, press <b>Save backup file</b>.</li>
-      <li>Send the file to yourself, for example by email.</li>
-      <li>On the new device, open the app and press <b>Load backup file</b>.</li>
-    </ol>
-
-    <h3>Your progress can disappear if</h3>
-    <ul>
-      <li>you clear your browser’s history or browsing data,</li>
-      <li>you use a private (incognito) window,</li>
-      <li>on an iPhone or iPad, you don’t open the app for 7 days.</li>
-    </ul>
-    <p>Opening the app in another browser or on another device shows no progress. It isn’t lost: it is still in the first browser.</p>
-
-    
+    <details class="more"><summary>Learn more</summary>
+      <ul>
+        <li>Always open the app in the <b>same browser</b> on the same device. Your phone and your laptop each keep their own progress.</li>
+        <li><b>New device:</b> on the old one press <b>Save backup file</b>, send the file to yourself (for example by email), and on the new one press <b>Load backup file</b>.</li>
+        <li>Updates arrive by themselves through the link, and your progress stays.</li>
+        <li>Your progress is lost if you clear your browser’s data or use a private (incognito) window. Safari on iPhone and iPad may delete it if you don’t open the app for 7 days.</li>
+        <li>Nobody else can see your progress.</li>
+      </ul>
+    </details>
   </div>`;
   m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
 }
@@ -3931,10 +3926,10 @@ function openAbout() {
   m.innerHTML = `<div class="modal-box help-box" role="dialog" aria-modal="true" aria-label="About this app">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <h1 class="view-title">About this app</h1>
-    <p>A free study app for <i>Contemporary Chinese 1</i>, Units 0–2, made by a student for classmates and other learners. Version 0.7 beta, 13 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
+    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, Units 0–2, made for classmates and other learners. Version 0.7.1 beta, 13 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
     <h2>Privacy</h2><p>The app collects no data. Your progress and favourites stay in your own browser.</p>
     <h2>Content</h2><p>The exercises in Book exercises and the vocabulary follow the textbook <i>Contemporary Chinese</i> (当代中文); all rights to the textbook belong to its authors and publisher. The Learn levels, the Test questions, the grammar explanations and the practice tests were written for this app with the help of AI (Claude by Anthropic).</p>
-    <h2>Credits</h2><p>Stroke animations: <b>Hanzi Writer</b> by David Chanin (MIT License). Stroke data: <b>hanzi-writer-data</b>, based on <b>Make Me a Hanzi</b> (Arphic Public License). Fonts: <b>Fira Sans</b> and <b>Noto Serif SC</b> (SIL Open Font License). Speech uses your device’s built-in voices.</p>
+    <h2>Credits</h2><p>Made by <b>Damjan Raunić</b> (draunic@gmail.com). Stroke animations: <b>Hanzi Writer</b> by David Chanin (MIT License). Stroke data: <b>hanzi-writer-data</b>, based on <b>Make Me a Hanzi</b> (Arphic Public License). Fonts: <b>Fira Sans</b> and <b>Noto Serif SC</b> (SIL Open Font License). Speech uses your device’s built-in voices.</p>
   </div>`;
   m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
 }
@@ -3997,7 +3992,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
 
 /* ================= navigation, course, version ================= */
-const APP_VERSION = '0.7';
+const APP_VERSION = '0.7.1';
 const PANDA_SM = '<svg class="tab-panda" viewBox="0 0 40 36" aria-hidden="true"><circle cx="9" cy="8" r="6" fill="#222"/><circle cx="31" cy="8" r="6" fill="#222"/><ellipse cx="20" cy="20" rx="15" ry="13.5" fill="#fff" stroke="#222" stroke-width="1.6"/><ellipse cx="14" cy="19" rx="4" ry="5" fill="#222" transform="rotate(30 14 19)"/><ellipse cx="26" cy="19" rx="4" ry="5" fill="#222" transform="rotate(-30 26 19)"/><circle cx="14.6" cy="18.6" r="1.5" fill="#fff"/><circle cx="25.4" cy="18.6" r="1.5" fill="#fff"/><ellipse cx="20" cy="24" rx="2.2" ry="1.5" fill="#222"/></svg>';
 const SECTIONS = [
   { id: 'learn', hz: '学', label: 'Learn', pages: [['learn', 'Learn']] },
@@ -4025,7 +4020,7 @@ function renderNav() {
 }
 function renderDrawer() {
   const d = $('#drawer'); if (!d) return; const sec = secOf(view);
-  d.innerHTML = `<div class="dr-head"><span class="cells" aria-hidden="true"><span class="cell">汉</span><span class="cell">语</span></span><b>Midterm prep <span class="beta">BETA</span></b><button type="button" class="icon-btn dr-x" data-drawerclose aria-label="Close the menu">✕</button></div>
+  d.innerHTML = `<div class="dr-head"><span class="cells" aria-hidden="true"><span class="cell">汉</span><span class="cell">语</span></span><b>Panda Chinese <span class="beta">BETA</span></b><button type="button" class="icon-btn dr-x" data-drawerclose aria-label="Close the menu">✕</button></div>
     <label class="dr-course"><span>Course</span>${courseSelect('dr')}</label>
     <nav class="dr-nav" aria-label="Sections">${SECTIONS.map(s => `<div class="dr-sec"><button type="button" class="dr-main${sec === s ? ' on' : ''}" data-view="${LASTPAGE[s.id] || s.pages[0][0]}"><span class="tab-hz" aria-hidden="true">${s.hz}</span>${esc(s.label)}</button>${s.pages.length > 1 ? s.pages.map(([v, l]) => `<button type="button" class="dr-sub${v === view ? ' on' : ''}" data-view="${v}">${esc(l)}</button>`).join('') : ''}</div>`).join('')}</nav>
     <div class="dr-sep"></div>
@@ -4046,6 +4041,7 @@ function closeDrawer() {
 
 /* ----- patch notes and welcome ----- */
 const NOTES = [
+  { v: '0.7.1', date: '13 November 2026', items: ['New name and a new home: Panda Chinese now lives at panda-chinese.github.io.', 'The voice is slow by default, which is easier for beginners. You can change it in Settings.', 'Shorter Help and Settings.', 'A button to report a mistake or a bug.'] },
   { v: '0.7', date: '13 November 2026', items: ['A tidier menu: three sections, Learn, Practice and Tests, with their pages underneath.', 'On phones, ☰ in the top-left corner opens a side menu with everything in one place.', 'Choose your course at the top. HSK is coming soon.', 'Settings: pick the Chinese voice and its speed. “Slow” is great for beginners.', 'This “What’s new” window, and the version number at the bottom of the page.'] },
   { v: '0.6', items: ['Learn: all of Unit 1 and Unit 2, 31 levels in total.', 'Stars under every level on the path, and a bar to jump to any unit.', 'Every exercise with sound is marked “Listening”.'] },
   { v: '0.5', items: ['The Learn path with a panda guide: Unit 0 in 8 levels.', 'Switch off listening exercises in Settings, or skip one with “Can’t listen now”.', 'An About page with credits.'] },
@@ -4209,6 +4205,7 @@ renderVoice();
 let rT; window.addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (view === 'writing') { const b = $('#w-box'); if (b && Math.abs(b.clientWidth - W.size) > 8 && W.mode !== 'free') mountWriter(); } }, 200); });
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (view === 'writing') renderWriting(); }); } catch (e) { /* old browser */ }
 applySettings();
+if (!/(^|\.)panda-chinese\.github\.io$/i.test(location.hostname)) { const mv = $('#moved'); if (mv) { mv.hidden = false; mv.innerHTML = 'Panda Chinese has a new home: <a href="https://panda-chinese.github.io/" target="_blank" rel="noopener"><b>panda-chinese.github.io</b></a>. To keep your progress, <button type="button" class="link" data-settings>save a backup</button> here and load it there.'; } }
 go();
 checkNotes();
 })();
