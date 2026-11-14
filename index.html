@@ -769,6 +769,12 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
 .msg-item.new h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#D93A2F;margin-right:6px;vertical-align:middle}
 .msg-item p,.msg-item ul{margin:4px 0;font-size:14px;line-height:1.5}
 .msg-item ul{padding-left:18px}
+.msg-more{margin:2px 0 4px}
+.msg-more summary{cursor:pointer;color:var(--jade);font-size:13px;font-weight:600;list-style:none;display:inline-block}
+.msg-more summary::-webkit-details-marker{display:none}
+.msg-more summary::after{content:" ▾"}
+.msg-more[open] summary::after{content:" ▴"}
+.msg-more[open] summary{margin-bottom:2px}
 @media (max-width:1199px){
   .msg-btn{position:fixed;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);right:16px}
   .msg-panel{position:fixed;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 74px);right:12px}
@@ -4629,10 +4635,12 @@ document.addEventListener('click', e => {
 
 /* ----- messages: the red button with important news (remove a message here when it is no longer needed) ----- */
 const MSGS = [
-  { id: 'voice-1', title: 'The voice is still improving', html: () => `<p>The app’s recorded Chinese voice is still being fine-tuned, so some words or tones may not sound perfect yet. It gets better with every update.</p><p>If you can’t use sound right now, you can turn off listening exercises in Settings.</p><p><button type="button" class="btn sm" data-settings>Open Settings</button></p>` },
-  { id: 'refresh-1', title: 'Getting the newest version', html: () => `<p>Updates arrive by themselves, but your browser sometimes keeps an old copy, also when you open the app from a bookmark or your Home Screen. If something looks old, refresh the page:</p><ul><li><b>Computer:</b> Ctrl+F5 (on a Mac: Cmd+Shift+R)</li><li><b>Phone:</b> pull the page down, or close the tab and open the app again</li></ul><p class="small muted">You’re on version ${APP_VERSION}. The version is also shown at the bottom of the page.</p>` },
-  { id: 'safari-1', title: 'Keep your progress safe', html: () => `<p>Your progress is saved only in this browser, on this device. Save a backup now and then in Settings; it also lets you move your progress to another device.</p><p><b>Using an iPhone, iPad or Mac?</b> Safari deletes saved progress if you don’t open the app for 7 days of using Safari.</p><ul><li><b>iPhone and iPad:</b> add the app to your Home Screen. Tap <b>Share</b>, then <b>Add to Home Screen</b>, and open it from there.</li><li><b>Mac:</b> use Chrome, Edge or Firefox, which don’t do this.</li></ul><p><button type="button" class="btn sm" data-settings>Save a backup</button></p>` }
+  // Keep each message short: one or two sentences, details under "More".
+  { id: 'voice-1', title: 'The voice is still improving', html: () => `<p>The recorded voice is still being fine-tuned and gets better with every update.</p>${msgMore('<p>Some words or tones may not sound perfect yet. No sound right now? Turn off listening exercises in Settings.</p><p><button type="button" class="btn sm" data-settings>Open Settings</button></p>')}` },
+  { id: 'refresh-1', title: 'Getting the newest version', html: () => `<p>If the app looks old, refresh the page.</p>${msgMore(`<ul><li><b>Computer:</b> Ctrl+F5 (Mac: Cmd+Shift+R)</li><li><b>Phone:</b> pull the page down, or close the tab and open the app again</li></ul><p class="small muted">This also applies when you open the app from a bookmark or your Home Screen. You’re on version ${APP_VERSION}.</p>`)}` },
+  { id: 'safari-1', title: 'Keep your progress safe', html: () => `<p>Your progress is saved only in this browser. Save a backup now and then.</p><p><button type="button" class="btn sm" data-settings>Save a backup</button></p>${msgMore('<p><b>iPhone, iPad or Mac with Safari?</b> Safari deletes saved progress after 7 days without opening the app.</p><ul><li><b>iPhone and iPad:</b> Share → Add to Home Screen, and open the app from there.</li><li><b>Mac:</b> use Chrome, Edge or Firefox.</li></ul>')}` }
 ];
+function msgMore(html) { return `<details class="msg-more"><summary>More</summary>${html}</details>`; }
 const msgList = () => MSGS.filter(m => !m.when || m.when());
 function renderMsgBtn() {
   const b = $('#msg-btn'); if (!b) return; const list = msgList(), seen = S.msgSeen || [];
