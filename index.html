@@ -800,6 +800,46 @@ body.modal-open .msg-btn,body.drawer-open .msg-btn{visibility:hidden}
 .rp-box a.btn{text-decoration:none}
 .dlg-play{margin:6px 0 4px}
 .btn.play.playing{background:var(--jade-soft);border-color:var(--jade)}
+/* 字 character levels */
+.lp-zi{cursor:pointer;font:inherit;font-size:14px}
+.lp-zi:hover{border-color:var(--jade);color:var(--ink)}
+.zi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:12px 0}
+.zi-grid.sm{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
+.zi-t{position:relative;display:flex;flex-direction:column}
+.zi-tb{width:100%;border:1.5px solid var(--line);border-bottom-width:3px;border-radius:14px;background:var(--surface);padding:12px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;color:var(--ink);font:inherit}
+.zi-tb:hover{border-color:var(--jade)}
+.zi-th{font-size:44px;line-height:1.15}
+.zi-grid.sm .zi-th{font-size:34px}
+.zi-tp{font-size:16px}
+.zi-tm{font-size:13px;color:var(--muted);text-align:center}
+.zi-hint{font-size:12.5px;color:var(--muted);padding:5px 4px 0;text-align:center;line-height:1.35}
+.zi-t .ln-stk{position:absolute;top:2px;right:2px}
+.zi-t::before,.zi-m::after{content:"";position:absolute;top:9px;left:9px;width:9px;height:9px;border-radius:50%;background:var(--line-2);z-index:1}
+.zi-t.lv1::before,.zi-m.lv1::after{background:var(--bad)}
+.zi-t.lv2::before,.zi-m.lv2::after{background:var(--warn)}
+.zi-t.lv3::before,.zi-m.lv3::after{background:var(--ok)}
+.zi-box{max-width:620px;text-align:left}
+.zi-box h2{text-align:center}
+.zi-legend{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted)}
+.zi-legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;background:var(--line-2)}
+.zi-legend .lv1::before{background:var(--bad)}.zi-legend .lv2::before{background:var(--warn)}.zi-legend .lv3::before{background:var(--ok)}
+.zi-practise{margin:12px 0 4px;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.zi-modes{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+.zi-uh{font-size:15px;margin:14px 0 6px}
+.zi-mine{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px}
+.zi-m{position:relative;height:50px;font-size:24px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);cursor:pointer}
+.zi-m::after{top:4px;left:4px;width:7px;height:7px}
+.zi-m.lv1{background:var(--bad-soft)}.zi-m.lv2{background:var(--warn-soft)}.zi-m.lv3{background:var(--ok-soft)}
+.zi-m.sel{border-color:var(--jade);box-shadow:0 0 0 2px var(--jade)}
+.zi-detail{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:10px 0;background:var(--sunk)}
+.zi-dh{display:flex;gap:14px;align-items:center}
+.zi-db{font-size:52px;line-height:1;border:none;background:var(--surface);border-radius:12px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.zi-dp{font-size:18px;display:flex;align-items:center;gap:6px}
+.zi-dw{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.zi-w{text-align:left;border:none;background:none;padding:3px 0;cursor:pointer;color:var(--ink);font:inherit}
+.zi-w .hzf{font-size:18px}
+:not(.rev)>.pyfade{background:var(--sunk);border-radius:6px;min-width:3em}
+:not(.rev)>.pyfade,:not(.rev)>.pyfade span{color:transparent!important}
 /* tutorial */
 .tut{position:fixed;inset:0;z-index:100;pointer-events:none}
 .tut-dim{position:fixed;inset:0;width:100%;height:100%}
@@ -853,7 +893,7 @@ body.tut-on .lp-pal{z-index:1}
   <div class="msg-panel" id="msg-panel" role="dialog" aria-label="Messages" hidden></div>
 </header>
 <main id="main"></main>
-<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.8 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
+<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.9 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
 <div class="drawer-bg" id="drawer-bg" hidden></div><aside class="drawer" id="drawer" aria-label="Menu" hidden></aside>
 <button type="button" class="icon-btn show-hdr show-hdr2" data-showhdr aria-label="Show the header" title="Show the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
 <button type="button" class="icon-btn show-hdr" data-drawer aria-label="Open the menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -3816,6 +3856,190 @@ LEVELS.push(
 );
 const LUNITS = { 0: 'Sounds, tones and first characters', 1: 'Names, countries and languages', 2: 'Work, phone numbers and visits' };
 
+/* ================= 字 character levels ================= */
+// Character levels drill single characters in every direction: character → meaning, → pinyin, sound → character,
+// meaning → character, pinyin → character, and the character inside a word. Look-alike characters are the wrong options.
+// The level IDs are fixed; the quiz is built fresh every time from the character list and the learner's strength per character (S.zi).
+const ZI_LEVELS = [
+  { id: 'u0-z1', after: 'u0-5', unit: 0, title: 'Picture characters', chars: '人口日月木水门马女子上下大小' },
+  { id: 'u0-z2', after: 'u0-6', unit: 0, title: 'Characters of your first words', chars: '中国学习汉语文字写好天田王明林妈河' },
+  { id: 'u0-zr', after: 'u0-7', unit: 0, review: true, title: 'Unit 0 characters' },
+  { id: 'u1-z1', after: 'u1-4', unit: 1, title: 'Characters: people and names', chars: '我你他她们是不吗叫什么名呢' },
+  { id: 'u1-z2', after: 'u1-7', unit: 1, title: 'Characters: countries and polite words', chars: '哪美英加拿澳利亚克也都您贵姓老师同' },
+  { id: 'u1-z3', after: 'u1-9', unit: 1, title: 'Characters: languages and names', chars: '说只法还白红张江山丁' },
+  { id: 'u1-zr', after: 'u1-10', unit: 1, review: true, title: 'Unit 1 characters' },
+  { id: 'u2-z1', after: 'u2-3', unit: 2, title: 'Characters: work and meeting people', chars: '在工作公司进出很高兴认识谢的' },
+  { id: 'u2-z2', after: 'u2-5', unit: 2, title: 'Characters: phone and email', chars: '电话号码零打给可以发邮件合' },
+  { id: 'u2-z3', after: 'u2-8', unit: 2, title: 'Characters: visiting friends', chars: '请坐喝茶这那朋友男儿里院系东方' },
+  { id: 'u2-z4', after: 'u2-10', unit: 2, title: 'Characters: how is it?', chars: '怎样漂亮真喜欢杰生园' },
+  { id: 'u2-zr', after: 'u2-11', unit: 2, review: true, title: 'Unit 2 characters' }
+];
+const ZI_EXTRA = { 0: '一二三四五六七八九十' }; // drilled in the unit review only
+// groups of characters that look alike; only characters the app teaches are used
+const ZI_SIM = ['一二三', '二三王工', '人八大入', '大天太', '日月白田电目的', '口中田四国回只', '木林样杰', '子字学好', '女好妈她姓', '马妈吗码', '们门问', '你他们什作件', '他她也', '么公', '名合', '哪那', '吗呢哪喝叫号', '不下还', '上下', '说话请识认语谢', '汉江河法漂澳', '朋明月', '男田电里', '进这还', '可司号', '给红', '发友', '园国', '山出', '喜真', '怎作', '老姓', '加如', '是足', '欢汉', '院那都', '亮高', '小水', '十七', '方万', '儿几', '生姓', '东车', '美英'];
+// parts and memory stories: extra help, not from the textbook
+const ZI_HINT = {
+  '一': 'One line: one.', '二': 'Two lines: two.', '三': 'Three lines: three.',
+  '人': 'A person walking.', '口': 'An open mouth.', '日': 'The sun.', '月': 'A crescent moon.', '木': 'A tree: trunk, branches and roots.', '水': 'A flowing stream.', '门': 'A doorway.',
+  '马': 'Once a drawing of a whole horse.', '女': 'Once a drawing of a kneeling woman.', '子': 'A baby with its arms out.', '上': 'A mark above the line: up.', '下': 'A mark below the line: down.',
+  '大': 'A person 人 with arms stretched out wide: big.', '小': 'Three small strokes: small.', '中': 'A line through the middle of a box.', '国': '囗 a border around 玉 jade: a country.',
+  '学': '子 a child under a roof: learning.', '字': '宀 roof + 子 child.', '好': '女 woman + 子 child: good.', '妈': '女 woman + 马 mǎ for the sound.', '河': '氵 water + 可 kě for the sound: river.',
+  '汉': '氵 water: 汉 was first the name of a river.', '语': '讠 speech: words, language.', '明': '日 sun + 月 moon: bright.', '林': '木 tree + 木 tree: woods.', '天': 'A line above 大, a person: the sky.',
+  '田': 'A field divided into plots.', '王': 'Three lines joined by one: king.',
+  '你': '亻 person on the left.', '他': '亻 person + 也: he.', '她': '女 woman + 也: she. Same sound as 他.', '们': '亻 person + 门 mén for the sound.', '吗': '口 mouth + 马 mǎ for the sound.',
+  '呢': '口 mouth on the left: a sentence particle.', '叫': '口 mouth: to call out.', '什': '亻 person + 十.', '么': 'Compare 公: 么 has no 八 on top.', '名': '夕 evening + 口 mouth: saying your name in the dark.',
+  '哪': '口 + 那: 哪 nǎ asks “which”, 那 nà is “that”.', '那': 'Compare 哪: 那 has no 口 on the left.', '您': '你 + 心 heart: the polite “you”.', '贵': '贝 shell at the bottom: shells were once money.',
+  '姓': '女 woman + 生 birth: the family you are born into.', '说': '讠 speech: to speak.', '只': '口 on top of 八.', '还': '辶 movement + 不.', '美': '羊 sheep on top of 大: beautiful.',
+  '拿': '合 on top of 手 hand: to take.', '利': '禾 grain + 刂 knife.', '法': '氵 water + 去.', '红': '纟 silk + 工 gōng for the sound: red.', '江': '氵 water + 工 gōng for the sound: river.',
+  '山': 'Three mountain peaks.', '张': '弓 bow on the left.', '英': '艹 grass on top.', '加': '力 strength + 口.', '白': 'Compare 日 and 的.', '的': '白 white on the left.',
+  '作': '亻 person: someone at work.', '公': 'Compare 么: 公 has 八 on top.', '司': 'Compare 可: they look alike.', '可': 'Compare 司 and 号: they look alike.', '进': '辶 movement: to come in.',
+  '这': '辶 movement + 文.', '出': 'Looks like one 山 on top of another.', '高': 'A tall tower: tall, high.', '认': '讠 speech + 人 rén for the sound: to recognise.', '识': '讠 speech + 只.',
+  '谢': '讠 speech: to thank.', '请': '讠 speech + 青 qīng for the sound: please.', '话': '讠 speech + 舌 tongue: words, speech.', '码': '石 stone + 马 mǎ for the sound.', '零': '雨 rain on top.',
+  '打': '扌 hand + 丁: to hit.', '给': '纟 silk + 合.', '发': 'Compare 友: they look alike.', '友': 'Compare 发: they look alike.', '件': '亻 person + 牛 cow.', '合': '人 and 一 on top of 口: to fit together.',
+  '邮': '阝 on the right.', '院': '阝 on the left.', '坐': 'Two 人 sitting on 土, the ground.', '喝': '口 mouth: to drink.', '茶': '艹 plants on top, then 人 and 木.', '朋': 'Two 月 side by side: friends.',
+  '男': '田 field + 力 strength: man.', '里': '田 field + 土 earth.', '样': '木 tree + 羊 yáng for the sound.', '漂': '氵 water + 票 piào for the sound.', '怎': '心 heart at the bottom.',
+  '杰': '灬 fire at the bottom.', '园': '囗 a wall around 元 yuán for the sound: garden.', '生': 'A plant growing out of the ground.'
+};
+const ZI_UNIT = {}, ZI_OF = {}, ZI_POS = {};
+ZI_LEVELS.forEach((z, k) => {
+  const u = z.unit; ZI_UNIT[u] = ZI_UNIT[u] || [];
+  if (!z.review) [...(z.chars || '')].forEach(c => { if (!(c in ZI_OF)) { ZI_OF[c] = u; ZI_POS[c] = k; ZI_UNIT[u].push(c); } });
+});
+Object.entries(ZI_EXTRA).forEach(([u, cs]) => { u = +u; [...cs].forEach(c => { if (!(c in ZI_OF)) { ZI_OF[c] = u; ZI_POS[c] = ZI_LEVELS.findIndex(z => z.unit === u && z.review); ZI_UNIT[u] = [...(ZI_UNIT[u] || []), c]; } }); });
+const ziN = lv => lv.virtual ? (lv.ziMaster ? lv.zi.length : Math.round(lv.zi.length * 1.3) + 1) : lv.ziReview ? 16 : Math.min(18, Math.max(12, lv.zi.length + 2));
+ZI_LEVELS.forEach((z, k) => {
+  const cs = z.review ? [...(ZI_UNIT[z.unit] || [])] : [...z.chars];
+  const lv = { id: z.id, unit: z.unit, icon: z.review ? '识' : '认', title: z.title, zi: cs, ziReview: !!z.review, ziK: k, cards: [{ k: 'zi' }], quiz: [],
+    desc: z.review ? `All the characters from Unit ${z.unit}, mixed. The ones you know least come up most often.` : `${cs.length} characters: what they mean, how they sound, and how to tell them apart from look-alikes.` };
+  LEVELS.splice(LEVELS.findIndex(l => l.id === z.after) + 1, 0, lv);
+});
+const ziInfo = c => { const i = CHARINFO[c] || {}; return { p: String(i.p || '').toLowerCase(), m: String(i.m || '') }; };
+const ziBound = c => /^as in /.test(ziInfo(c).m);
+const ziLevel = c => { const z = (S.zi || {})[c]; return z ? z.s : -1; };
+const ziKnown = c => ziLevel(c) >= 4;
+const ziBand = c => { const s = ziLevel(c); return s < 0 ? 0 : s < 2 ? 1 : s < 4 ? 2 : 3; };
+function ziMark(c, ok) {
+  S.zi = S.zi || {}; const z = S.zi[c] || { s: 0, n: 0 };
+  z.s = ok ? Math.min(5, z.s + 1) : Math.max(0, z.s - 2); z.n++; z.at = Date.now(); S.zi[c] = z; save();
+}
+const isHzC = c => /[一-鿿]/.test(c);
+// pinyin fades away for words whose characters are all known well (tap to show it)
+const pyFade = h => { const cs = [...String(h)].filter(isHzC); return cs.length > 0 && cs.every(c => (c in ZI_OF) && ziKnown(c)); };
+function ziPool(lv) {
+  if (lv.virtual) return Object.keys(ZI_OF).filter(c => ZI_OF[c] <= lv.unit);
+  return Object.keys(ZI_OF).filter(c => ZI_POS[c] <= lv.ziK);
+}
+function ziPick(c, pool, n, ok) {
+  const sim = new Set(); ZI_SIM.forEach(g => { if (g.includes(c)) [...g].forEach(x => { if (x !== c && pool.includes(x)) sim.add(x); }); });
+  const out = [];
+  for (const x of [...shuffle([...sim]), ...shuffle(pool)]) { if (out.length >= n) break; if (x !== c && !out.includes(x) && ok(x)) out.push(x); }
+  return out;
+}
+const ZBIG = c => `<span class="hzf big-in">${esc(c)}</span>`;
+const ziWords = (c, unit) => VOCAB.filter(v => (v.tag === '' || v.tag === 'ext') && v.unit <= unit && v.h !== c && v.h.includes(c) && [...v.h].length <= 4 && [...v.h].every(isHzC));
+function ziQ(c, kind, pool, unit) {
+  // in questions, "as in 可以" would give the answer away, so only the first part of the meaning is used
+  const mean = x => ziInfo(x).m.replace(/;?\s*as in .*$/, '').trim(), I = { ...ziInfo(c), m: mean(c) }, samePy = x => ziInfo(x).p === I.p;
+  switch (kind) {
+    case 'mean': { const ds = ziPick(c, pool, 3, x => !ziBound(x) && mean(x) !== I.m); return { t: 'mc', zi: c, q: `What does ${ZBIG(c)} mean?`, o: [I.m, ...ds.map(mean)], c: 0 }; }
+    case 'which': { const ds = ziPick(c, pool, 3, x => mean(x) !== I.m); return { t: 'mc', zi: c, q: `Which character means <b>${esc(I.m)}</b>?`, o: [c, ...ds], c: 0 }; }
+    case 'py': {
+      const base = I.p.normalize('NFD').replace(/[̀́̄̌]/g, '').normalize('NFC'), o = [I.p];
+      shuffle([1, 2, 3, 4, 5]).forEach(t => { const v = t === 5 ? base : numToMarks(base + t).normalize('NFC'); if (o.length < 3 && !o.includes(v)) o.push(v); });
+      ziPick(c, pool, 5, () => true).forEach(x => { const p = ziInfo(x).p; if (o.length < 4 && p && !o.includes(p)) o.push(p); });
+      return { t: 'mc', zi: c, q: `How do you read ${ZBIG(c)}?`, o, c: 0 };
+    }
+    case 'pyhz': { const ds = ziPick(c, pool, 3, x => !samePy(x)); return { t: 'mc', zi: c, q: `Which character is read <b>${esc(I.p)}</b>?`, o: [c, ...ds], c: 0 }; }
+    case 'listen': { const ds = ziPick(c, pool, 3, x => !samePy(x)); return { t: 'listen', zi: c, say: c, o: [c, ...ds], c: 0 }; }
+    case 'word': {
+      const ws = ziWords(c, unit); if (!ws.length) return null;
+      const w = ws[Math.floor(Math.random() * ws.length)];
+      const near = shuffle(ws.filter(v => v.h !== w.h && v.e !== w.e)).slice(0, 2);
+      const rest = shuffle(VOCAB.filter(v => (v.tag === '' || v.tag === 'ext') && v.unit <= unit && [...v.h].length >= 2 && v.h !== w.h && v.e !== w.e && !near.includes(v) && [...v.h].every(isHzC)));
+      const ds = [...near, ...rest].slice(0, 3);
+      return { t: 'mc', zi: c, q: `This word has <span class="hzf">${esc(c)}</span> in it. What does ${ZBIG(w.h)} mean?`, o: [w.e, ...ds.map(v => v.e)], c: 0, x: `${w.h} ${w.p}` };
+    }
+  }
+  return null;
+}
+function ziKinds(c, s) {
+  let ks = s < 2 ? ['mean', 'which', 'listen', 'py', 'word'] : s < 4 ? ['mean', 'which', 'listen', 'py', 'pyhz', 'word'] : ['py', 'pyhz', 'listen', 'word'];
+  if (ziBound(c)) ks = ks.filter(k => k !== 'mean' && k !== 'which');
+  if (!ks.length) ks = ['py', 'pyhz', 'word'];
+  return ks;
+}
+function ziBuild(lv) {
+  const N = ziN(lv), pool = ziPool(lv), noL = noListenOn() || !canListen(), lvl = c => Math.max(0, ziLevel(c));
+  const weak = () => lv.zi.slice().sort((a, b) => (lvl(a) + Math.random() * 1.5) - (lvl(b) + Math.random() * 1.5));
+  let order;
+  if (lv.ziMaster) order = shuffle(lv.zi);
+  else if (lv.ziReview) { order = weak().slice(0, N); while (order.length < N) order.push(...weak().slice(0, N - order.length)); }
+  else { order = shuffle(lv.zi); order.push(...weak().slice(0, Math.max(0, N - order.length))); }
+  const items = [], used = {};
+  for (const c of order) {
+    const ks = shuffle(ziKinds(c, lvl(c)).filter(k => !(noL && k === 'listen') && !(used[c] || []).includes(k)));
+    for (const k of ks) {
+      const q = ziQ(c, k, pool, lv.unit);
+      if (q && q.o.length >= 3 && new Set(q.o).size === q.o.length) { items.push({ ...q, kind: k, ...(lv.ziMaster ? { ziMaster: true } : {}) }); (used[c] = used[c] || []).push(k); break; }
+    }
+  }
+  return items;
+}
+function ziTile(c, full) {
+  const I = ziInfo(c), h = ZI_HINT[c];
+  return `<div class="zi-t lv${ziBand(c)}"><button type="button" class="zi-tb" data-say="${esc(c)}"><span class="hzf zi-th">${esc(c)}</span><span class="zi-tp">${colorPy(I.p)}</span>${full ? `<span class="zi-tm">${esc(I.m)}</span>` : ''}</button>${strokeBtn(c)}${full && h ? `<span class="zi-hint">${esc(h)}</span>` : ''}</div>`;
+}
+// "Practise my weakest characters": 10 or 20 characters, or 10 until each one is right twice in a row.
+// "Next" leaves out the characters of the round just played.
+function ziWeakLevel(size, master, skip) {
+  size = master ? 10 : (+size || 10); skip = skip || [];
+  const all = lUnits().flatMap(u => ZI_UNIT[u] || []), seen = all.filter(c => ziLevel(c) >= 0);
+  const src = seen.length >= 8 ? seen : all.slice(0, Math.max(size, seen.length));
+  const w = c => Math.max(0, ziLevel(c)) + Math.random() * 1.5;
+  let rest = src.filter(c => !skip.includes(c));
+  if (rest.length < Math.min(4, size)) rest = src;
+  let pick = rest.slice().sort((a, b) => w(a) - w(b)).slice(0, size);
+  if (pick.length < size) pick = pick.concat(src.filter(c => !pick.includes(c)).sort((a, b) => w(a) - w(b)).slice(0, size - pick.length));
+  return { id: 'zi-weak', virtual: true, ziSize: size, ziMaster: !!master, unit: Math.max(...pick.map(c => ZI_OF[c])), icon: '字',
+    title: master ? 'Until I get them all' : `My ${pick.length} weakest characters`, desc: '', zi: pick, ziReview: true, cards: [{ k: 'zi' }], quiz: [] };
+}
+const ziPrep = (q, uid) => { const idx = shuffle(q.o.map((_, j) => j)); return { ...q, uid, oo: idx.map(j => q.o[j]), ci: idx.indexOf(q.c) }; };
+// mastery round: a new question about the same character, if possible of another kind
+function ziMasterQ(c, prevKind) {
+  const lv = LN.lv, noL = noListenOn() || !canListen(), pool = ziPool(lv);
+  const ks = shuffle(ziKinds(c, Math.max(0, ziLevel(c))).filter(k => !(noL && k === 'listen')));
+  ks.sort((a, b) => (a === prevKind) - (b === prevKind));
+  for (const k of ks) { const q = ziQ(c, k, pool, lv.unit); if (q && q.o.length >= 3 && new Set(q.o).size === q.o.length) return { ...q, kind: k, ziMaster: true }; }
+  return null;
+}
+function ziDetail(c) {
+  const I = ziInfo(c), h = ZI_HINT[c], ws = ziWords(c, 99).slice(0, 6);
+  return `<div class="zi-dh"><button type="button" class="zi-db hzf" data-say="${esc(c)}" aria-label="Hear ${esc(c)}">${esc(c)}</button><div><div class="zi-dp">${colorPy(I.p)} ${sayBtn(c)}</div><div>${esc(I.m)}</div>${h ? `<div class="small muted">${esc(h)}</div>` : ''}</div></div>
+    ${ws.length ? `<div class="zi-dw">${ws.map(v => `<button type="button" class="zi-w" data-say="${esc(v.h)}"><span class="hzf">${esc(v.h)}</span> <span class="small">${colorPy(v.p)}</span> <span class="small muted">${esc(v.e)}</span></button>`).join('')}</div>` : ''}`;
+}
+function openZiMine() {
+  const us = lUnits(), all = us.flatMap(u => ZI_UNIT[u] || []), known = all.filter(ziKnown).length, seen = all.some(c => ziLevel(c) >= 0);
+  const m = $('#modal');
+  m.innerHTML = `<div class="modal-box zi-box" role="dialog" aria-modal="true" aria-label="My characters"><button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
+    <h2>My characters</h2><p class="small">You know <b>${known}</b> of ${all.length} characters well. ${seen ? 'Tap a character to see it.' : 'Play a 字 level on the path to start.'}</p>
+    <p class="zi-legend small"><span class="lv0">not practised</span><span class="lv1">weak</span><span class="lv2">getting there</span><span class="lv3">known</span></p>
+    <div class="zi-practise"><b>Practise my weakest characters</b>
+      <div class="zi-modes"><button type="button" class="btn primary" data-zistart="10"${seen ? '' : ' disabled'}>10 characters</button><button type="button" class="btn" data-zistart="20"${seen ? '' : ' disabled'}>20 characters</button><button type="button" class="btn" data-zistart="all"${seen ? '' : ' disabled'}>Until I get them all</button></div>
+      <p class="small muted">“Until I get them all”: 10 characters, and each one comes back until you get it right twice in a row.</p></div>
+    <div id="zi-detail" class="zi-detail" hidden></div>
+    ${us.map(u => `<h3 class="zi-uh">Unit ${u}</h3><div class="zi-mine">${(ZI_UNIT[u] || []).map(c => `<button type="button" class="zi-m hzf lv${ziBand(c)}" data-zipick="${esc(c)}">${esc(c)}</button>`).join('')}</div>`).join('')}</div>`;
+  m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.zimine !== undefined) return openZiMine();
+  if (t.dataset.zistart) { const v = t.dataset.zistart; return lStart('zi-weak', ziWeakLevel(v === 'all' ? 10 : +v, v === 'all')); }
+  if (t.dataset.zinext !== undefined && LN.lv && LN.lv.virtual) { const o = LN.lv; return lStart('zi-weak', ziWeakLevel(o.ziSize, o.ziMaster, o.zi)); }
+  if (t.dataset.ziagain !== undefined && LN.lv && LN.lv.virtual) return lStart('zi-weak', { ...LN.lv });
+  if (t.dataset.zipick) { const d = $('#zi-detail'); if (!d) return; d.innerHTML = ziDetail(t.dataset.zipick); d.hidden = false; $$('.zi-m').forEach(b => b.classList.toggle('sel', b === t)); d.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); return; }
+  if (t.classList.contains('ln-wb') || t.classList.contains('ln-li')) t.classList.add('rev');
+});
+
 
 /* ----- decorations ----- */
 const flower = (x, y, r = 4.2, c = '#F7A8C0') => [0, 72, 144, 216, 288].map(a => `<circle cx="${(x + Math.cos(a * Math.PI / 180) * r * 1.1).toFixed(1)}" cy="${(y + Math.sin(a * Math.PI / 180) * r * 1.1).toFixed(1)}" r="${r}" fill="${c}"/>`).join('') + `<circle cx="${x}" cy="${y}" r="${(r * 0.55).toFixed(1)}" fill="#F6C945"/>`;
@@ -3848,7 +4072,7 @@ function lPath() {
   LN.phase = 'path'; const prog = S.learn || {};
   const doneN = LEVELS.filter(l => prog[l.id]).length, starsN = LEVELS.reduce((s, l) => s + ((prog[l.id] || {}).stars || 0), 0);
   main.innerHTML = `<div class="lp-head"><div><h1 class="view-title">Learn</h1><p class="lead">Learn Chinese step by step. Every level first shows you something new, then checks it with a short quiz.</p></div>
-      <div class="lp-stats"><span class="lp-stat"><b>★ ${starsN}</b> of ${LEVELS.length * 3}</span><span class="lp-stat"><b>${doneN}</b> of ${LEVELS.length} levels</span></div></div>
+      <div class="lp-stats"><span class="lp-stat"><b>★ ${starsN}</b> of ${LEVELS.length * 3}</span><span class="lp-stat"><b>${doneN}</b> of ${LEVELS.length} levels</span><button type="button" class="lp-stat lp-zi" data-zimine title="See every character and how well you know it"><b class="hzf">字</b> <b>${Object.keys(ZI_OF).filter(ziKnown).length}</b> of ${Object.keys(ZI_OF).length} characters</button></div></div>
     ${learnHello()}
     <details class="howto" data-howto="learn"${howOpen('learn')}><summary>How it works</summary>
       <p>Each level has two parts. First you <b>learn</b>: a few cards show new sounds, characters or a rule, with audio and stroke animations. Then a short <b>quiz</b> checks what you just learned, plus a couple of questions from earlier levels so you don’t forget. Mistakes come back at the end of the quiz.</p>
@@ -3860,7 +4084,7 @@ function lPath() {
   const r = $('.lp-node.rec');
   if (r) setTimeout(() => { const b = r.getBoundingClientRect(); if (b.bottom > innerHeight - 40) r.scrollIntoView({ block: 'center' }); }, 60);
 }
-const lvHasListen = lv => (lv.checkpoint ? LEVELS.filter(x => x.unit === lv.unit && !x.checkpoint) : [lv]).some(x => x.quiz.some(q => q.t === 'tone' || q.t === 'listen'));
+const lvHasListen = lv => lv.zi ? true : (lv.checkpoint ? LEVELS.filter(x => x.unit === lv.unit && !x.checkpoint) : [lv]).some(x => x.quiz.some(q => q.t === 'tone' || q.t === 'listen'));
 // The path shows one unit at a time as a "snake" board: rows go left to right, then right to left.
 const lUnits = () => [...new Set(LEVELS.map(l => l.unit))];
 function lCurUnit() { const us = lUnits(); if (us.includes(LN.unit)) return LN.unit; const r = lRec(); return r ? r.unit : us[us.length - 1]; }
@@ -3928,7 +4152,7 @@ let lResizeT = 0;
 window.addEventListener('resize', () => { clearTimeout(lResizeT); lResizeT = setTimeout(() => { if (view === 'learn' && LN.phase === 'path') lLayout(); }, 150); });
 function lOpen(id) {
   const lv = LEVELS.find(x => x.id === id); if (!lv) return; const i = LEVELS.indexOf(lv), st = (S.learn || {})[id];
-  const nq = lv.checkpoint ? 12 : lv.quiz.length + (i ? 2 : 0);
+  const nq = lv.checkpoint ? 12 : lv.zi ? ziN(lv) : lv.quiz.length + (i ? 2 : 0);
   const m = $('#modal');
   m.innerHTML = `<div class="modal-box ln-modal" role="dialog" aria-modal="true" aria-label="${esc(lv.title)}"><button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <div class="lp-node big${st ? ' done' : ''}${lv.checkpoint ? ' check' : ''}"><span class="lp-ic hzf">${esc(lv.icon)}</span></div>
@@ -3952,9 +4176,14 @@ function lCardHtml(c) {
       <p class="small muted">妈 mother, 麻 hemp, 马 horse, 骂 to scold: four different words.</p>`;
     case 'rule': return `<h2 class="ln-h">${esc(c.title)}</h2><p class="ln-rule">${c.html}</p>${c.ex ? `<div class="ln-ex">${c.ex.map(([h, p, e]) => `<div class="ln-exr"><span class="hzf ln-exh">${esc(h)}</span><span class="ln-exp">${colorPy(p)}</span><span class="ln-exe">${esc(e)}</span><span class="ln-exb">${sayBtn(h)}${c.strokes && [...h].length === 1 ? strokeBtn(h) : ''}</span></div>`).join('')}</div>` : ''}`;
     case 'table': return `<h2 class="ln-h">${esc(c.title)}</h2><p>${c.html}</p><div class="ln-tab">${c.rows.map(([g, cells]) => `<div class="ln-tr"><span class="ln-tg">${esc(g)}</span>${cells.map(([p, h]) => `<button type="button" class="ln-syl" data-say="${h}">${colorPy(p)}</button>`).join('')}</div>`).join('')}</div>`;
-    case 'words': return `${c.title ? `<h2 class="ln-h">${esc(c.title)}</h2>` : '<h2 class="ln-h">New words</h2>'}<p class="small muted">Tap a card to hear it${c.strokes ? ', ✎ to see how it’s written' : ''}.</p><div class="ln-words">${c.list.map(([h, p, e]) => `<div class="ln-w"><button type="button" class="ln-wb" data-say="${esc(h)}"><span class="hzf ln-wh">${esc(h)}</span><span class="ln-wp">${colorPy(p)}</span><span class="ln-we">${esc(e)}</span></button>${c.strokes ? strokeBtn(h) : ''}</div>`).join('')}</div>`;
+    case 'zi': { const lv = LN.lv, full = lv.zi.length <= 20;
+      return `<h2 class="ln-h">${lv.ziReview ? 'Characters to review' : 'New characters'}</h2><p class="small muted">Tap a character to hear it, ✎ to see how it’s written. The dot shows how well you know it.</p>
+        <div class="zi-grid${full ? '' : ' sm'}">${lv.zi.map(c => ziTile(c, full)).join('')}</div>
+        ${full ? '<p class="small muted">The notes about parts of characters are extra help, not from your textbook.</p>' : ''}
+        <p class="small muted">In the quiz you’ll see each character in different ways, next to characters that look alike.</p>`; }
+    case 'words': return `${c.title ? `<h2 class="ln-h">${esc(c.title)}</h2>` : '<h2 class="ln-h">New words</h2>'}<p class="small muted">Tap a card to hear it${c.strokes ? ', ✎ to see how it’s written' : ''}.${c.list.some(([h]) => pyFade(h)) ? ' Pinyin is hidden for characters you know well: tap to show it.' : ''}</p><div class="ln-words">${c.list.map(([h, p, e]) => `<div class="ln-w"><button type="button" class="ln-wb" data-say="${esc(h)}"><span class="hzf ln-wh">${esc(h)}</span><span class="ln-wp${pyFade(h) ? ' pyfade' : ''}">${colorPy(p)}</span><span class="ln-we">${esc(e)}</span></button>${c.strokes ? strokeBtn(h) : ''}</div>`).join('')}</div>`;
     case 'dialog': return `<h2 class="ln-h">${esc(c.title)}</h2><p class="small muted">Tap a line to hear it.</p>${lDialogHtml(LN.lv.dialog)}`;
-    case 'list': return `<h2 class="ln-h">${esc(c.title)}</h2><p class="small muted">Tap a sentence to hear it.</p><div class="ln-list">${c.list.map(([h, p, e]) => `<button type="button" class="ln-li" data-say="${esc(h)}"><span class="hzf ln-lh">${esc(h)}</span><span class="ln-lp">${colorPy(p)}</span><span class="ln-le">${esc(e)}</span></button>`).join('')}</div>`;
+    case 'list': return `<h2 class="ln-h">${esc(c.title)}</h2><p class="small muted">Tap a sentence to hear it.${c.list.some(([h]) => pyFade(h)) ? ' Pinyin is hidden for characters you know well: tap to show it.' : ''}</p><div class="ln-list">${c.list.map(([h, p, e]) => `<button type="button" class="ln-li" data-say="${esc(h)}"><span class="hzf ln-lh">${esc(h)}</span><span class="ln-lp${pyFade(h) ? ' pyfade' : ''}">${colorPy(p)}</span><span class="ln-le">${esc(e)}</span></button>`).join('')}</div>`;
   }
   return '';
 }
@@ -3966,8 +4195,8 @@ function lCards() {
     <div class="ln-card">${lCardHtml(c)}</div>
     <div class="ln-nav">${LN.ci ? '<button type="button" class="btn" data-lprev>← Back</button>' : ''}<button type="button" class="btn primary big" data-lnext>${LN.ci === n - 1 ? 'Start the quiz →' : 'Next →'}</button></div>`;
 }
-function lStart(id) {
-  const lv = LEVELS.find(x => x.id === id); if (!lv) return;
+function lStart(id, made) {
+  const lv = made || (id === 'zi-weak' ? ziWeakLevel(10) : LEVELS.find(x => x.id === id)); if (!lv) return;
   closeModal(); LN.lv = lv; LN.ci = 0; LN.phase = 'cards'; setFocus(true);
   if (view !== 'learn') { location.hash = 'learn'; return; }
   renderLearn(); window.scrollTo({ top: 0 });
@@ -3977,7 +4206,8 @@ function lStart(id) {
 function lBuildQuiz(lv) {
   const i = LEVELS.indexOf(lv), prev = LEVELS.slice(0, i).filter(x => !lv.checkpoint || x.unit === lv.unit).flatMap(x => x.quiz);
   let items;
-  if (lv.checkpoint) { const nd = shuffle(prev.filter(q => q.t !== 'draw')).slice(0, 11), dr = shuffle(prev.filter(q => q.t === 'draw')).slice(0, 1); items = shuffle([...nd, ...dr]); }
+  if (lv.zi) items = ziBuild(lv);
+  else if (lv.checkpoint) { const nd = shuffle(prev.filter(q => q.t !== 'draw')).slice(0, 11), dr = shuffle(prev.filter(q => q.t === 'draw')).slice(0, 1); items = shuffle([...nd, ...dr]); }
   else items = [...lv.quiz, ...shuffle(prev.filter(q => q.t !== 'draw' && q.t !== 'match')).slice(0, 2).map(q => ({ ...q, review: true }))];
   if (noListenOn() || !canListen()) items = items.filter(q => !lNeedsAudio(q));
   const draws = items.filter(q => q.t === 'draw'), rest = shuffle(items.filter(q => q.t !== 'draw'));
@@ -3991,7 +4221,7 @@ function lBuildQuiz(lv) {
   });
 }
 function lStartQuiz() {
-  LN.queue = lBuildQuiz(LN.lv); LN.total = LN.queue.length; LN.doneN = 0; LN.first = {}; LN.phase = 'quiz';
+  LN.queue = lBuildQuiz(LN.lv); LN.total = LN.queue.length; LN.doneN = 0; LN.first = {}; LN.zst = {}; LN.phase = 'quiz';
   if (!LN.total) { toast('No questions left with listening switched off.'); return lFinish(); }
   lQuiz(); window.scrollTo({ top: 0 });
 }
@@ -4052,14 +4282,19 @@ function lCheck() {
 }
 function lResult(ok, ans, note) {
   const q = LN.queue[0]; if (!q || LN.answered) return; LN.answered = true;
-  if (!(q.uid in LN.first)) LN.first[q.uid] = ok;
+  if (!(q.uid in LN.first)) { LN.first[q.uid] = ok; if (q.zi) ziMark(q.zi, ok); }
   LN.queue.shift();
-  if (ok || q.t === 'draw' || q.t === 'match') LN.doneN++;
+  if (q.ziMaster) {
+    // mastery round: the character comes back (with a new question) until it is right twice in a row
+    LN.doneN++; LN.zst = LN.zst || {}; const c = q.zi, st = LN.zst[c] = ok ? (LN.zst[c] || 0) + 1 : 0;
+    if (st < 2 && LN.total < 80) { const nq = ziMasterQ(c, q.kind); if (nq) { LN.queue.push(ziPrep(nq, LN.total + 1000)); LN.total++; } }
+  }
+  else if (ok || q.t === 'draw' || q.t === 'match') LN.doneN++;
   else { q.tries = (q.tries || 0) + 1; if (q.tries < 2) LN.queue.push(q); else LN.doneN++; }
   $$('#ln-q button, #ln-q input').forEach(x => { if (x.tagName === 'INPUT') x.readOnly = true; else if (!x.classList.contains('say')) x.disabled = true; });
   const fb = $('#ln-fb');
   fb.className = 'ln-fb ' + (ok ? 'ok' : 'bad'); fb.hidden = false;
-  fb.innerHTML = `<div class="ln-fbt">${ok ? `<b>${PRAISE[Math.floor(Math.random() * PRAISE.length)]}</b>${note ? ` <span>${esc(note)}</span>` : ''}` : `<b>${q.t === 'match' ? 'All matched, with a few slips.' : 'Not quite.'}</b>${ans && q.t !== 'match' ? ` Correct answer: <span class="hzf ln-ans-c">${esc(ans)}</span>` : ''}${note ? `<div class="small">${esc(note)}</div>` : ''}${!ok && q.tries === 1 ? '<div class="small">It will come back at the end.</div>' : ''}`}</div><button type="button" class="btn primary big" data-lcont>Continue</button>`;
+  fb.innerHTML = `<div class="ln-fbt">${ok ? `<b>${PRAISE[Math.floor(Math.random() * PRAISE.length)]}</b>${note ? ` <span>${esc(note)}</span>` : ''}` : `<b>${q.t === 'match' ? 'All matched, with a few slips.' : 'Not quite.'}</b>${ans && q.t !== 'match' ? ` Correct answer: <span class="hzf ln-ans-c">${esc(ans)}</span>` : ''}${note ? `<div class="small">${esc(note)}</div>` : ''}${!ok && (q.tries === 1 || q.ziMaster) ? '<div class="small">It will come back at the end.</div>' : ''}`}</div><button type="button" class="btn primary big" data-lcont>Continue</button>`;
   $('#ln-act').innerHTML = '';
   const bar = $('.ln-prog .bar'); if (bar) bar.style.width = `${Math.round(100 * LN.doneN / Math.max(1, LN.total))}%`;
   lReact(ok ? 'yay' : 'cry', ok ? 'Yes!' : 'Oops…');
@@ -4069,11 +4304,12 @@ function lFinish() {
   const ks = Object.keys(LN.first), right = ks.filter(k => LN.first[k]).length, count = ks.length;
   const pct = count ? Math.round(100 * right / count) : 100, stars = pct >= 90 ? 3 : pct >= 70 ? 2 : 1;
   S.learn = S.learn || {}; const prev = S.learn[LN.lv.id];
-  S.learn[LN.lv.id] = { stars: Math.max(stars, prev ? prev.stars : 0), best: Math.max(pct, prev ? prev.best : 0), at: Date.now() }; save();
+  if (!LN.lv.virtual) S.learn[LN.lv.id] = { stars: Math.max(stars, prev ? prev.stars : 0), best: Math.max(pct, prev ? prev.best : 0), at: Date.now() };
+  save();
   LN.result = { pct, stars, right, count }; LN.phase = 'done'; lDone();
 }
 function lDone() {
-  const r = LN.result, lv = LN.lv, i = LEVELS.indexOf(lv), next = LEVELS[i + 1];
+  const r = LN.result, lv = LN.lv, i = LEVELS.indexOf(lv), next = lv.virtual ? null : LEVELS[i + 1];
   const band = r.pct < 60 ? 'facepalm' : r.pct < 70 ? 'awkward' : r.pct < 80 ? 'notbad' : r.pct < 90 ? 'happy' : 'ecstatic';
   const MSG = { facepalm: 'That was a tough one. Look at the cards again and have another go.', awkward: 'Heh… you got through it. One more round?', notbad: 'Not bad! A bit more practice and it’s solid.', happy: 'Great work!', ecstatic: 'Outstanding! 太棒了！' };
   const anim = { facepalm: '', awkward: 'sway', notbad: 'sway', happy: 'jump-loop', ecstatic: 'party' }[band];
@@ -4082,8 +4318,9 @@ function lDone() {
     <div class="lr-stars" aria-label="${r.stars} of 3 stars">${[1, 2, 3].map(k => `<span class="lr-star${k <= r.stars ? ' on' : ''}" style="animation-delay:${0.2 + k * 0.25}s">★</span>`).join('')}</div>
     <div class="qc-pct">${r.pct}%</div><p class="qc-msg">${esc(MSG[band])}</p>
     <p class="muted">${r.right} of ${r.count} right the first time in “${esc(lv.title)}”.</p>
-    ${!next ? '<p class="muted">You’ve finished all the levels for now. More are coming soon!</p>' : ''}
-    <div class="card-actions qc-endbtns">${next ? `<button type="button" class="btn primary" data-lstart="${next.id}">Next level →</button>` : ''}<button type="button" class="btn" data-lstart="${lv.id}">Play again</button><button type="button" class="btn" data-lpath>Back to the path</button></div></section>`;
+    ${!next && !lv.virtual ? '<p class="muted">You’ve finished all the levels for now. More are coming soon!</p>' : ''}${lv.virtual ? '<p><button type="button" class="link" data-zimine>See my characters</button></p>' : ''}
+    ${lv.ziMaster ? (() => { const got = lv.zi.filter(c => (LN.zst || {})[c] >= 2).length; return `<p class="muted">${got === lv.zi.length ? `You got all ${got} characters right twice in a row, in ${r.count} questions.` : `${got} of ${lv.zi.length} characters right twice in a row. The round stops after ${r.count} questions; try these characters again.`}</p>`; })() : ''}
+    <div class="card-actions qc-endbtns">${lv.virtual ? `<button type="button" class="btn primary" data-zinext>Next ${lv.ziSize} →</button><button type="button" class="btn" data-ziagain>Same characters again</button>` : `${next ? `<button type="button" class="btn primary" data-lstart="${next.id}">Next level →</button>` : ''}<button type="button" class="btn" data-lstart="${lv.id}">Play again</button>`}<button type="button" class="btn" data-lpath>Back to the path</button></div></section>`;
   window.scrollTo({ top: 0 });
 }
 function lExit() { if (LN.writer) { try { LN.writer.cancelQuiz(); } catch (e) { /* ignore */ } } LN.phase = 'path'; LN.lv = null; LN.unit = null; setFocus(false); renderLearn(); window.scrollTo({ top: 0 }); }
@@ -4159,7 +4396,7 @@ document.addEventListener('click', e => {
 /* ================= word modal (stroke animation) ================= */
 let MODAL_W = [], wmTok = 0;
 function openWord(h) {
-  const v = VOCAB.find(x => x.h === h); if (!v) return;
+  const v = VOCAB.find(x => x.h === h) || ([...h].length === 1 && CHARINFO[h] ? { h, p: CHARINFO[h].p, e: CHARINFO[h].m } : null); if (!v) return;
   const chars = [...h].filter(c => STROKES[c]);
   const m = $('#modal');
   m.innerHTML = `<div class="modal-box" role="dialog" aria-modal="true" aria-label="${esc(h)}">
@@ -4201,7 +4438,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
 
 /* ================= navigation, course, version ================= */
-const APP_VERSION = '0.7.8';
+const APP_VERSION = '0.7.9';
 const PANDA_SM = '<svg class="tab-panda" viewBox="0 0 40 36" aria-hidden="true"><circle cx="9" cy="8" r="6" fill="#222"/><circle cx="31" cy="8" r="6" fill="#222"/><ellipse cx="20" cy="20" rx="15" ry="13.5" fill="#fff" stroke="#222" stroke-width="1.6"/><ellipse cx="14" cy="19" rx="4" ry="5" fill="#222" transform="rotate(30 14 19)"/><ellipse cx="26" cy="19" rx="4" ry="5" fill="#222" transform="rotate(-30 26 19)"/><circle cx="14.6" cy="18.6" r="1.5" fill="#fff"/><circle cx="25.4" cy="18.6" r="1.5" fill="#fff"/><ellipse cx="20" cy="24" rx="2.2" ry="1.5" fill="#222"/></svg>';
 const SECTIONS = [
   { id: 'learn', hz: '学', label: 'Learn', pages: [['learn', 'Learn']] },
@@ -4250,6 +4487,7 @@ function closeDrawer() {
 
 /* ----- patch notes and welcome ----- */
 const NOTES = [
+  { v: '0.7.9', date: '14 November 2026', items: ['New 字 levels in Learn for reading characters: what they mean, how they sound, and how to tell look-alike characters apart.', 'Every unit now has a character review that brings back the characters you know least.', 'New on the Learn page: “My characters” shows every character and how well you know it, and lets you practise your weakest ones: 10 or 20 at a time, or until you get them all right.', 'Pinyin is hidden for characters you already know well. Tap a word to show it.'] },
   { v: '0.7.8', date: '14 November 2026', items: ['Dialogues now have different voices: every character in the texts speaks with their own voice.', 'A new “Play the dialogue” button plays a whole conversation.', 'On Slow, single characters and short words are spoken extra slowly, so the tones are clearer.'] },
   { v: '0.7.7', date: '14 November 2026', items: ['Found a mistake? A new window shows the e-mail address and a button to send a message.', 'The tutorial lets you choose where to start: all units and levels are open.'] },
   { v: '0.7.6', date: '14 November 2026', items: ['A red button with important messages, for example about the voice and how to get the newest version. It disappears when there’s nothing new.', 'No more backup reminders on the Learn page.'] },
