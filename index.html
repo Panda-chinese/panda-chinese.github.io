@@ -792,6 +792,8 @@ body.modal-open .msg-btn,body.drawer-open .msg-btn{visibility:hidden}
 .rp-mail{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--sunk);border-radius:10px;padding:10px 12px;margin:10px 0}
 .rp-mail b{font-size:17px;user-select:all}
 .rp-box a.btn{text-decoration:none}
+.dlg-play{margin:6px 0 4px}
+.btn.play.playing{background:var(--jade-soft);border-color:var(--jade)}
 /* tutorial */
 .tut{position:fixed;inset:0;z-index:100;pointer-events:none}
 .tut-dim{position:fixed;inset:0;width:100%;height:100%}
@@ -845,7 +847,7 @@ body.tut-on .lp-pal{z-index:1}
   <div class="msg-panel" id="msg-panel" role="dialog" aria-label="Messages" hidden></div>
 </header>
 <main id="main"></main>
-<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.7 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
+<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.8 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
 <div class="drawer-bg" id="drawer-bg" hidden></div><aside class="drawer" id="drawer" aria-label="Menu" hidden></aside>
 <button type="button" class="icon-btn show-hdr show-hdr2" data-showhdr aria-label="Show the header" title="Show the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
 <button type="button" class="icon-btn show-hdr" data-drawer aria-label="Open the menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -1931,9 +1933,11 @@ function recCtx() {
   return REC.ctx;
 }
 document.addEventListener('pointerdown', () => { if (recOn()) recCtx(); }, true);
-function recClip(text) {
-  const r = voiceRate(), sp = r <= 0.7 ? 's' : r < 1 ? 'm' : 'n', k = fnv(String(text).trim()), cl = REC.idx.clips;
-  const c = (sp === 's' && (cl.v || {})[k]) || (cl[sp] || {})[k] || (cl.n || {})[k];
+// A dialogue line has its own clip, spoken in the voice of its character (key: "spk:<name>|<text>").
+function recClip(text, spk) {
+  const r = voiceRate(), sp = r <= 0.7 ? 's' : r < 1 ? 'm' : 'n', t = String(text).trim(), k = fnv(t), cl = REC.idx.clips;
+  const kd = spk ? fnv(`spk:${spk}|${t}`) : null;
+  const c = (kd && (cl[sp] || {})[kd]) || (sp === 's' && (cl.v || {})[k]) || (cl[sp] || {})[k] || (cl.n || {})[k];
   return c ? { file: REC.idx.files[c[0]], a: c[1] / 1000, z: c[2] / 1000, rate: 1 } : null;
 }
 function recBuf(file) {
@@ -1952,10 +1956,10 @@ function ttsOne(text, done) {
   speechSynthesis.speak(u);
 }
 // Plays one text: the recorded clip when there is one, otherwise the device's voice. Resolves when it ends.
-function sayOne(text, tok) {
+function sayOne(text, tok, spk) {
   text = String(text).trim();
   return new Promise(done => {
-    const c = recOn() && recCtx() && recClip(text);
+    const c = recOn() && recCtx() && recClip(text, spk);
     if (!c) return ttsOne(text, done);
     recBuf(c.file).then(buf => {
       if (tok !== seqTok) return done();
@@ -1971,26 +1975,33 @@ function stopAudio() {
   if (hasSpeech) { try { speechSynthesis.cancel(); } catch (e) { /* ignore */ } }
   if (seqBtn) { seqBtn.classList.remove('playing'); seqBtn = null; }
 }
-function speak(text) { stopAudio(); sayOne(text, seqTok); }
+function speak(text, spk) { stopAudio(); sayOne(text, seqTok, spk); }
 let seqTok = 0, seqBtn = null;
 const splitSent = t => (String(t).match(/[^。！？!?]+[。！？!?]?/g) || [t]).map(s => s.trim()).filter(Boolean);
 function playSeq(parts, btn) {
   stopAudio(); const tok = seqTok; const segs = [];
-  parts.forEach(p => { const ss = splitSent(p.t); ss.forEach((s, k) => segs.push({ t: s, gap: k === ss.length - 1 ? p.gap : 250 })); });
+  parts.forEach(p => { if (p.whole) { segs.push({ t: p.t, gap: p.gap, spk: p.spk }); return; } const ss = splitSent(p.t); ss.forEach((s, k) => segs.push({ t: s, gap: k === ss.length - 1 ? p.gap : 250 })); });
   seqBtn = btn || null; if (btn) btn.classList.add('playing');
   let i = 0;
   const next = () => {
     if (tok !== seqTok) return;
     if (i >= segs.length) { if (btn) btn.classList.remove('playing'); if (seqBtn === btn) seqBtn = null; return; }
     const s = segs[i++];
-    sayOne(s.t, tok).then(() => setTimeout(next, s.gap));
+    sayOne(s.t, tok, s.spk).then(() => setTimeout(next, s.gap));
   };
   next();
 }
 const DIG = '零一二三四五六七八九';
 const numSay = s => [...String(s)].map(c => /\d/.test(c) ? DIG[c] : (c === '-' ? '，' : '')).join(' ');
 const ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
-const sayBtn = (t, cls = '') => `<button type="button" class="say ${cls}" data-say="${esc(t)}" aria-label="Play audio">${ICON}</button>`;
+const sayBtn = (t, cls = '', spk = '') => `<button type="button" class="say ${cls}" data-say="${esc(t)}"${spk ? ` data-spk="${esc(spk)}"` : ''} aria-label="Play audio">${ICON}</button>`;
+// Plays a whole dialogue, line by line, each in the voice of its character. A second tap stops it.
+function playDialog(lines, btn) {
+  if (btn && btn.classList.contains('playing')) return stopAudio();
+  const parts = lines.filter(l => l.h).map(l => ({ t: String(l.h).replace(/[A-Za-z@.]+/g, '').trim(), spk: l.s || '', gap: 450, whole: true }));
+  playSeq(parts, btn);
+}
+const dlgPlayBtn = key => `<p class="dlg-play"><button type="button" class="btn sm play" data-playdlg="${esc(key)}">${ICON}<span>Play the dialogue</span></button></p>`;
 
 let toastT;
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2600); }
@@ -2002,8 +2013,9 @@ const bankHtml = b => b ? `<div class="bank" aria-label="Word bank">${b.split(' 
 function effBank(set, i) { for (let k = i; k >= 0; k--) if (set.items[k].bank) return set.items[k].bank; return set.bank || ''; }
 function renderPassage(key) {
   const p = PASSAGES[key]; if (!p) return '';
-  return `<details class="passage${p.card ? ' is-card' : ''}" open><summary>${esc(p.title)}</summary><div class="pl">${p.lines.map(l => `
-    <div class="pline">${l.s ? `<span class="spk">${esc(l.s)}</span>` : '<span></span>'}<span><span class="hz-line">${esc(l.h)}</span><span class="py-line">${colorPy(l.p)}</span></span>${sayBtn(l.h.replace(/[A-Za-z@.]+/g, ''), 'sm')}</div>`).join('')}</div></details>`;
+  const isDlg = p.lines.some(l => l.s);
+  return `<details class="passage${p.card ? ' is-card' : ''}" open><summary>${esc(p.title)}</summary>${isDlg ? dlgPlayBtn(key) : ''}<div class="pl">${p.lines.map(l => `
+    <div class="pline">${l.s ? `<span class="spk">${esc(l.s)}</span>` : '<span></span>'}<span><span class="hz-line">${esc(l.h)}</span><span class="py-line">${colorPy(l.p)}</span></span>${sayBtn(l.h.replace(/[A-Za-z@.]+/g, ''), 'sm', l.s)}</div>`).join('')}</div></details>`;
 }
 const itemType = (set, it) => it.type || set.type;
 function inputsOf(set, it) {
@@ -2144,7 +2156,13 @@ function mountWork(el, set, opts) { WORK[set.id] = () => { el.innerHTML = workHt
 
 document.addEventListener('click', e => {
   const sayEl = e.target.closest('[data-say]');
-  if (sayEl) { speak(sayEl.dataset.say); return; }
+  if (sayEl) { speak(sayEl.dataset.say, sayEl.dataset.spk); return; }
+  const dlg = e.target.closest('[data-playdlg]');
+  if (dlg) {
+    const k = dlg.dataset.playdlg;
+    const lines = k === 'learn' ? ((LN.lv && LN.lv.dialog) || []).map(([sp, h]) => ({ s: sp, h })) : ((PASSAGES[k] || {}).lines || []);
+    return playDialog(lines, dlg);
+  }
   const opt = e.target.closest('.opt');
   if (opt) {
     const li = opt.closest('.item'); if (!li || li.closest('.locked')) return;
@@ -3934,7 +3952,7 @@ function lCardHtml(c) {
   }
   return '';
 }
-function lDialogHtml(lines) { return `<div class="ln-list">${(lines || []).map(([s, h, p, e]) => `<button type="button" class="ln-li" data-say="${esc(h)}"><span class="ln-sp">${esc(s)}</span><span class="hzf ln-lh">${esc(h)}</span><span class="ln-lp">${colorPy(p)}</span><span class="ln-le">${esc(e)}</span></button>`).join('')}</div>`; }
+function lDialogHtml(lines) { return `${dlgPlayBtn('learn')}<div class="ln-list">${(lines || []).map(([s, h, p, e]) => `<button type="button" class="ln-li" data-say="${esc(h)}" data-spk="${esc(s)}"><span class="ln-sp">${esc(s)}</span><span class="hzf ln-lh">${esc(h)}</span><span class="ln-lp">${colorPy(p)}</span><span class="ln-le">${esc(e)}</span></button>`).join('')}</div>`; }
 function lCards() {
   const lv = LN.lv, c = lv.cards[LN.ci], n = lv.cards.length;
   main.innerHTML = `<div class="ln-top"><button type="button" class="icon-btn" data-lexit aria-label="Back to the path" title="Back to the path">✕</button>
@@ -4111,7 +4129,7 @@ function openAbout() {
   m.innerHTML = `<div class="modal-box help-box" role="dialog" aria-modal="true" aria-label="About this app">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <h1 class="view-title">About this app</h1>
-    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, made for classmates and other learners. Version 0.7.7 beta, 14 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
+    <p><b>Panda Chinese</b> is a free study app for <i>Contemporary Chinese 1</i>, made for classmates and other learners. Version ${APP_VERSION} beta, 14 November 2026. <button type="button" class="link" data-notes>What’s new</button></p>
     <h2>Privacy</h2><p>The app collects no data. Your progress and favourites stay in your own browser.</p>
     <h2>Content</h2><p>The exercises in Book exercises and the vocabulary follow the textbook <i>Contemporary Chinese</i> (当代中文); all rights to the textbook belong to its authors and publisher. The Learn levels, the Test questions, the grammar explanations and the practice tests were written for this app with the help of AI (Claude by Anthropic). The Chinese voice recordings were made with Microsoft Azure text-to-speech.</p>
     <h2>Credits</h2><p>Made by <b>Damjan Raunić</b> (draunic@gmail.com). Stroke animations: <b>Hanzi Writer</b> by David Chanin (MIT License). Stroke data: <b>hanzi-writer-data</b>, based on <b>Make Me a Hanzi</b> (Arphic Public License). Fonts: <b>Fira Sans</b> and <b>Noto Serif SC</b> (SIL Open Font License). If the recordings can’t load, the app uses your device’s built-in voice.</p>
@@ -4177,7 +4195,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
 
 /* ================= navigation, course, version ================= */
-const APP_VERSION = '0.7.7';
+const APP_VERSION = '0.7.8';
 const PANDA_SM = '<svg class="tab-panda" viewBox="0 0 40 36" aria-hidden="true"><circle cx="9" cy="8" r="6" fill="#222"/><circle cx="31" cy="8" r="6" fill="#222"/><ellipse cx="20" cy="20" rx="15" ry="13.5" fill="#fff" stroke="#222" stroke-width="1.6"/><ellipse cx="14" cy="19" rx="4" ry="5" fill="#222" transform="rotate(30 14 19)"/><ellipse cx="26" cy="19" rx="4" ry="5" fill="#222" transform="rotate(-30 26 19)"/><circle cx="14.6" cy="18.6" r="1.5" fill="#fff"/><circle cx="25.4" cy="18.6" r="1.5" fill="#fff"/><ellipse cx="20" cy="24" rx="2.2" ry="1.5" fill="#222"/></svg>';
 const SECTIONS = [
   { id: 'learn', hz: '学', label: 'Learn', pages: [['learn', 'Learn']] },
@@ -4226,6 +4244,7 @@ function closeDrawer() {
 
 /* ----- patch notes and welcome ----- */
 const NOTES = [
+  { v: '0.7.8', date: '14 November 2026', items: ['Dialogues now have different voices: every character in the texts speaks with their own voice.', 'A new “Play the dialogue” button plays a whole conversation.', 'On Slow, single characters and short words are spoken extra slowly, so the tones are clearer.'] },
   { v: '0.7.7', date: '14 November 2026', items: ['Found a mistake? A new window shows the e-mail address and a button to send a message.', 'The tutorial lets you choose where to start: all units and levels are open.'] },
   { v: '0.7.6', date: '14 November 2026', items: ['A red button with important messages, for example about the voice and how to get the newest version. It disappears when there’s nothing new.', 'No more backup reminders on the Learn page.'] },
   { v: '0.7.5', date: '13 November 2026', items: ['Using Safari? A short tip shows how to keep your progress safe: Safari deletes it after 7 days without opening the app. On iPhone and iPad, add the app to your Home Screen.', 'A gentle reminder to save a backup when your last one is more than a week old.'] },
