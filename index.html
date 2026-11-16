@@ -235,7 +235,7 @@ table.wl{width:100%;border-collapse:collapse;font-size:15px}
 .c-stage:has(.wl){max-width:none}
 
 /* test */
-.t-top{position:sticky;top:calc(env(safe-area-inset-top,0px) + 92px);z-index:4;background:var(--paper);padding-top:4px}
+.t-top{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hdr-h,92px));z-index:4;background:var(--paper);padding-top:4px}
 .tq{padding-top:4px}
 .tq .items{border-top:0}
 .t-result{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
@@ -708,7 +708,6 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
   .item{grid-template-columns:1.8em 1fr}
   .g-row{grid-template-columns:1fr auto}.g-row .g-zh{display:none}
   .pline{grid-template-columns:3.6em 1fr auto}
-  .t-top{top:calc(env(safe-area-inset-top,0px) + 100px)}
   .cells.xl .cell{--cs:84px;font-size:54px}
   .toggles{width:100%}
 }
@@ -754,7 +753,7 @@ footer{max-width:1040px;margin:0 auto;padding:10px 20px 30px;font-size:13px;colo
 .sh-prev img{width:100%;max-width:380px;height:auto;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.15);aspect-ratio:1080/1350;background:#FBF4E6}
 
 /* messages button (red, like a game client) */
-.msg-btn{position:absolute;top:12px;right:22px;width:46px;height:46px;border-radius:50%;background:#D93A2F;color:#fff;border:3px solid var(--surface);box-shadow:0 4px 14px rgba(217,58,47,.45);font:800 22px/1 var(--ui);cursor:pointer;display:grid;place-items:center;z-index:31;padding:0}
+.msg-btn{position:absolute;top:12px;right:40px;width:46px;height:46px;border-radius:50%;background:#D93A2F;color:#fff;border:3px solid var(--surface);box-shadow:0 4px 14px rgba(217,58,47,.45);font:800 22px/1 var(--ui);cursor:pointer;display:grid;place-items:center;z-index:31;padding:0}
 .msg-btn[hidden]{display:none}
 .msg-btn:hover{filter:brightness(1.08)}
 .msg-btn.unread{animation:msgPulse 2s ease-in-out infinite}
@@ -785,6 +784,7 @@ body.modal-open .msg-btn,body.drawer-open .msg-btn{visibility:hidden}
 /* phones: a calm header with the menu, the name, the settings line and the red messages button */
 @media (max-width:720px){
   .hdr-right [data-hidehdr],.hdr-right [data-favs],.hdr-right [data-help],.hdr-right [data-settings]{display:none}
+  body.sess .hdr-right [data-hidehdr]{display:inline-grid}
   .top-in{padding-right:68px}
   .brand b{overflow:visible}
   .msg-btn{position:absolute;top:9px;bottom:auto;right:12px;width:40px;height:40px;font-size:19px;border-width:2px}
@@ -792,9 +792,247 @@ body.modal-open .msg-btn,body.drawer-open .msg-btn{visibility:hidden}
   .hdr-st-m{cursor:pointer}
 }
 
+.zi-page{max-width:none}
+.mg-h{font-size:15px;font-weight:600;color:var(--muted);margin:20px 0 0;text-transform:none}
+.pr-note{font-size:14px;color:var(--muted);margin:0 0 10px}
+.gm-soon{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin:24px 0}
+.gm-panda{width:150px;flex:none}
+.gm-soon .lead{margin:0 0 6px;max-width:48ch}
+
+/* Games tab: a faint outline of a monk with a staff behind the label */
+.tab-games{position:relative;isolation:isolate;overflow:hidden;padding-right:44px}
+.tab-games .monk{position:absolute;right:0;top:50%;transform:translateY(-54%);height:50px;width:auto;color:var(--jade);opacity:.16;z-index:-1;pointer-events:none}
+.tab-games[aria-selected="true"] .monk{opacity:.26}
+.dr-monk{height:30px;width:auto;margin-left:8px;color:var(--jade);opacity:.55;vertical-align:middle}
+
+/* Daily practice */
+.dp-card{display:flex;align-items:center;gap:16px;margin:12px 0 14px;padding:14px 18px;border-radius:16px;background:linear-gradient(135deg,#FFF4E2,#FFE6CC);border:1.5px solid #F5C38A;color:#3A2A14}
+.dp-card h2{margin:0;font-size:18px;color:#7A2420}
+.dp-card p{margin:2px 0 0}
+.dp-tx{flex:1;min-width:0}
+.dp-line{font-weight:700}
+.dp-sub{font-size:13.5px;color:#7A5A30}
+.dp-card.done{background:linear-gradient(135deg,#EAF7EE,#D9F0E1);border-color:#9ED3B0}
+.dp-card.done h2{color:#1E7742}
+.dp-card.off{opacity:.85;background:var(--sunk);border-color:var(--line);color:var(--muted)}
+.dp-card.off h2{color:var(--ink)}
+.dp-fl{position:relative;flex:none;width:58px;height:70px;display:grid;place-items:center}
+.dp-flame{width:100%;height:100%;fill:#E5D5BC}
+.dp-flame .in{fill:#F4EAD9}
+.dp-fl.on .dp-flame{fill:#F28B2C}
+.dp-fl.on .dp-flame .in{fill:#FFD45E}
+.dp-fl b{position:absolute;bottom:9px;font-size:20px;font-weight:800;color:#7A2420}
+.dp-fl:not(.on) b{color:#9A8A70}
+.dp-week{display:flex;gap:5px;margin-top:8px}
+.dp-week i{font-style:normal;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:rgba(122,90,48,.12);color:#9A7A50}
+.dp-week i.on{background:#F28B2C;color:#fff}
+.dp-week i.now{box-shadow:0 0 0 2px #F28B2C}
+.dp-act{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+.dp-share{font-size:13px}
+.dp-best{font-size:12px;color:#7A5A30}
+.dp-card.sm{flex-wrap:wrap;margin:0 0 12px;padding:12px;gap:10px}
+.dp-card.sm .dp-fl{width:44px;height:54px}
+.dp-card.sm .dp-fl b{font-size:16px;bottom:7px}
+.dp-card.sm .dp-act{flex-direction:row;align-items:center;width:100%;justify-content:space-between}
+.dp-card.sm .dp-week i{width:20px;height:20px;font-size:10px}
+.dp-card.sm h2{font-size:16px}
+.dp-card.sm .dp-sub{display:none}.dp-card.sm .dp-line{font-size:14px}.dp-card.sm{padding:10px 12px;margin:0 0 10px}.rail .rl-box{background:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:11px 2px;margin:0}
+.rail .rl-head+.rl-box,.rail .rl-head+.dp-card{border-top:0}
+.rail .dp-card.sm{margin:2px 0 10px}
+.rail .rl-next{background:var(--surface)}
+.rl-head{display:flex;align-items:center;gap:6px;margin:0 0 8px;font-size:13px;font-weight:700;color:var(--muted)}
+.rl-head svg{width:15px;height:15px;flex:none}
+/* side columns: quiet, so the middle keeps the focus */
+.rail{font-size:13px;color:var(--muted);transition:opacity .2s}
+.rail:not(:hover):not(:focus-within){opacity:.72}
+.rail .rl-head{font-size:12px;font-weight:600}
+.rail .rl-box h3,.rail .qs-grp h3{font-size:10.5px;margin:0 0 5px}
+.rail .rl-box p{font-size:13px;margin:0 0 6px}
+.rail .btn,.rail .btn.sm{font-size:12.5px;padding:4px 10px;min-height:0}
+.rail .qs-row{padding:5px 0}
+.rail .qs-l b{font-size:13px;font-weight:500}
+.rail .qs-l small{font-size:11px}
+.rail .qs-sw{width:30px;height:17px}
+.rail .qs-sw::after{top:2px;left:2px;width:13px;height:13px}
+.rail .qs-row[aria-checked="true"] .qs-sw::after{left:15px}
+.rail .qs-row[aria-checked="true"] .qs-sw{background:color-mix(in srgb,var(--jade) 75%,var(--muted))}
+.rail .seg{display:flex;flex-wrap:nowrap;gap:4px}.rail .seg button{flex:1 1 auto;min-width:0;font-size:11.5px;padding:3px 4px;white-space:nowrap}
+.rail .qs-line{gap:4px;padding:5px 0}.rail .qs-line>b{font-size:13px;font-weight:500;color:var(--ink)}
+.rail .rl-next{padding:6px;gap:8px;border-width:1px}
+.rail .rl-next .lp-ic{width:30px;height:30px;font-size:15px}
+.rail .rl-next b{font-size:13px;font-weight:600}
+.rail .rl-next small{font-size:10px}
+.rail .rl-zi .zi-m{height:30px;font-size:16px}
+.rail .dp-card.sm,.rail .dp-card.sm.done{background:var(--surface)!important;border:1px solid var(--line)!important;box-shadow:none!important;padding:8px 10px;gap:8px}
+.rail .dp-card.sm h2{font-size:13px;color:var(--ink)}
+.rail .dp-card.sm .dp-line{font-size:12.5px;font-weight:500}
+.rail .dp-card.sm .dp-fl{width:30px;height:38px}
+.rail .dp-card.sm .dp-fl b{font-size:12px;bottom:5px}
+.rail .dp-card.sm .dp-week i{width:16px;height:16px;font-size:8.5px}
+.rail .dp-card .btn.primary{background:var(--surface);color:var(--ink);border:1px solid var(--line-2)}
+.rail .dp-card .btn.primary:hover{border-color:var(--jade)}.rl-zi{flex-wrap:nowrap;gap:4px}.rl-zi .zi-m{flex:1 1 0;min-width:0;max-width:38px;height:36px;font-size:19px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .dp-card:not(.off){background:linear-gradient(135deg,#3A2A1A,#2E2216);border-color:#6A4A24;color:#F3E2C8}:root:not([data-theme="light"]) .dp-card h2{color:#FFB46A}:root:not([data-theme="light"]) .dp-sub,:root:not([data-theme="light"]) .dp-best{color:#D8B88A}:root:not([data-theme="light"]) .dp-card.done{background:linear-gradient(135deg,#1C3326,#17291F);border-color:#2F6B47}:root:not([data-theme="light"]) .dp-card.done h2{color:#7ED6A0}:root:not([data-theme="light"]) .dp-fl b{color:#3A1A10}}
+:root[data-theme="dark"] .dp-card:not(.off){background:linear-gradient(135deg,#3A2A1A,#2E2216);border-color:#6A4A24;color:#F3E2C8}
+:root[data-theme="dark"] .dp-card h2{color:#FFB46A}
+:root[data-theme="dark"] .dp-sub,:root[data-theme="dark"] .dp-best{color:#D8B88A}
+:root[data-theme="dark"] .dp-card.done{background:linear-gradient(135deg,#1C3326,#17291F);border-color:#2F6B47}
+:root[data-theme="dark"] .dp-card.done h2{color:#7ED6A0}
+:root[data-theme="dark"] .dp-fl b{color:#3A1A10}
+.dp-res .dp-big{position:relative;width:90px;height:110px;margin:0 auto;display:grid;place-items:center}
+.dp-res .dp-big .dp-flame{fill:#F28B2C}
+.dp-res .dp-big .dp-flame .in{fill:#FFD45E}
+.dp-res .dp-big b{position:absolute;bottom:14px;font-size:32px;font-weight:800;color:#7A2420}
+.dp-res .dp-week{justify-content:center;margin:10px 0}
+.dr-streak{display:inline-flex;align-items:center;gap:2px;margin-left:8px;border:0;background:#FFE6CC;color:#7A2420;border-radius:999px;padding:1px 8px 1px 4px;font:700 13px var(--ui);cursor:pointer;vertical-align:2px}
+.dr-streak .dp-flame{width:14px;height:18px;fill:#F28B2C}
+.dr-streak .dp-flame .in{fill:#FFD45E}
+@media (max-width:560px){.dp-card{flex-wrap:wrap}.dp-act{flex-direction:row;align-items:center;width:100%;justify-content:space-between}}
+/* quick settings (sheet on phones and medium screens, and in the side column) */
+.qs-grp{text-align:left;margin:6px 0 12px}
+.qs-grp h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 6px}
+.qs-row{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;border:0;background:none;padding:7px 0;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
+.qs-l{display:flex;flex-direction:column;min-width:0}
+.qs-l b{font-size:14.5px;font-weight:600}
+.qs-l small{font-size:12px;color:var(--muted)}
+.qs-sw{flex:none;width:40px;height:23px;border-radius:999px;background:var(--line-2);position:relative;transition:background .15s}
+.qs-sw::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .15s}
+.qs-row[aria-checked="true"] .qs-sw{background:var(--jade)}
+.qs-row[aria-checked="true"] .qs-sw::after{left:20px}
+.qs-line{display:flex;flex-direction:column;gap:6px;padding:7px 0}
+.qs-line b{font-size:14.5px;font-weight:600}
+.qs-line .seg button{font-size:13px;padding:5px 10px}
+.qs-all{text-align:left;margin:4px 0 0}
+.modal.sheet{align-items:end}
+.modal.sheet .qs-box{max-width:440px}
+@media (max-width:720px){.modal.sheet{padding:0}.modal.sheet .qs-box{border-radius:18px 18px 0 0;max-width:none;animation:qsUp .22s ease-out}}
+@keyframes qsUp{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+/* side column on wide computers */
+.rail{display:none}
+@media (min-width:1600px){
+  .rail:not([hidden]){display:block;position:fixed;bottom:20px;left:calc(50% + 572px);width:min(232px,calc(50% - 592px));max-height:calc(100vh - var(--hdr-h,100px) - 40px);overflow:auto;z-index:5;scrollbar-width:thin}
+  .rail.rail-l:not([hidden]){left:auto;right:calc(50% + 572px)}
+  .rail:not([hidden]){background:rgba(128,128,128,.075);border:1px solid var(--line);border-radius:18px;padding:10px 12px 4px}
+  body.sess .rail,body.focus .rail{display:none}
+}
+.rl-box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;margin:0 0 12px}
+.rl-box h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
+.rl-box p{margin:0 0 8px;font-size:14px}
+.rl-next{display:flex;align-items:center;gap:10px;width:100%;border:1.5px solid var(--line-2);background:var(--paper);border-radius:12px;padding:8px;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+.rl-next:hover{border-color:var(--jade)}
+.rl-next .lp-ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#E2453C;color:#fff;font-size:20px;flex:none}
+.rl-next small{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.rl-next b{font-size:14px}
+.rl-zi{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.rl-zi .zi-m{width:38px;height:38px;font-size:20px}
+.rl-qs .qs-grp{margin:0 0 6px}
+/* Panda Run records */
+.pr-recs{display:grid;gap:8px;margin:8px 0}
+.pr-rec{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px}
+.pr-rec-d{min-width:80px;font-weight:600}
+.pr-rec-d.sh{color:#C9372C}
+.pr-rec b{font-size:18px;margin-right:auto}
+.gm-chrow{margin:12px 0 0}.gm-chrow .btn{white-space:normal;line-height:1.3;text-align:left;max-width:100%}
+
+/* games */
+.gm-hero{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:8px 0 16px}
+.gm-hero .lead{margin:0;max-width:52ch}
+
+.gm-err{color:var(--bad);font-weight:600}
+.gm-list{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.gm-card{display:flex;gap:14px;align-items:center;text-align:left;border:1.5px solid var(--line-2);background:var(--surface);border-radius:14px;padding:14px;color:var(--ink);font:inherit}
+button.gm-card{cursor:pointer}
+button.gm-card:hover{border-color:var(--jade)}
+.gm-run{border:2px solid var(--jade)}
+.gm-off{opacity:.7}
+.gm-art{width:110px;height:82px;flex:none;border-radius:10px}
+.gm-art-rain,.gm-art-feed{display:grid;place-items:center;font-size:44px;background:var(--sunk);color:var(--muted)}
+.gm-ct{display:flex;flex-direction:column;gap:3px;min-width:0}
+.gm-ct b{font-size:18px}
+.gm-ct span{font-size:14px;color:var(--muted)}
+.gm-ct small{font-size:12.5px;color:var(--jade);font-weight:600}
+.gm-ct em{font-style:normal;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.pr-setup{max-width:760px}
+.pr-intro{display:flex;gap:16px;align-items:center;margin:4px 0 6px}
+.pr-intro p{margin:0}
+.pr-sel,.pr-diffs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin:8px 0 6px}
+.pr-opt{position:relative;overflow:hidden;isolation:isolate;border:1.5px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:12px;padding:10px 12px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px;font:inherit}
+.pr-opt b{font-size:15px}
+.pr-opt span{font-size:12.5px;color:var(--muted)}
+.pr-opt small{font-size:12px;color:var(--jade);font-weight:600}
+.pr-opt[aria-pressed="true"]{border:2px solid var(--jade);padding:9.5px 11.5px;background:var(--jade-soft)}
+.pr-opt:disabled{opacity:.5;cursor:default}
+.pr-d-shaolin{background:linear-gradient(160deg,#B3261E,#E0451F 60%,#F28B2C);border-color:#B3261E;color:#fff}
+.pr-d-shaolin span,.pr-d-shaolin small{color:#FFE7C2}
+.pr-d-shaolin[aria-pressed="true"]{border-color:#FFD166;background:linear-gradient(160deg,#9C1F18,#D63C19 60%,#F2992C);box-shadow:0 0 0 3px rgba(255,180,59,.45)}
+.pr-flame{position:absolute;right:4px;bottom:-6px;height:40px;width:auto;z-index:-1;opacity:.9;animation:prFlame .9s ease-in-out infinite alternate;transform-origin:50% 100%}
+.pr-monk{position:absolute;right:30px;top:4px;height:34px;width:auto;color:#FFE7C2;opacity:.55;z-index:-1}
+@keyframes prFlame{from{transform:scaleY(.92) skewX(-3deg)}to{transform:scaleY(1.06) skewX(3deg)}}
+@media (prefers-reduced-motion: reduce){.pr-flame{animation:none}}
+.pr-game{position:relative;width:100%;max-width:820px;margin:0 auto;border-radius:16px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;background:#BFDDB0}
+.pr-game canvas{display:block}
+.pr-hud{position:absolute;inset:0 0 auto 0;padding:10px 12px;pointer-events:none;display:flex;flex-direction:column;gap:8px}
+.pr-hud button{pointer-events:auto}
+.pr-top{display:flex;align-items:center;gap:10px}
+.pr-lives{display:flex;align-items:center;gap:2px;font-size:22px;line-height:1}
+.pr-lives i{font-style:normal;color:rgba(0,0,0,.18)}
+.pr-lives i.on{color:#E2453C;text-shadow:0 1px 0 rgba(0,0,0,.15)}
+.pr-streak{margin-left:8px;font-size:15px;font-weight:800;color:#7A2420;background:#FFE27A;border-radius:999px;padding:2px 8px}
+.pr-score{margin-left:auto;font-size:22px;font-weight:800;color:#1E3A2F;background:rgba(255,255,255,.75);border-radius:10px;padding:2px 10px;min-width:56px;text-align:center}
+.pr-pause{background:rgba(255,255,255,.8);color:#1E3A2F}
+.pr-q{align-self:center;max-width:min(92%,640px);background:rgba(255,255,255,.93);color:#18211E;border-radius:14px;padding:8px 14px;font-size:17px;line-height:1.35;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px}
+.pr-q .big-in{font-size:30px;vertical-align:-4px}
+.pr-say{border:0;background:#1C6A55;color:#fff;border-radius:999px;width:38px;height:38px;font-size:18px;cursor:pointer;flex:none}
+.pr-pop{align-self:center;font-weight:800;font-size:18px;opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;background:rgba(255,255,255,.9);border-radius:999px;padding:3px 12px}
+.pr-pop.on{opacity:1;transform:none}
+.pr-pop.good{color:#1E7742}
+.pr-pop.bad{color:#AE3328}
+.pr-paused{position:absolute;inset:0;background:rgba(10,20,16,.55);display:grid;place-items:center;color:#fff;text-align:center}
+.pr-paused[hidden]{display:none}
+.pr-paused h2{color:#fff;font-size:28px;margin:0 0 12px}
+.pr-over,.pr-ch{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.pr-over-panda,.pr-ch-panda{width:150px;flex:none}
+.pr-big{font-size:52px;font-weight:800;margin:0;color:var(--jade);line-height:1.1}
+.pr-vs{font-size:18px;font-weight:700}
+.pr-ch-prev{font-weight:600;color:var(--jade)}
+.pr-missed{margin:12px 0}
+.pr-missed>div{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
+.gm-link{width:100%;font-size:13px;margin:6px 0}
+.gm-msg{font-weight:600}
+@media (max-width:720px){.pr-game{border-radius:0;margin:0 -14px;width:calc(100% + 28px);max-width:none}.pr-q{font-size:16px}.gm-art{width:90px;height:68px}}
+
+/* reset progress */
+.btn.danger{background:#C9372C;border-color:#C9372C;color:#fff}
+.btn.danger:hover{background:#B02E24;border-color:#B02E24}
+.btn.danger-o{color:var(--bad);border-color:var(--bad);background:transparent}
+.btn.danger-o:hover{background:var(--bad-soft)}
+.rs-box ul{margin:6px 0 12px}
+.rs-act{flex-wrap:wrap}
+
+/* big pages row on computers: each page with its character, name and a short line */
+@media (min-width:721px){
+  .subtabs{display:grid;grid-template-columns:repeat(var(--sub-n,3),minmax(0,1fr));gap:10px;padding:10px 20px 14px;overflow:visible}
+  .subtabs[hidden]{display:none}
+  .subtab{border-radius:12px;padding:10px 12px;gap:12px;justify-content:flex-start;text-align:left;border-width:1.5px;min-width:0}
+  .subtab .st-hz{flex:none;width:38px;height:38px;border-radius:9px;display:grid;place-items:center;background:var(--sunk);color:var(--muted);font:700 21px/1 var(--hz)}
+  .subtab .st-tx{display:flex;flex-direction:column;min-width:0}
+  .subtab .st-tx b{font-size:15px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px}
+  .subtab .st-tx span{font-size:12.5px;font-weight:400;color:var(--muted);line-height:1.3}
+  .subtab[aria-current="page"]{background:var(--surface);border:2px solid var(--jade);color:var(--ink);padding:9.5px 11.5px}
+  .subtab[aria-current="page"] .st-hz{background:var(--jade);color:var(--jade-ink)}
+  body.focus .subtabs,body.sess .subtabs{display:none}
+}
+@media (max-width:720px){.subtab .st-hz,.subtab .st-tx span{display:none}.subtab .st-tx b{font-weight:500}
+  body.sess .brand .beta{display:none}
+  body.sess .brand b{overflow:hidden}}
+/* medium screens: five tabs need the whole row, so the settings line moves under it */
+@media (min-width:721px) and (max-width:1099px){
+  .tabs .hdr-st{display:none}
+  .hdr-st-m{display:flex;justify-content:flex-end;max-width:1040px;margin:0 auto;padding:0 20px 2px;font-size:12px;width:100%}
+}
+
 /* report a mistake */
 .rp-link{display:none}
-@media (min-width:1200px){.rp-link{display:block;position:absolute;top:68px;right:0;width:100px;border:0;background:none;padding:2px;font:12px/1.3 var(--ui);color:var(--muted);text-align:center;cursor:pointer;z-index:31}.rp-link b{color:var(--jade);text-decoration:underline;text-underline-offset:2px}.rp-link:hover b{text-decoration-thickness:2px}}
+@media (min-width:1200px){.rp-link{display:block;position:absolute;top:68px;right:8px;width:110px;white-space:nowrap;border:0;background:none;padding:2px;font:12px/1.3 var(--ui);color:var(--muted);text-align:center;cursor:pointer;z-index:31}.rp-link b{color:var(--jade);text-decoration:underline;text-underline-offset:2px}.rp-link:hover b{text-decoration-thickness:2px}}
 .rp-mail{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--sunk);border-radius:10px;padding:10px 12px;margin:10px 0}
 .rp-mail b{font-size:17px;user-select:all}
 .rp-box a.btn{text-decoration:none}
@@ -883,17 +1121,21 @@ body.tut-on .lp-pal{z-index:1}
   <nav class="tabs" aria-label="Sections">
     <button type="button" class="tab" data-sec="learn"><span class="tab-hz" aria-hidden="true">学</span>Learn</button>
     <button type="button" class="tab" data-sec="practice"><span class="tab-hz" aria-hidden="true">练</span>Practice</button>
+    <button type="button" class="tab" data-sec="words"><span class="tab-hz" aria-hidden="true">词</span>Words</button>
     <button type="button" class="tab" data-sec="tests"><span class="tab-hz" aria-hidden="true">考</span>Tests</button>
-    <button type="button" class="hdr-st" data-settings title="Your main settings. Tap to change them."></button>
+    <button type="button" class="tab tab-games" data-sec="games"><span class="tab-hz" aria-hidden="true">玩</span>Games</button>
+    <button type="button" class="hdr-st" data-qs title="Your main settings. Tap to change them."></button>
   </nav>
-  <button type="button" class="hdr-st hdr-st-m" data-settings title="Your main settings. Tap to change them."></button>
+  <button type="button" class="hdr-st hdr-st-m" data-qs title="Your main settings. Tap to change them."></button>
   <nav class="subtabs" id="subtabs" aria-label="Pages" hidden></nav>
   <button type="button" class="rp-link" data-report>Found a mistake?<br><b>Tell us</b></button>
   <button type="button" class="msg-btn" id="msg-btn" aria-expanded="false" aria-controls="msg-panel" hidden></button>
   <div class="msg-panel" id="msg-panel" role="dialog" aria-label="Messages" hidden></div>
 </header>
 <main id="main"></main>
-<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.7.9 beta</button><button type="button" class="link" data-about>About</button><span id="reset-box"><button type="button" class="link" data-reset>Reset progress</button></span></footer>
+<aside class="rail rail-l" id="rail-l" aria-label="Quick settings" hidden></aside>
+<aside class="rail" id="rail" aria-label="Your day" hidden></aside>
+<footer><span id="voice-note"></span><span>Progress is saved in this browser only.</span><button type="button" class="link" data-notes>v0.8.0 beta</button><button type="button" class="link" data-about>About</button></footer>
 <div class="drawer-bg" id="drawer-bg" hidden></div><aside class="drawer" id="drawer" aria-label="Menu" hidden></aside>
 <button type="button" class="icon-btn show-hdr show-hdr2" data-showhdr aria-label="Show the header" title="Show the header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
 <button type="button" class="icon-btn show-hdr" data-drawer aria-label="Open the menu" title="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -1843,8 +2085,36 @@ const KEY = 'hz-midterm-v1';
 const DEF = { settings: { pinyin: true, strict: true, noListen: false }, sets: {}, cards: {}, chars: {}, favs: {}, learn: {} };
 let S = JSON.parse(JSON.stringify(DEF));
 try { const raw = localStorage.getItem(KEY); if (raw) { const o = JSON.parse(raw); S = { ...S, ...o, settings: { ...DEF.settings, ...(o.settings || {}) } }; } } catch (e) { /* storage unavailable */ }
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } hdrStatus(); };
-function setFocus(on) { document.body.classList.toggle('focus', !!on); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } hdrStatus(); railSoon(); };
+// Header: an exercise ("session") hides the header by itself only on phones. On computers it hides only with ⌃.
+// When it's hidden, ⌄ (and ☰) sit exactly where ⌃ (and ☰) were in the header.
+const isPhone = () => matchMedia('(max-width:720px)').matches;
+const HDRPOS = {};
+function hdrMeasure() {
+  if (document.body.classList.contains('focus')) return;
+  const cw = document.documentElement.clientWidth;
+  [['up', '.hdr-right [data-hidehdr]'], ['menu', 'header .menu-btn']].forEach(([k, s]) => { const b = document.querySelector(s); if (b && b.getClientRects().length) { const r = b.getBoundingClientRect(); HDRPOS[k + (isPhone() ? 'P' : 'D')] = { top: r.top, left: r.left, right: cw - r.right }; } });
+}
+function hdrPlace() {
+  const ph = isPhone(), dn = document.querySelector('.show-hdr2'), mn = document.querySelector('.show-hdr:not(.show-hdr2)');
+  const cw = document.documentElement.clientWidth, side = Math.max(0, (cw - 1040) / 2);
+  const up = HDRPOS['up' + (ph ? 'P' : 'D')] || (ph ? { top: 10, right: 68 } : { top: 14, right: side + 20 + 126 });
+  const me = HDRPOS['menu' + (ph ? 'P' : 'D')] || { top: ph ? 10 : 14, left: ph ? 14 : side + 20 };
+  if (dn) Object.assign(dn.style, { top: `calc(env(safe-area-inset-top,0px) + ${Math.round(up.top)}px)`, right: Math.round(up.right + (innerWidth - cw)) + 'px', left: 'auto' });
+  if (mn) Object.assign(mn.style, { top: `calc(env(safe-area-inset-top,0px) + ${Math.round(me.top)}px)`, left: Math.round(me.left) + 'px', right: 'auto' });
+}
+// --hdr-h: the visible header height, used by the sticky bars under it
+function hdrH() { const hd = document.querySelector('.top'); document.documentElement.style.setProperty('--hdr-h', (hd && !document.body.classList.contains('focus') ? hd.offsetHeight : 0) + 'px'); }
+function hdrHide(on) {
+  if (on) { hdrMeasure(); hdrPlace(); }
+  document.body.classList.toggle('focus', !!on);
+  hdrH();
+  if (!on) requestAnimationFrame(() => { hdrMeasure(); hdrH(); });
+}
+function setFocus(on) {
+  document.body.classList.toggle('sess', !!on);
+  if (isPhone()) hdrHide(on); else hdrH();
+}
 const HOW = {};
 function howOpen(k) { return HOW[k] ? ' open' : ''; }
 document.addEventListener('toggle', e => { const d = e.target; if (d && d.matches && d.matches('details.howto')) HOW[d.dataset.howto] = d.open; }, true);
@@ -2023,6 +2293,57 @@ function stopAudio() {
 }
 function speak(text, spk) { stopAudio(); sayOne(text, seqTok, spk); }
 let seqTok = 0, seqBtn = null;
+
+/* ----- sound effects: tiny sounds made in the browser (Web Audio), no files. Quieter than the Chinese voice and never stop it. ----- */
+const sfxOn = () => !(S.settings && S.settings.sfx === false);
+const SFX = { ctx: null, noise: null };
+function sfxCtx() {
+  if (!SFX.ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; SFX.ctx = new AC(); }
+  if (SFX.ctx.state === 'suspended') SFX.ctx.resume().catch(() => {});
+  return SFX.ctx;
+}
+function sfxTone(c, t, f1, f2, dur, type = 'sine', vol = 0.1) {
+  const o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.setValueAtTime(f1, t); if (f2 && f2 !== f1) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + dur + 0.02);
+}
+function sfxNoise(c, t, dur, freq, vol) {
+  if (!SFX.noise) { const n = c.sampleRate * 0.6, b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; SFX.noise = b; }
+  const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+  s.buffer = SFX.noise; f.type = 'lowpass'; f.frequency.value = freq;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  s.connect(f); f.connect(g); g.connect(c.destination); s.start(t, 0, dur + 0.02);
+}
+const SFX_P = {
+  ok: (c, t) => { sfxTone(c, t, 880, 880, 0.11, 'sine', 0.09); sfxTone(c, t + 0.08, 1320, 1320, 0.18, 'sine', 0.08); },
+  bad: (c, t) => { sfxTone(c, t, 260, 170, 0.22, 'triangle', 0.11); },
+  star: (c, t) => { sfxTone(c, t, 1180, 1560, 0.12, 'sine', 0.07); },
+  done: (c, t) => { [523, 659, 784, 1047].forEach((f, k) => sfxTone(c, t + k * 0.09, f, f, 0.22, 'triangle', 0.07)); },
+  end: (c, t) => { [523, 659, 784].forEach((f, k) => sfxTone(c, t + k * 0.12, f, f, 0.25, 'sine', 0.06)); },
+  break: (c, t) => { sfxNoise(c, t, 0.18, 1600, 0.16); sfxTone(c, t, 180, 90, 0.12, 'triangle', 0.08); },
+  hurt: (c, t) => { sfxTone(c, t, 330, 140, 0.28, 'square', 0.035); sfxNoise(c, t, 0.12, 600, 0.08); },
+  life: (c, t) => { [660, 880, 1100].forEach((f, k) => sfxTone(c, t + k * 0.07, f, f, 0.12, 'sine', 0.07)); },
+  splat: (c, t) => { sfxNoise(c, t, 0.32, 500, 0.2); sfxTone(c, t, 140, 60, 0.3, 'sine', 0.12); },
+  record: (c, t) => { [523, 659, 784, 1047, 784, 1047].forEach((f, k) => sfxTone(c, t + k * 0.11, f, f, k === 5 ? 0.4 : 0.16, 'triangle', 0.07)); }
+};
+function sfx(name, delay = 0) {
+  if (!sfxOn() || !SFX_P[name]) return;
+  try { const c = sfxCtx(); if (c) SFX_P[name](c, c.currentTime + 0.01 + delay); } catch (e) { /* no sound: fine */ }
+}
+/* ----- theme: Auto follows the device, or Light / Dark ----- */
+const themeOf = () => (S.settings && S.settings.theme) || 'auto';
+function applyTheme() {
+  const t = themeOf(), r = document.documentElement;
+  if (t === 'light' || t === 'dark') r.dataset.theme = t; else delete r.dataset.theme;
+}
+applyTheme();
+const THEMES = [['light', '☀ Light'], ['auto', 'Auto'], ['dark', '🌙 Dark']];
+const themeSeg = () => `<div class="seg" role="group" aria-label="Theme">${THEMES.map(([v, l]) => `<button type="button" aria-pressed="${themeOf() === v}" data-settheme="${v}">${l}</button>`).join('')}</div>`;
+function setTheme(v) { S.settings.theme = v; save(); applyTheme(); $$('[data-settheme]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.settheme === v))); if (view === 'writing') renderWriting(); if (view === 'learn' && LN.phase === 'path') lPath(); }
+function setSfx(on) { S.settings.sfx = !!on; save(); $$('#opt-sfx, [data-qsfx]').forEach(x => { if (x.type === 'checkbox') x.checked = !!on; else x.setAttribute('aria-pressed', String(!!on)); }); if (on) sfx('ok'); }
+document.addEventListener('click', e => { const b = e.target.closest('[data-settheme]'); if (b) setTheme(b.dataset.settheme); });
+document.addEventListener('change', e => { if (e.target.id === 'opt-sfx') setSfx(e.target.checked); });
 const splitSent = t => (String(t).match(/[^。！？!?]+[。！？!?]?/g) || [t]).map(s => s.trim()).filter(Boolean);
 function playSeq(parts, btn) {
   stopAudio(); const tok = seqTok; const segs = [];
@@ -2229,6 +2550,7 @@ document.addEventListener('click', e => {
       let got = 0, max = 0; lis.forEach(li => { const r = evalLi(li); got += r.got; max += r.max; });
       if (!String(id).startsWith('syn:')) { const prev = S.sets[id]; S.sets[id] = { got, max, best: Math.max(got, prev?.best || 0) }; save(); }
       $('.score', w).innerHTML = `<b>${got} / ${max}</b> correct`;
+      if (max) sfx(got === max ? 'ok' : 'bad');
       const firstBad = $('.is-wrong', w); if (firstBad) firstBad.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     } else if (act.dataset.act === 'show') { lis.forEach(showAnswersLi); }
     else if (act.dataset.act === 'reset') { WORK[id] && WORK[id](); }
@@ -2252,7 +2574,8 @@ document.addEventListener('keydown', e => {
 
 /* ================= Characters tab ================= */
 const C = { mode: 'flash', screen: 'menu', units: new Set([0, 1, 2]), core: true, ext: false, ph: false, names: false, weak: false, pyHint: false, queue: [], pos: 0, flipped: false, answered: null, right: 0, wrong: 0, missed: [], search: '' };
-const CMODES = [['list', 'Word list'], ['flash', 'Flashcards'], ['py', 'Pinyin quiz'], ['mean', 'Meaning quiz'], ['hz', 'Type the characters'], ['listen', 'Listen and type']];
+const C_GROUPS = [['Look and review', ['list', 'flash']], ['Quiz yourself', ['mean', 'py']], ['Write and listen', ['hz', 'listen']]];
+const CMODES = [['list', 'Word list'],['flash', 'Flashcards'], ['py', 'Pinyin quiz'], ['mean', 'Meaning quiz'], ['hz', 'Type the characters'], ['listen', 'Listen and type']];
 function deck() {
   const seen = new Set(), out = [];
   for (const v of VOCAB) {
@@ -2300,7 +2623,7 @@ function renderChars() {
       <details class="howto" data-howto="h0"${howOpen('h0')}><summary>How it works</summary><p>Here you learn what every word from your units means and how it’s read. First choose which words to practise, then start one of the six ways of practising below.</p><p>Every round goes through your selection in random order. Words you get wrong come back later in the same round, and your record for each word is saved, so “Words I missed” can later give you only your weak words.</p></details>
       ${charFilters()}
       <p class="sel-count">${n} words selected.</p>
-      <div class="menu-grid">${CMODES.filter(([k]) => !(k === 'listen' && noListenOn())).map(([k]) => { const d = CDESC[k]; return `<div class="mcard"><h2>${k === 'listen' ? LTAG : ''}${esc(d.t)}</h2><p>${esc(d.short)}</p><details class="more"><summary>More</summary><p>${esc(d.p)}</p><p class="onscreen">${esc(d.s)}</p></details><button type="button" class="btn primary" data-cstart="${k}" ${n ? '' : 'disabled'}>${k === 'list' ? 'Open' : 'Start'}</button></div>`; }).join('')}</div>`;
+      ${C_GROUPS.map(([h, ks]) => { const cs = ks.filter(k => !(k === 'listen' && noListenOn())); return cs.length ? `<h2 class="mg-h">${esc(h)}</h2><div class="menu-grid">${cs.map(k => { const d = CDESC[k]; return `<div class="mcard"><h2>${k === 'listen' ? LTAG : ''}${esc(d.t)}</h2><p>${esc(d.short)}</p><details class="more"><summary>More</summary><p>${esc(d.p)}</p><p class="onscreen">${esc(d.s)}</p></details><button type="button" class="btn primary" data-cstart="${k}" ${n ? '' : 'disabled'}>${k === 'list' ? 'Open' : 'Start'}</button></div>`; }).join('')}</div>` : ''; }).join('')}`;
     return;
   }
   const d = CDESC[C.mode];
@@ -2360,6 +2683,7 @@ function renderCard() {
 }
 function cAnswer(ok, extra = '') {
   const v = C.queue[C.pos]; rec(v, ok);
+  sfx(ok ? 'ok' : 'bad');
   if (ok) C.right++; else { C.wrong++; C.missed.push(v); C.queue.splice(Math.min(C.queue.length, C.pos + 5), 0, v); }
   C.answered = { ok, html: ok ? '<span class="ok-l">Correct</span>' : `<span class="bad-l">Not quite.</span> ${extra}` };
 }
@@ -2526,6 +2850,7 @@ function renderResults() {
   let got = 0, max = 0;
   $$('.tq').forEach((el, n) => { if (T.results[n] === undefined) { let g = 0, m = 0; $$('.item', el).forEach(li => { const r = evalLi(li); g += r.got; m += r.max; }); T.results[n] = { got: g, max: m }; } el.hidden = false; el.classList.add('locked'); got += T.results[n].got; max += T.results[n].max; el.classList.toggle('q-wrong', T.results[n].got < T.results[n].max); });
   const pct = max ? Math.round((got / max) * 100) : 0;
+  sfx(pct >= 90 ? 'done' : 'end');
   $('#t-count').textContent = ''; $('#t-bar').style.width = '100%';
   $('#t-run').insertAdjacentHTML('afterbegin', `<div class="t-result"><div class="t-score">${pct}%</div><div><b>${got} of ${max}</b> points. Every question is listed below with the correct answers.</div><label class="small"><input type="checkbox" id="t-onlywrong"> Show only questions with mistakes</label></div>`);
   $('#t-act').innerHTML = `<button type="button" class="btn primary" data-t="again">New test</button><button type="button" class="btn" data-t="setup">Change settings</button><button type="button" class="btn" data-share="test" data-pct="${pct}" data-pts="${got} of ${max} points">Share result</button>`;
@@ -2535,7 +2860,7 @@ function renderResults() {
 function tHandle(a) {
   if (a === 'start' || a === 'again') { setFocus(true); return startTest(); }
   if (a === 'setup' || a === 'quit') { T.phase = 'setup'; setFocus(false); return renderTest(); }
-  if (a === 'check') { tCheckCurrent(); return renderRun(); }
+  if (a === 'check') { tCheckCurrent(); const r = T.results[T.pos]; if (T.mode === 'each' && r && r.max) sfx(r.got === r.max ? 'ok' : 'bad'); return renderRun(); }
   if (a === 'skip') { tCheckCurrent(); return renderRun(); }
   if (a === 'next') { T.pos++; renderRun(); window.scrollTo({ top: 0 }); return; }
   if (a === 'prev') { T.pos = Math.max(0, T.pos - 1); renderRun(); return; }
@@ -2848,7 +3173,7 @@ function mkSubmit(force, auto) {
   if (!MK.test || MK.done) return;
   const missing = MK.test.items.filter(it => !mkAnswered(it)).length;
   if (!auto && missing && !force) { MK.bar = 'confirmSubmit'; MK.missing = missing; return mkBar(); }
-  MK.done = true; MK.bar = ''; mkStopTimer(); stopAudio();
+  MK.done = true; MK.bar = ''; mkStopTimer(); stopAudio(); sfx('end');
   const now = new Date();
   MK.attempt = { when: now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), got: 0, pending: 15 };
   MK.hist.unshift(MK.attempt); mkSaveAttempt();
@@ -3037,13 +3362,10 @@ function openHelp() {
     <h2>The sections</h2>
     <ul class="hl">
       <li><b>Learn</b>: step-by-step levels. Each shows you something new, then a short quiz.</li>
-      <li><b>Quick challenge</b>: a short mixed round with the panda.</li>
-      <li><b>Words</b>: flashcards and quizzes for the vocabulary.</li>
-      <li><b>Writing</b>: stroke order and writing characters.</li>
-      <li><b>Grammar</b>: every grammar point with a drill.</li>
-      <li><b>Book exercises</b>: the exercises from your textbooks.</li>
-      <li><b>Practice test</b>: harder questions in exam style.</li>
-      <li><b>Mock exam</b>: a full 50-question exam.</li>
+      <li><b>Practice</b>: <b>Quick challenge</b>, a short mixed round with the panda; <b>Grammar</b>, every grammar point with a drill; <b>Book exercises</b>, the exercises from your textbooks.</li>
+      <li><b>Words</b>: flashcards and quizzes for the vocabulary; <b>Characters</b>, how well you know each character, with practice for your weakest ones; <b>Writing</b>, stroke order and writing characters.</li>
+      <li><b>Tests</b>: <b>Practice test</b>, harder questions in exam style; <b>Mock exam</b>, a full 50-question exam.</li>
+      <li><b>Games</b>: <b>Panda Run</b>, run through the wall with the right answer. More games are on their way.</li>
       <li><b>☰</b> opens the menu, <b>⌃</b> hides the header and <b>⌄</b> brings it back.</li>
     </ul>
     <h2>Favourites</h2>
@@ -3092,16 +3414,19 @@ function applyBackup() {
 }
 
 function openSettings() {
-  const m = $('#modal');
+  const m = $('#modal'); m.classList.remove('sheet');
   m.innerHTML = `<div class="modal-box help-box set-box" role="dialog" aria-modal="true" aria-label="Settings">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
     <h1 class="view-title">Settings</h1>
     <label class="set-line"><span>Your name</span>${nameInput('opt-name', 'Your name')}</label>
-    <h2>Display</h2>
+    <h2>Learning</h2>
     <label class="set-opt"><input type="checkbox" id="opt-py" ${S.settings.pinyin ? 'checked' : ''}><span><b>Pinyin under Chinese</b><small>Shows the pinyin under Chinese sentences in the exercises.</small></span></label>
     <label class="set-opt"><input type="checkbox" id="opt-strict" ${S.settings.strict ? 'checked' : ''}><span><b>Tones must be right</b><small>When this is on, a pinyin answer with a wrong tone counts as a mistake.</small></span></label>
-    <label class="set-opt"><input type="checkbox" id="opt-nolisten" ${S.settings.noListen ? 'checked' : ''}><span><b>No listening exercises</b><small>Hides the exercises where you have to listen. Useful when you can’t use sound right now.</small></span></label>
+    <label class="set-opt"><input type="checkbox" id="opt-nolisten" ${S.settings.noListen ? 'checked' : ''}><span><b>🎧 No listening exercises</b><small>Hides the exercises where you have to listen. Useful when you can’t use sound right now.</small></span></label>
     ${voiceSettingsHtml()}
+    <h2>App</h2>
+    <label class="set-opt"><input type="checkbox" id="opt-sfx" ${sfxOn() ? 'checked' : ''}><span><b>🔔 Sound effects</b><small>Short sounds for right and wrong answers, finished levels and games. The Chinese voice is not affected.</small></span></label>
+    <div class="set-line"><span>Theme</span>${themeSeg()}</div>
 
     <h2>Your progress</h2>
     <p>Your progress and favourites are saved <b>in this browser, on this device</b>. A backup lets you keep them safe or move them to another device.</p>
@@ -3120,8 +3445,26 @@ function openSettings() {
         <li>Nobody else can see your progress.</li>
       </ul>
     </details>
+    <h2>Start over</h2>
+    <p class="small muted">Deletes all your progress in this browser. You can’t undo it, so save a backup first.</p>
+    <div class="card-actions"><button type="button" class="btn danger-o" data-reset>Reset progress…</button></div>
   </div>`;
   m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
+}
+// Reset gets its own window: it deletes everything, so it explains what goes and offers a backup first.
+function openReset() {
+  const m = $('#modal');
+  m.innerHTML = `<div class="modal-box help-box rs-box" role="alertdialog" aria-modal="true" aria-labelledby="rs-h">
+    <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
+    <h1 class="view-title" id="rs-h">Reset all progress?</h1>
+    <p>This deletes everything the app has saved in this browser:</p>
+    <ul class="hl"><li>your levels and stars in Learn</li><li>how well you know each character and word</li><li>your favourites</li><li>your Daily practice streak</li><li>your Mock exam results and game records</li><li>your name and settings</li></ul>
+    <p><b>You can’t undo this.</b> A backup file lets you bring it all back later.</p>
+    <div id="bk-msg" aria-live="polite"></div>
+    <div id="bk-code" hidden><p class="small">Saving a file isn’t possible here, so the app shows a <b>backup code</b> instead. Copy all of it and keep it somewhere safe.</p><textarea class="in bk-ta" readonly rows="3"></textarea></div>
+    <div class="card-actions rs-act"><button type="button" class="btn primary" data-bksave>Save a backup first</button><button type="button" class="btn danger" data-resetyes>Delete everything</button><button type="button" class="btn" data-settings>Cancel</button></div>
+  </div>`;
+  m.hidden = false; document.body.classList.add('modal-open'); $('[data-settings]', m).focus();
 }
 
 /* ================= panda ================= */
@@ -3228,7 +3571,7 @@ function renderQC() {
   if (QC.phase === 'done') return;
   if (!QC.preview) QC.preview = qcBuild();
   const P = QC.preview, valid = parseInt(QC.custom, 10) >= 1;
-  main.innerHTML = `<div class="qc-hero">${pandaSvg('idle', 'qc-big sway')}<div><h1 class="view-title">Quick challenge</h1><p class="lead">A short round that mixes everything you’ve learned. Pick the lessons and your time, and the panda will keep you company.</p></div></div>
+  main.innerHTML = `<div class="qc-hero">${pandaSvg('idle', 'qc-big sway')}<div><h1 class="view-title">Quick challenge</h1><p class="lead">A short round that mixes everything you’ve learned. Pick the lessons and your time, and the panda will keep you company.</p><p class="pr-note">Word quizzes, your characters and writing are in the <button type="button" class="link" data-sec="words">Words</button> tab.</p></div></div>
     <details class="howto" data-howto="qc"${howOpen('qc')}><summary>How it works</summary>
       <p>Pick the lessons, what to practise and how long you have. You get a random mix of tasks that fits that time, one at a time: answer, press Check, and the panda reacts. At the end you see your score in percent.</p>
       <p><b>Not included here: the harder exam-style questions from the Test tab and the Midterm mock test.</b> Included are the exercises from your books (the same ones the Test tab offers as “Questions from the books”), word quizzes from Characters (pinyin, meaning, writing in characters, listening), the drills from Grammar and, if you switch it on, writing characters from memory.</p>
@@ -3292,7 +3635,7 @@ function qcReact(mood, text) {
   if (b) { b.textContent = text; b.className = 'qc-bubble on ' + (mood === 'cry' ? 'bad' : 'ok'); }
   qcReactT = setTimeout(() => { setMood(p, 'idle'); p.classList.remove('jump', 'shake'); if (b) b.className = 'qc-bubble'; }, 1900);
 }
-function qcDone(got, max, mood, text) { QC.res[QC.pos] = { got, max }; qcReact(mood, text); qcRenderRun(); }
+function qcDone(got, max, mood, text) { QC.res[QC.pos] = { got, max }; if (max) sfx(got === max ? 'ok' : 'bad'); qcReact(mood, text); qcRenderRun(); }
 function qcCheck(skip) {
   const cur = $(`.qc-task[data-q="${QC.pos}"]`); let got = 0, max = 0, open = true;
   if ($$('.item', cur).length && $$('.item', cur).every(li => li.dataset.skip === '1')) { cur.classList.add('locked'); return qcDone(0, 0, 'idle', 'Skipped'); }
@@ -3307,6 +3650,7 @@ function qcFinish() {
   const rs = QC.res.filter(Boolean); let got = 0, max = 0, right = 0, counted = 0, sub = 0;
   rs.forEach(r => { got += r.got; max += r.max; if (r.max) { counted++; if (r.got === r.max) right++; } else sub++; });
   const pct = max ? Math.round(100 * got / max) : 100;
+  sfx(pct >= 90 ? 'done' : 'end');
   const band = pct < 60 ? 'facepalm' : pct < 70 ? 'awkward' : pct < 80 ? 'notbad' : pct < 90 ? 'happy' : 'ecstatic';
   const MSG = { facepalm: 'Oof. That one hurt. Have another go at the tricky ones.', awkward: 'Heh… a pass, but only just.', notbad: 'Not bad! A bit more practice and it’s solid.', happy: 'Great work, you really know this!', ecstatic: 'OUTSTANDING! Almost perfect. 太棒了！' };
   const mins = Math.max(1, Math.round((Date.now() - QC.t0) / 60000));
@@ -3913,6 +4257,8 @@ ZI_LEVELS.forEach((z, k) => {
     desc: z.review ? `All the characters from Unit ${z.unit}, mixed. The ones you know least come up most often.` : `${cs.length} characters: what they mean, how they sound, and how to tell them apart from look-alikes.` };
   LEVELS.splice(LEVELS.findIndex(l => l.id === z.after) + 1, 0, lv);
 });
+// every Learn question gets a stable id ("level:index"), so Daily practice can bring back the ones you got wrong
+LEVELS.forEach(l => (l.quiz || []).forEach((q, i) => { q.qid = l.id + ':' + i; }));
 const ziInfo = c => { const i = CHARINFO[c] || {}; return { p: String(i.p || '').toLowerCase(), m: String(i.m || '') }; };
 const ziBound = c => /^as in /.test(ziInfo(c).m);
 const ziLevel = c => { const z = (S.zi || {})[c]; return z ? z.s : -1; };
@@ -4017,18 +4363,21 @@ function ziDetail(c) {
   return `<div class="zi-dh"><button type="button" class="zi-db hzf" data-say="${esc(c)}" aria-label="Hear ${esc(c)}">${esc(c)}</button><div><div class="zi-dp">${colorPy(I.p)} ${sayBtn(c)}</div><div>${esc(I.m)}</div>${h ? `<div class="small muted">${esc(h)}</div>` : ''}</div></div>
     ${ws.length ? `<div class="zi-dw">${ws.map(v => `<button type="button" class="zi-w" data-say="${esc(v.h)}"><span class="hzf">${esc(v.h)}</span> <span class="small">${colorPy(v.p)}</span> <span class="small muted">${esc(v.e)}</span></button>`).join('')}</div>` : ''}`;
 }
+// "My characters" is a page in the Words tab (it used to be a window over Learn).
 function openZiMine() {
+  closeModal(); if (LN.phase === 'done') { LN.phase = 'path'; LN.lv = null; }
+  setFocus(false); if (location.hash !== '#mychars') location.hash = 'mychars'; else go();
+}
+function renderMyChars() {
   const us = lUnits(), all = us.flatMap(u => ZI_UNIT[u] || []), known = all.filter(ziKnown).length, seen = all.some(c => ziLevel(c) >= 0);
-  const m = $('#modal');
-  m.innerHTML = `<div class="modal-box zi-box" role="dialog" aria-modal="true" aria-label="My characters"><button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
-    <h2>My characters</h2><p class="small">You know <b>${known}</b> of ${all.length} characters well. ${seen ? 'Tap a character to see it.' : 'Play a 字 level on the path to start.'}</p>
+  main.innerHTML = `<div class="zi-box zi-page">
+    <h1 class="view-title">My characters</h1><p class="small">You know <b>${known}</b> of ${all.length} characters well. ${seen ? 'Tap a character to see it.' : 'Play a 字 level in Learn to start.'}</p>
     <p class="zi-legend small"><span class="lv0">not practised</span><span class="lv1">weak</span><span class="lv2">getting there</span><span class="lv3">known</span></p>
     <div class="zi-practise"><b>Practise my weakest characters</b>
       <div class="zi-modes"><button type="button" class="btn primary" data-zistart="10"${seen ? '' : ' disabled'}>10 characters</button><button type="button" class="btn" data-zistart="20"${seen ? '' : ' disabled'}>20 characters</button><button type="button" class="btn" data-zistart="all"${seen ? '' : ' disabled'}>Until I get them all</button></div>
       <p class="small muted">“Until I get them all”: 10 characters, and each one comes back until you get it right twice in a row.</p></div>
     <div id="zi-detail" class="zi-detail" hidden></div>
     ${us.map(u => `<h3 class="zi-uh">Unit ${u}</h3><div class="zi-mine">${(ZI_UNIT[u] || []).map(c => `<button type="button" class="zi-m hzf lv${ziBand(c)}" data-zipick="${esc(c)}">${esc(c)}</button>`).join('')}</div>`).join('')}</div>`;
-  m.hidden = false; document.body.classList.add('modal-open'); $('.modal-x', m).focus();
 }
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
@@ -4074,6 +4423,7 @@ function lPath() {
   main.innerHTML = `<div class="lp-head"><div><h1 class="view-title">Learn</h1><p class="lead">Learn Chinese step by step. Every level first shows you something new, then checks it with a short quiz.</p></div>
       <div class="lp-stats"><span class="lp-stat"><b>★ ${starsN}</b> of ${LEVELS.length * 3}</span><span class="lp-stat"><b>${doneN}</b> of ${LEVELS.length} levels</span><button type="button" class="lp-stat lp-zi" data-zimine title="See every character and how well you know it"><b class="hzf">字</b> <b>${Object.keys(ZI_OF).filter(ziKnown).length}</b> of ${Object.keys(ZI_OF).length} characters</button></div></div>
     ${learnHello()}
+    ${dailyCardHtml()}
     <details class="howto" data-howto="learn"${howOpen('learn')}><summary>How it works</summary>
       <p>Each level has two parts. First you <b>learn</b>: a few cards show new sounds, characters or a rule, with audio and stroke animations. Then a short <b>quiz</b> checks what you just learned, plus a couple of questions from earlier levels so you don’t forget. Mistakes come back at the end of the quiz.</p>
       <p>Questions marked ${LTAG} need sound; you can skip them with “Can’t listen now”, or hide them all in Settings.</p>
@@ -4099,7 +4449,9 @@ function lLayout() {
   const small = W < 520;
   html += `<div class="lp-banner${small ? ' sm' : ''}" id="lp-u${u}" style="top:16px"><span class="lp-roll"></span><div class="lp-bt"><b>Unit ${u}</b><span>${esc(LUNITS[u] || '')}</span></div><span class="lp-roll"></span></div>`;
   if (W >= 520) { dec += `<div class="lp-dec" style="left:${M - 10}px;top:62px">${DECOR.lantern}</div><div class="lp-dec" style="left:${W - M + 10}px;top:62px">${DECOR[u % 2 ? 'blossom' : 'cloud']}</div>`; }
-  y = small ? 148 : 170;
+  // the panda's "Next up!" bubble sits above its level: in the first row, leave room so it doesn't cover the banner
+  const ri = lvs.indexOf(rec), recTop = ri >= 0 && ri < cols;
+  y = (small ? 148 : 170) + (recTop ? (small ? 40 : 48) : 0);
   const first = y;
   lvs.forEach((lv, k) => {
     const row = Math.floor(k / cols), c = k % cols, col = row % 2 ? cols - 1 - c : c;
@@ -4206,7 +4558,8 @@ function lStart(id, made) {
 function lBuildQuiz(lv) {
   const i = LEVELS.indexOf(lv), prev = LEVELS.slice(0, i).filter(x => !lv.checkpoint || x.unit === lv.unit).flatMap(x => x.quiz);
   let items;
-  if (lv.zi) items = ziBuild(lv);
+  if (lv.daily) items = lv.items.map(q => ({ ...q }));
+  else if (lv.zi) items = ziBuild(lv);
   else if (lv.checkpoint) { const nd = shuffle(prev.filter(q => q.t !== 'draw')).slice(0, 11), dr = shuffle(prev.filter(q => q.t === 'draw')).slice(0, 1); items = shuffle([...nd, ...dr]); }
   else items = [...lv.quiz, ...shuffle(prev.filter(q => q.t !== 'draw' && q.t !== 'match')).slice(0, 2).map(q => ({ ...q, review: true }))];
   if (noListenOn() || !canListen()) items = items.filter(q => !lNeedsAudio(q));
@@ -4282,7 +4635,13 @@ function lCheck() {
 }
 function lResult(ok, ans, note) {
   const q = LN.queue[0]; if (!q || LN.answered) return; LN.answered = true;
-  if (!(q.uid in LN.first)) { LN.first[q.uid] = ok; if (q.zi) ziMark(q.zi, ok); }
+  sfx(ok ? 'ok' : 'bad');
+  if (!(q.uid in LN.first)) {
+    LN.first[q.uid] = ok; if (q.zi) ziMark(q.zi, ok);
+    // Daily practice remembers Learn questions you got wrong, and the words you practise there count for Words too
+    if (q.qid) { S.lmiss = S.lmiss || {}; if (ok) delete S.lmiss[q.qid]; else S.lmiss[q.qid] = Date.now(); }
+    if (q.wordH) { const v = VOCAB.find(x => x.h === q.wordH); if (v) rec(v, ok); }
+  }
   LN.queue.shift();
   if (q.ziMaster) {
     // mastery round: the character comes back (with a new question) until it is right twice in a row
@@ -4306,7 +4665,10 @@ function lFinish() {
   S.learn = S.learn || {}; const prev = S.learn[LN.lv.id];
   if (!LN.lv.virtual) S.learn[LN.lv.id] = { stars: Math.max(stars, prev ? prev.stars : 0), best: Math.max(pct, prev ? prev.best : 0), at: Date.now() };
   save();
-  LN.result = { pct, stars, right, count }; LN.phase = 'done'; lDone();
+  LN.result = { pct, stars, right, count }; LN.phase = 'done';
+  if (LN.lv.daily) LN.result.daily = dailyDone();
+  sfx(LN.lv.daily || stars === 3 ? 'done' : 'end'); for (let k = 1; k <= stars && !LN.lv.daily; k++) sfx('star', 0.2 + k * 0.25);
+  lDone();
 }
 function lDone() {
   const r = LN.result, lv = LN.lv, i = LEVELS.indexOf(lv), next = lv.virtual ? null : LEVELS[i + 1];
@@ -4314,6 +4676,7 @@ function lDone() {
   const MSG = { facepalm: 'That was a tough one. Look at the cards again and have another go.', awkward: 'Heh… you got through it. One more round?', notbad: 'Not bad! A bit more practice and it’s solid.', happy: 'Great work!', ecstatic: 'Outstanding! 太棒了！' };
   const anim = { facepalm: '', awkward: 'sway', notbad: 'sway', happy: 'jump-loop', ecstatic: 'party' }[band];
   setFocus(false);
+  if (lv.daily) { main.innerHTML = dailyDoneHtml(r); window.scrollTo({ top: 0 }); return; }
   main.innerHTML = `<section class="qc-result ${band} ln-res">${pandaSvg(band, 'qc-final ' + anim)}
     <div class="lr-stars" aria-label="${r.stars} of 3 stars">${[1, 2, 3].map(k => `<span class="lr-star${k <= r.stars ? ' on' : ''}" style="animation-delay:${0.2 + k * 0.25}s">★</span>`).join('')}</div>
     <div class="qc-pct">${r.pct}%</div><p class="qc-msg">${esc(MSG[band])}</p>
@@ -4422,7 +4785,7 @@ function wmPlay() {
   const next = () => { if (tok !== wmTok || i >= MODAL_W.length) return; MODAL_W[i++].animateCharacter({ onComplete: () => setTimeout(next, 250) }); };
   setTimeout(next, 200);
 }
-function closeModal() { const m = $('#modal'); wmTok++; m.hidden = true; m.innerHTML = ''; MODAL_W = []; document.body.classList.remove('modal-open'); if (TUT_PENDING && !TUT.on) { TUT_PENDING = false; setTimeout(tutStart, 300); } }
+function closeModal() { const m = $('#modal'); wmTok++; m.hidden = true; m.innerHTML = ''; m.classList.remove('sheet'); MODAL_W = []; document.body.classList.remove('modal-open'); if (TUT_PENDING && !TUT.on) { TUT_PENDING = false; setTimeout(tutStart, 300); } }
 document.addEventListener('click', e => {
   if (e.target.id === 'modal') return closeModal();
   const t = e.target.closest('button'); if (!t) return; const d = t.dataset;
@@ -4431,20 +4794,32 @@ document.addEventListener('click', e => {
   if (d.wmreplay !== undefined) return wmPlay();
   if (d.wmpractise) { const ch = d.wmpractise; closeModal(); W.sel = new Set(wGroups().map(g => g.id)); W.mode = 'trace'; W.screen = 'session'; W.i = Math.max(0, wList().indexOf(ch)); setFocus(true); if (location.hash === '#writing') renderWriting(); else location.hash = 'writing'; return; }
   if (d.settings !== undefined) return openSettings();
-  if (d.hidehdr !== undefined) return setFocus(true);
-  if (d.showhdr !== undefined) return setFocus(false);
+  if (d.hidehdr !== undefined) return hdrHide(true);
+  if (d.showhdr !== undefined) return hdrHide(false);
   if (d.voicemore !== undefined) { const v = $('#voice-more'); v.hidden = !v.hidden; t.textContent = v.hidden ? 'Details' : 'Hide'; }
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').hidden) closeModal(); });
 
 /* ================= navigation, course, version ================= */
-const APP_VERSION = '0.7.9';
+const APP_VERSION = '0.8.0';
 const PANDA_SM = '<svg class="tab-panda" viewBox="0 0 40 36" aria-hidden="true"><circle cx="9" cy="8" r="6" fill="#222"/><circle cx="31" cy="8" r="6" fill="#222"/><ellipse cx="20" cy="20" rx="15" ry="13.5" fill="#fff" stroke="#222" stroke-width="1.6"/><ellipse cx="14" cy="19" rx="4" ry="5" fill="#222" transform="rotate(30 14 19)"/><ellipse cx="26" cy="19" rx="4" ry="5" fill="#222" transform="rotate(-30 26 19)"/><circle cx="14.6" cy="18.6" r="1.5" fill="#fff"/><circle cx="25.4" cy="18.6" r="1.5" fill="#fff"/><ellipse cx="20" cy="24" rx="2.2" ry="1.5" fill="#222"/></svg>';
+// A Shaolin monk in a classic staff pose: bald head, robe with wide sleeves, sash, prayer beads, leg wraps.
+// Drawn as one silhouette; the details are cut out with a mask so it stays readable at any opacity.
+const MONK_SVG = `<svg class="monk" viewBox="0 0 64 56" aria-hidden="true"><defs><mask id="monk-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="56"><rect width="64" height="56" fill="#fff"/><g fill="none" stroke="#000" stroke-linecap="round"><path d="M30.5 27.5Q35 29.3 39.5 27.5" stroke-width="1.5"/><path d="M33.5 29L31.5 36M35.5 29L36.8 35" stroke-width="1.1"/><path d="M44.5 46.8l3-1.2M45.6 49.4l3-1M22 47.6l-3-1.6M18.8 49.6l-2.8-1.4" stroke-width="1"/></g><g fill="#000"><circle cx="30.4" cy="16.2" r="1"/><circle cx="31.4" cy="18.7" r="1"/><circle cx="33.2" cy="20.4" r="1"/><circle cx="35.5" cy="20.6" r="1"/><circle cx="37.4" cy="19.2" r="1"/><circle cx="38.4" cy="16.8" r="1"/></g></mask></defs>
+<g fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" mask="url(#monk-cut)"><path d="M3 7L36 40" fill="none" stroke-width="2.4"/><circle cx="34" cy="8.6" r="5.2" stroke="none"/><path d="M28.5 15Q34 12.6 39.5 15.6L39.5 28L46 38.5Q34 41.5 22.5 39.5L30 28Z" stroke-width="1"/><path d="M38.5 15.5L47 12.5L48.5 19.5L38.5 22Z" stroke-width="1"/><path d="M47.5 16L52 15.2" fill="none" stroke-width="3"/><path d="M52.8 10.2V17.6" fill="none" stroke-width="2.8"/><path d="M29.5 16L21 21.5L23.5 26L32 21.5Z" stroke-width="1"/><path d="M36.5 36L48.5 42.5L46 47.5L34.5 40.5Z" stroke-width="1"/><path d="M31 37L20.5 43.5L18.5 48.5L29.5 41Z" stroke-width="1"/><path d="M46.5 46L49.5 53.2L54 53.6M20 47L11.5 52.5L8 54.5" fill="none" stroke-width="3.2"/></g></svg>`;
 const SECTIONS = [
   { id: 'learn', hz: '学', label: 'Learn', pages: [['learn', 'Learn']] },
-  { id: 'practice', hz: '练', label: 'Practice', pages: [['challenge', 'Quick challenge'], ['characters', 'Words'], ['writing', 'Writing'], ['grammar', 'Grammar'], ['exercises', 'Book exercises']] },
-  { id: 'tests', hz: '考', label: 'Tests', pages: [['test', 'Practice test'], ['mock', 'Mock exam']] }
+  { id: 'practice', hz: '练', label: 'Practice', pages: [['challenge', 'Quick challenge'], ['grammar', 'Grammar'], ['exercises', 'Book exercises']] },
+  { id: 'words', hz: '词', label: 'Words', pages: [['characters', 'Words'], ['mychars', 'Characters'], ['writing', 'Writing']] },
+  { id: 'tests', hz: '考', label: 'Tests', pages: [['test', 'Practice test'], ['mock', 'Mock exam']] },
+  { id: 'games', hz: '玩', label: 'Games', pages: [['games', 'Games']] }
 ];
+// the big page buttons on computers: a character and a short line for every page
+const PAGE_INFO = {
+  challenge: ['快', 'A mixed round with the panda'], grammar: ['法', 'Every rule with a drill'], exercises: ['书', 'The exercises from your textbook'],
+  characters: ['词', 'Flashcards and word quizzes'], mychars: ['字', 'How well you know each one'], writing: ['写', 'Stroke order, step by step'],
+  test: ['测', 'Harder, exam-style questions'], mock: ['模', '50 questions like the midterm']
+};
 const secOf = v => SECTIONS.find(s => s.pages.some(p => p[0] === v));
 const LASTPAGE = {};
 const COURSES = [['cc1', 'Contemporary Chinese 1'], ['hsk1', 'HSK 1 (coming soon)', true]];
@@ -4457,18 +4832,24 @@ function renderNav() {
   $$('.tab[data-sec]').forEach(t => t.setAttribute('aria-selected', String(!!sec && t.dataset.sec === sec.id)));
   const sub = $('#subtabs');
   if (sub) {
-    if (sec && sec.pages.length > 1) { sub.hidden = false; sub.innerHTML = sec.pages.map(([v, l]) => `<button type="button" class="subtab" data-view="${v}" aria-current="${v === view ? 'page' : 'false'}">${esc(l)}${v === 'challenge' ? PANDA_SM : ''}</button>`).join(''); }
+    if (sec && sec.pages.length > 1) {
+      sub.hidden = false; sub.style.setProperty('--sub-n', Math.max(3, sec.pages.length));
+      sub.innerHTML = sec.pages.map(([v, l]) => { const [hz, line] = PAGE_INFO[v] || ['', '']; return `<button type="button" class="subtab" data-view="${v}" aria-current="${v === view ? 'page' : 'false'}"><span class="st-hz" aria-hidden="true">${hz}</span><span class="st-tx"><b>${esc(l)}${v === 'challenge' ? PANDA_SM : ''}</b><span>${esc(line)}</span></span></button>`; }).join('');
+    }
     else { sub.hidden = true; sub.innerHTML = ''; }
   }
   if (sec) LASTPAGE[sec.id] = view;
+  const gt = $('.tab-games'); if (gt && !$('.monk', gt)) gt.insertAdjacentHTML('afterbegin', MONK_SVG);
+  requestAnimationFrame(hdrH);
   const slot = $('#hdr-course'); if (slot && !slot.firstChild) slot.innerHTML = courseSelect('hdr');
   renderDrawer();
 }
 function renderDrawer() {
   const d = $('#drawer'); if (!d) return; const sec = secOf(view);
-  d.innerHTML = `<div class="dr-head"><span class="cells" aria-hidden="true"><span class="cell">汉</span><span class="cell">语</span></span><b>Panda Chinese <span class="beta">BETA</span></b><button type="button" class="icon-btn dr-x" data-drawerclose aria-label="Close the menu">✕</button></div>
+  const dst = dailyState();
+  d.innerHTML = `<div class="dr-head"><span class="cells" aria-hidden="true"><span class="cell">汉</span><span class="cell">语</span></span><b>Panda Chinese <span class="beta">BETA</span>${dst.streak ? `<button type="button" class="dr-streak${dst.doneToday ? ' done' : ''}" data-view="learn" title="Daily practice">${FLAME_SM}${dst.streak}</button>` : ''}</b><button type="button" class="icon-btn dr-x" data-drawerclose aria-label="Close the menu">✕</button></div>
     <label class="dr-course"><span>Course</span>${courseSelect('dr')}</label>
-    <nav class="dr-nav" aria-label="Sections">${SECTIONS.map(s => `<div class="dr-sec"><button type="button" class="dr-main${sec === s ? ' on' : ''}" data-view="${LASTPAGE[s.id] || s.pages[0][0]}"><span class="tab-hz" aria-hidden="true">${s.hz}</span>${esc(s.label)}</button>${s.pages.length > 1 ? s.pages.map(([v, l]) => `<button type="button" class="dr-sub${v === view ? ' on' : ''}" data-view="${v}">${esc(l)}</button>`).join('') : ''}</div>`).join('')}</nav>
+    <nav class="dr-nav" aria-label="Sections">${SECTIONS.map(s => `<div class="dr-sec"><button type="button" class="dr-main${sec === s ? ' on' : ''}" data-view="${LASTPAGE[s.id] || s.pages[0][0]}"><span class="tab-hz" aria-hidden="true">${s.hz}</span>${esc(s.label)}${s.id === 'games' ? MONK_SVG.replace('class="monk"', 'class="monk dr-monk"') : ''}</button>${s.pages.length > 1 ? s.pages.map(([v, l]) => `<button type="button" class="dr-sub${v === view ? ' on' : ''}" data-view="${v}">${esc(l)}</button>`).join('') : ''}</div>`).join('')}</nav>
     <div class="dr-sep"></div>
     ${document.body.classList.contains('focus') ? '<button type="button" class="dr-item" data-showhdr>Show the header</button>' : ''}
     <button type="button" class="dr-item" data-favs>★ Favourites</button><button type="button" class="dr-item" data-help>? Info</button><button type="button" class="dr-item" data-tutorial>▶ Tutorial</button><button type="button" class="dr-item" data-settings>⚙ Settings and backup</button><button type="button" class="dr-item" data-about>About this app</button>
@@ -4487,6 +4868,7 @@ function closeDrawer() {
 
 /* ----- patch notes and welcome ----- */
 const NOTES = [
+  { v: '0.8.0', date: '16 November 2026', items: ['New: Daily practice on the Learn page. A few minutes a day with the characters and words you’re starting to forget. Keep your streak going and share it as a picture.', 'Dark mode: choose Light, Dark or Auto (follows your device) in Settings.', 'Sound effects for right and wrong answers. You can switch them off in Settings.', 'Quick settings: tap the settings line under the header to switch listening, pinyin, sounds and theme. On big screens they’re in a column on the right.', 'New: Games! In Panda Run the panda runs towards walls with answers on them: pick the right lane and it runs straight through. Five difficulties, from Beginner to Shaolin.', 'Challenge a friend: send a link, your friend gets the same walls and tries to beat your score, then sends a challenge back. You can also share your result as a picture.', 'Two new tabs: Words and Games. Words has the word quizzes, My characters and Writing in one place.', 'Bigger page buttons under the tabs on computers, so every page is easy to find.', 'The header no longer hides by itself on computers. On phones, ⌃ hides it again during an exercise.', 'Reset progress is now in Settings, with a window that explains what gets deleted and offers a backup first.', 'Small fixes: the tutorial is easier to tap on small phones, and the panda’s “Next up!” no longer covers the unit title.'] },
   { v: '0.7.9', date: '14 November 2026', items: ['New 字 levels in Learn for reading characters: what they mean, how they sound, and how to tell look-alike characters apart.', 'Every unit now has a character review that brings back the characters you know least.', 'New on the Learn page: “My characters” shows every character and how well you know it, and lets you practise your weakest ones: 10 or 20 at a time, or until you get them all right.', 'Pinyin is hidden for characters you already know well. Tap a word to show it.'] },
   { v: '0.7.8', date: '14 November 2026', items: ['Dialogues now have different voices: every character in the texts speaks with their own voice.', 'A new “Play the dialogue” button plays a whole conversation.', 'On Slow, single characters and short words are spoken extra slowly, so the tones are clearer.'] },
   { v: '0.7.7', date: '14 November 2026', items: ['Found a mistake? A new window shows the e-mail address and a button to send a message.', 'The tutorial lets you choose where to start: all units and levels are open.'] },
@@ -4520,7 +4902,7 @@ function openWelcome() {
   const m = $('#modal');
   m.innerHTML = `<div class="modal-box help-box nt-box" role="dialog" aria-modal="true" aria-label="Welcome">
     <div class="nt-hero">${pandaSvg('yay', 'nt-panda jump-loop')}<div><h1 class="view-title">欢迎! Welcome!</h1><p class="muted">A free app for learning Chinese with <i>Contemporary Chinese 1</i>. Version ${APP_VERSION} beta.</p></div></div>
-    <ol class="wl-steps"><li><b>Learn</b>: start here. Each level shows you something new, then a short quiz.</li><li><b>Practice</b>: Quick challenge, words, writing, grammar and the exercises from your books.</li><li><b>Tests</b>: a practice test and a mock exam.</li></ol>
+    <ol class="wl-steps"><li><b>Learn</b>: start here. Each level shows you something new, then a short quiz.</li><li><b>Practice</b>: Quick challenge, grammar and the exercises from your books.</li><li><b>Words</b>: word quizzes, your characters and writing.</li><li><b>Tests</b>: a practice test and a mock exam.</li></ol>
     <label class="wl-name"><b>What should the panda call you?</b> ${nameInput('wl-name', 'Your name (optional)')}</label>
     <p class="small muted">Tip: in Settings (⚙) you can change the voice speed and switch listening off. Your progress stays in this browser only.</p>
     <div class="card-actions"><button type="button" class="btn primary big" data-wlstart>Let’s start</button></div></div>`;
@@ -4529,6 +4911,8 @@ function openWelcome() {
 function checkNotes() {
   const seen = S.seenVersion;
   if (!S.tutSeen) TUT_PENDING = true;
+  // a friend who opens a challenge link first: no tour now (it would leave the challenge), it comes on the next visit
+  if (GM.ch && GM.screen === 'challenge') TUT_PENDING = false;
   if (seen === APP_VERSION) { if (TUT_PENDING) { TUT_PENDING = false; setTimeout(tutStart, 400); } return; }
   const used = ['sets', 'cards', 'chars', 'learn', 'favs'].some(k => S[k] && Object.keys(S[k]).length);
   S.seenVersion = APP_VERSION; save();
@@ -4541,19 +4925,22 @@ const TUT = { on: false, i: 0, steps: [], el: null, ui: null, raf: 0, t0: 0, las
 const tutMob = () => matchMedia('(max-width:720px)').matches;
 function tutNav(v) { setFocus(false); if (v === 'learn') { LN.phase = 'path'; if (LN.unit !== null) { LN.unit = null; if (view === 'learn') lPath(); } } if (v === 'challenge' && QC.phase !== 'menu') QC.phase = 'menu'; if (location.hash !== '#' + v) location.hash = v; else if (view !== v) go(); }
 const hdrBtn = k => $(`.hdr-right [data-${k}]`);
+const TUT_SECS = '<b>Learn</b>: step-by-step levels.<br><b>Practice</b>: revise in your own way.<br><b>Words</b>: words, characters and writing.<br><b>Tests</b>: get ready for the exam.<br><b>Games</b>: play with what you’ve learned, like <b>Panda Run</b>.';
 const tutSet = () => { if ($('#modal').hidden || !$('#modal .set-box')) openSettings(); };
 function tutSteps() {
   const mob = tutMob(), rec = lRec(), fresh = !rec || LEVELS.indexOf(rec) === 0;
   const all = [
     { title: 'Quick tour', text: 'Hi! I’m your panda guide. In about a minute I’ll show you where everything is. Tap <b>Next</b>, or <b>Skip tutorial</b> any time.', before: () => { closeModal(); closeDrawer(); tutNav('learn'); window.scrollTo({ top: 0 }); } },
-    { desk: true, el: () => $('.tabs'), title: 'Three sections', text: '<b>Learn</b>: step-by-step levels.<br><b>Practice</b>: revise in your own way.<br><b>Tests</b>: get ready for the exam.' },
+    { desk: true, el: () => $('.tabs'), title: 'Five sections', text: TUT_SECS },
     { mob: true, el: () => $('header .menu-btn'), click: true, title: 'The menu', text: 'Tap <b>☰</b>. Everything in the app is in this menu.' },
-    { mob: true, el: () => $('#drawer .dr-nav'), before: () => { if (!document.body.classList.contains('drawer-open')) openDrawer(); }, title: 'Three sections', text: '<b>Learn</b>: step-by-step levels.<br><b>Practice</b>: revise in your own way.<br><b>Tests</b>: get ready for the exam.<br>Each section has its pages underneath.', wait: () => document.body.classList.contains('drawer-open') },
+    { mob: true, el: () => $('#drawer .dr-nav'), before: () => { if (!document.body.classList.contains('drawer-open')) openDrawer(); }, title: 'Five sections', text: TUT_SECS + '<br>Each section has its pages underneath.', wait: () => document.body.classList.contains('drawer-open') },
     { el: () => $('.lp-node.rec') || $('.lp-node'), before: () => { closeDrawer(); tutNav('learn'); }, scroll: true, title: 'Learn', text: 'Levels that follow your textbook, one unit at a time. Each level shows you something new, then a short quiz gives you up to 3 stars. All levels are open, and the panda always points to the recommended next one.' },
     { el: () => $('#lp-jump'), before: () => tutNav('learn'), title: 'Units', text: 'Each unit has its own board. Switch between the units here; the stars show how far you’ve got.' },
     { desk: true, el: () => $('.tab[data-sec="practice"]'), click: true, before: () => window.scrollTo({ top: 0 }), title: 'Practice', text: 'Now tap <b>Practice</b>.' },
-    { el: () => $('#subtabs'), before: () => { if (mob) tutNav('challenge'); window.scrollTo({ top: 0 }); }, wait: () => { const x = secOf(view); return !!x && x.id === 'practice'; }, title: 'Pages in a section', text: '<b>Quick challenge</b>: a mixed round with the panda.<br><b>Words</b>: flashcards and word quizzes.<br><b>Writing</b>: stroke order.<br><b>Grammar</b>: every rule with a drill.<br><b>Book exercises</b>: the exercises from your textbook.' },
+    { el: () => $('#subtabs'), before: () => { if (mob) tutNav('challenge'); window.scrollTo({ top: 0 }); }, wait: () => { const x = secOf(view); return !!x && x.id === 'practice'; }, title: 'Pages in a section', text: '<b>Quick challenge</b>: a mixed round with the panda.<br><b>Grammar</b>: every rule with a drill.<br><b>Book exercises</b>: the exercises from your textbook.' },
     { el: () => $('#main .filters'), before: () => { if (view !== 'challenge') tutNav('challenge'); }, scroll: true, title: 'Where the questions come from', text: 'On most pages you choose what to practise: which units, <b>everything</b> or <b>only favourites</b>, and which kinds of tasks. Change it whenever you like.' },
+    { desk: true, el: () => $('.tab[data-sec="words"]'), click: true, before: () => window.scrollTo({ top: 0 }), title: 'Words', text: 'Now tap <b>Words</b>.' },
+    { el: () => $('#subtabs'), before: () => { if (mob) tutNav('characters'); window.scrollTo({ top: 0 }); }, wait: () => { const x = secOf(view); return !!x && x.id === 'words'; }, title: 'Words and characters', text: '<b>Words</b>: flashcards and word quizzes.<br><b>Characters</b>: how well you know each character, and practice for your weakest ones.<br><b>Writing</b>: stroke order.' },
     { desk: true, el: () => $('.tab[data-sec="tests"]'), click: true, before: () => window.scrollTo({ top: 0 }), title: 'Tests', text: 'Now tap <b>Tests</b>.' },
     { el: () => $('#subtabs'), before: () => { if (mob) tutNav('test'); window.scrollTo({ top: 0 }); }, wait: () => secOf(view) && secOf(view).id === 'tests', title: 'Tests', text: '<b>Practice test</b>: harder, exam-style questions.<br><b>Mock exam</b>: 50 questions in the format of the midterm.' },
     { mob: true, el: () => $('header .menu-btn'), title: 'Favourites, Info and more', text: 'In the <b>☰</b> menu you also find <b>★ Favourites</b> (tap ☆ next to any word or task to save it), <b>Info</b> with a button to report mistakes, this <b>Tutorial</b> and <b>Settings</b>.' },
@@ -4564,8 +4951,8 @@ function tutSteps() {
     { before: tutSet, el: () => { const x = $('#opt-nolisten'); return x && x.closest('.set-opt'); }, scroll: true, title: 'No sound? Switch listening off', text: 'If you can’t use sound right now, turn on <b>No listening exercises</b>. They disappear from the whole app. In a single exercise you can also tap “Can’t listen now”.' },
     { before: tutSet, el: () => { const x = $('#modal [data-rate]'); return x && x.closest('.set-line'); }, scroll: true, title: 'Voice speed', text: 'The app speaks with a natural recorded Chinese voice. Choose how fast it talks: <b>Slow</b> is the default and great for beginners.' },
     { before: tutSet, el: () => $('#modal .bk-panel'), scroll: true, title: 'Backup', text: 'Your progress is saved <b>only in this browser</b>. Save a backup file now and then; load it on another device to move your progress there.' },
-    { mob: true, before: () => closeModal(), title: 'More room', text: 'When an exercise starts, the header hides by itself so you have more room. <b>⌄</b> in the corner brings it back.' },
-    { desk: true, el: () => hdrBtn('hidehdr'), before: () => closeModal(), title: 'More room', text: '<b>⌃</b> hides the header so you have more room. It also hides by itself when an exercise starts; <b>⌄</b> brings it back.' },
+    { mob: true, before: () => closeModal(), title: 'More room', text: 'When an exercise starts, the header hides by itself so you have more room. <b>⌄</b> at the top brings it back, and <b>⌃</b> in the same place hides it again.' },
+    { desk: true, el: () => hdrBtn('hidehdr'), before: () => closeModal(), title: 'More room', text: '<b>⌃</b> hides the header so you have more room. <b>⌄</b> in the same place brings it back.' },
     { cond: () => msgList().length > 0, el: () => $('#msg-btn'), title: 'Messages', text: 'The red button brings important news about the app, for example about the voice or new versions. When there’s nothing to say, it disappears.' + (innerWidth >= 1200 ? ' Below it you can tell us about a mistake you found.' : '') },
     { desk: true, el: () => hdrBtn('help'), title: 'Info', text: 'Info explains every page. Found a mistake? Report it from there. You can watch this tutorial again from Info or the ☰ menu.' },
     { el: () => $('#lp-jump'), before: () => { tutNav('learn'); window.scrollTo({ top: 0 }); }, final: true, title: 'Where to start? You choose!',
@@ -4606,9 +4993,11 @@ function tutShow() {
   bub.classList.remove('in'); bub.classList.add('wait');
   $('#tut-h', ui).textContent = st.title;
   $('.tut-n', ui).textContent = `${TUT.i + 1} / ${TUT.steps.length}`;
-  $('.tut-tx', ui).innerHTML = st.text + (st.click ? '<span class="tut-hint">Tap the highlighted button.</span>' : '');
+  $('.tut-tx', ui).innerHTML = st.text + (st.click ? '<span class="tut-hint">Tap the highlighted part.</span>' : '');
   const nx = $('[data-tutnext]', ui), bk = $('[data-tutback]', ui);
-  nx.hidden = !!st.click; nx.textContent = st.final ? (st.clickOk ? 'Start this level' : 'Finish') : TUT.i ? 'Next' : 'Show me';
+  nx.hidden = !!st.click;
+  // hard to hit the button? after a few seconds "Next" shows up and does the tap for you
+  if (st.click) { const i = TUT.i; setTimeout(() => { if (TUT.on && TUT.i === i && TUT.steps[i] === st) nx.hidden = false; }, 4000); } nx.textContent = st.final ? (st.clickOk ? 'Start this level' : 'Finish') : TUT.i ? 'Next' : 'Show me';
   bk.hidden = TUT.i === 0 || !!st.click || !!TUT.steps[TUT.i - 1].click;
   let fin = $('[data-tutfinish]', ui); if (fin) fin.remove();
   if (st.final) { if (st.clickOk) nx.insertAdjacentHTML('beforebegin', '<button type="button" class="btn" data-tutfinish>Finish</button>'); $('.tut-skip', ui).hidden = true; }
@@ -4638,6 +5027,8 @@ function tutPlace() {
   let hx, hy, hw, hh, bx, by, ax = null, side = 'none';
   if (r) {
     hx = r.left - pad; hy = r.top - pad; hw = r.width + pad * 2; hh = r.height + pad * 2;
+    // "tap" steps: at least a 48 px target, so small buttons and the settings line are easy to hit
+    if (st.click) { const ex = Math.max(0, (48 - hh) / 2), ew = Math.max(0, (48 - hw) / 2); hy -= ex; hh += ex * 2; hx -= ew; hw += ew * 2; }
     const below = vh - (hy + hh), above = hy;
     if (below >= bh + 20) { side = 'top'; by = hy + hh + 14; }
     else if (above >= bh + 20) { side = 'bottom'; by = hy - bh - 14; }
@@ -4670,7 +5061,13 @@ function tutAllowed(e) {
   if (!TUT.on) return true;
   if (TUT.ui && TUT.ui.contains(e.target)) return true;
   const st = TUT.steps[TUT.i];
-  return !!(st && (st.click || st.clickOk) && TUT.el && TUT.el.contains(e.target));
+  return !!(st && (st.click || st.clickOk) && TUT.el && (TUT.el.contains(e.target) || tutInHole(e)));
+}
+// On "tap" steps the whole lit-up box counts, not just the (sometimes tiny) element inside it.
+function tutInHole(e) {
+  const h = TUT.ui && $('.tut-hole', TUT.ui); if (!h || e.clientX == null) return false;
+  const r = h.getBoundingClientRect(), t = 10; // fingers are not precise: a little margin around the box counts too
+  return r.width > 0 && e.clientX >= r.left - t && e.clientX <= r.right + t && e.clientY >= r.top - t && e.clientY <= r.bottom + t;
 }
 ['mousedown', 'pointerdown', 'dblclick', 'contextmenu'].forEach(ev => window.addEventListener(ev, e => { if (!tutAllowed(e)) { e.preventDefault(); e.stopPropagation(); } }, true));
 window.addEventListener('click', e => {
@@ -4682,10 +5079,12 @@ window.addEventListener('click', e => {
     if (d.tutskip !== undefined) return tutSkip();
     if (d.tutfinish !== undefined) return tutEnd();
     if (d.tutback !== undefined) { let j = TUT.i - 1; while (j > 0 && TUT.steps[j].click) j--; TUT.i = j; return tutShow(); }
-    if (d.tutnext !== undefined) { const st = TUT.steps[TUT.i]; if (st.final) { const el = TUT.el; tutEnd(); if (st.clickOk && el) el.click(); return; } return tutGo(1); }
+    if (d.tutnext !== undefined) { const st = TUT.steps[TUT.i]; if (st.final) { const el = TUT.el; tutEnd(); if (st.clickOk && el) el.click(); return; } if (st.click) { if (TUT.el) TUT.el.click(); else tutGo(1); return; } return tutGo(1); }
     return;
   }
   const st = TUT.steps[TUT.i];
+  // a tap in the lit-up box but next to the element: pass it on to the element
+  if ((st.click || st.clickOk) && TUT.el && !TUT.el.contains(e.target)) { e.preventDefault(); e.stopPropagation(); TUT.el.click(); return; }
   if (st.clickOk) { tutEnd(); return; }
   if (st.click && !TUT.advancing) { TUT.advancing = true; setTimeout(() => tutGo(1), 60); }
 }, true);
@@ -4770,6 +5169,14 @@ function shareData(kind, d) {
     const mood = done === LEVELS.length ? 'ecstatic' : 'yay';
     return { kind, sub: `My progress · ${today}`, units, stars, done, mood, say: SH_SAY[done === LEVELS.length ? 'ecstatic' : 'notbad'] };
   }
+  if (kind === 'streak') {
+    const st = dailyState(), known = Object.keys(ZI_OF).filter(ziKnown).length;
+    return { kind, sub: `Daily practice · ${today}`, streak: st.streak, best: st.best, week: st.week, known, mood: 'yay', say: st.streak >= 7 ? SH_SAY.ecstatic : ['加油！', 'jiāyóu', 'Keep it up!'] };
+  }
+  if (kind === 'run') {
+    const score = Math.max(0, Math.round(+d.score || 0)), walls = +d.walls || 0, right = +d.right || 0, p = walls ? Math.round(100 * right / walls) : 0;
+    return { kind, sub: `Panda Run · ${today}`, score, diff: String(d.diff || ''), right, walls, mood: SH_MOOD(p), say: SH_SAY[SH_MOOD(p)] };
+  }
   const pct = Math.max(0, Math.min(100, Math.round(+d.pct || 0))), mood = SH_MOOD(pct);
   const title = { mock: 'Mock exam', test: 'Practice test', qc: 'Quick challenge' }[kind] || 'Result';
   return { kind, sub: `${title} · ${today}`, pct, pts: d.pts || '', mood, say: SH_SAY[mood] };
@@ -4801,6 +5208,25 @@ async function drawShare(D) {
       txt(`★ ${u.stars}/${u.max}`, bx + bw + 24, y + 40, big ? 32 : 24, '#5A4A2E');
       if (big) txt(`${u.done} of ${u.total} levels`, bx, y + 90, 26, '#8A7A5A');
     });
+  } else if (D.kind === 'streak') {
+    // a flame with the number of days, and this week's days as dots
+    const fx = W / 2, fy = 330;
+    g.fillStyle = '#F28B2C'; g.beginPath(); g.moveTo(fx, fy - 170); g.bezierCurveTo(fx + 40, fy - 90, fx + 150, fy - 60, fx + 130, fy + 40); g.bezierCurveTo(fx + 120, fy + 120, fx + 60, fy + 160, fx, fy + 160); g.bezierCurveTo(fx - 80, fy + 160, fx - 140, fy + 110, fx - 130, fy + 30); g.bezierCurveTo(fx - 120, fy - 40, fx - 60, fy - 50, fx - 50, fy - 110); g.bezierCurveTo(fx - 20, fy - 70, fx - 10, fy - 60, fx + 10, fy - 50); g.bezierCurveTo(fx + 20, fy - 90, fx + 10, fy - 130, fx, fy - 170); g.fill();
+    g.fillStyle = '#FFD45E'; g.beginPath(); g.ellipse(fx, fy + 80, 80, 78, 0, 0, Math.PI * 2); g.fill();
+    txt(String(D.streak), fx, fy + 118, 110, '#7A2420', 800, 'center');
+    txt(D.streak === 1 ? 'day of Chinese' : 'days in a row', fx, fy + 230, 52, '#5A4A2E', 700, 'center');
+    if (name) txt(`${name}’s daily practice`, fx, fy + 290, fit(`${name}’s daily practice`, 900, 36, 400), '#8A7A5A', 400, 'center');
+    const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'], dx = 112, x0 = fx - dx * 3, dy = 790;
+    days.forEach((l, k) => { const on = D.week[k]; g.fillStyle = on ? '#F28B2C' : '#EBDDBF'; g.beginPath(); g.arc(x0 + k * dx, dy, 40, 0, Math.PI * 2); g.fill(); txt(on ? '✓' : l, x0 + k * dx, dy + 14, 38, on ? '#fff' : '#8A7A5A', 700, 'center'); });
+    txt(`Best streak: ${D.best} · ${D.known} characters known`, fx, 900, 34, '#5A4A2E', 400, 'center');
+    if (panda) g.drawImage(panda, fx - 95, 920, 190, 150);
+  } else if (D.kind === 'run') {
+    const who = name ? `${name} ran` : 'I ran';
+    txt(who, W / 2, 300, fit(who, 900, 52, 400), '#5A4A2E', 400, 'center');
+    txt(String(D.score), W / 2, 500, fit(String(D.score), 900, 200, 800), '#C2392F', 800, 'center');
+    txt(`points in Panda Run · ${D.diff}`, W / 2, 570, 40, '#5A4A2E', 400, 'center');
+    txt(`${D.right} of ${D.walls} walls right`, W / 2, 624, 32, '#8A7A5A', 400, 'center');
+    if (panda) g.drawImage(panda, W / 2 - 190, 650, 380, 403);
   } else {
     const who = name ? `${name} scored` : 'I scored';
     txt(who, W / 2, 300, fit(who, 900, 52, 400), '#5A4A2E', 400, 'center');
@@ -4817,11 +5243,11 @@ async function drawShare(D) {
   return c;
 }
 async function openShare(kind, d) {
-  SH.kind = kind; SH.data = { pct: d.pct, pts: d.pts };
+  SH.kind = kind; SH.data = { ...d };
   const m = $('#modal');
   m.innerHTML = `<div class="modal-box help-box sh-box" role="dialog" aria-modal="true" aria-label="Share">
     <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
-    <h1 class="view-title">${kind === 'learn' ? 'Share my progress' : 'Share your result'}</h1>
+    <h1 class="view-title">${kind === 'learn' ? 'Share my progress' : kind === 'streak' ? 'Share my streak' : 'Share your result'}</h1>
     <label class="sh-name"><span>Name on the picture</span>${nameInput('opt-sharename', 'Your name')}</label>
     <div class="sh-prev"><img id="sh-img" alt="Preview of the picture"></div>
     <div class="card-actions">${navigator.canShare ? '<button type="button" class="btn primary" data-shsend>Share…</button>' : ''}<button type="button" class="btn${navigator.canShare ? '' : ' primary'}" data-shdl>Download picture</button></div>
@@ -4951,14 +5377,15 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('drawer-open')) closeDrawer(); });
 
 /* ================= router & global ================= */
-const VIEWS = { learn: renderLearn, challenge: renderQC, exercises: renderBook, characters: renderChars, writing: renderWriting, grammar: renderGrammar, test: renderTest, mock: renderMock, favourites: renderFavs };
+const VIEWS = { learn: renderLearn, challenge: renderQC, exercises: renderBook, characters: renderChars, mychars: renderMyChars, writing: renderWriting, games: renderGames, grammar: renderGrammar, test: renderTest, mock: renderMock, favourites: renderFavs };
 let view = 'learn';
 function go() {
-  const h = location.hash.replace('#', '');
+  const h = location.hash.replace('#', '').split('?')[0];
   view = VIEWS[h] ? h : 'learn';
   closeDrawer(); renderNav();
-  stopAudio();
+  stopAudio(); gmStop();
   VIEWS[view]();
+  railSoon();
 }
 window.addEventListener('hashchange', go);
 
@@ -5004,9 +5431,8 @@ document.addEventListener('click', e => {
   if (d.wopt) { W[d.wopt] = !W[d.wopt]; return renderWriting(); }
   if (d.wnav) { const n = wList().length; W.i = d.wnav === 'rand' ? Math.floor(Math.random() * n) : (W.i + (+d.wnav) + n) % n; return renderWriting(); }
   if (d.w) return wHandle(d.w);
-  if (d.reset !== undefined) { $('#reset-box').innerHTML = '<span>Reset all saved progress on this device?</span> <button type="button" class="link" data-resetyes>Yes, reset</button> <button type="button" class="link" data-resetno>Cancel</button>'; return; }
-  if (d.resetyes !== undefined) { S = JSON.parse(JSON.stringify(DEF)); save(); MK.hist = []; mkSaveHist(); applySettings(); $('#reset-box').innerHTML = '<button type="button" class="link" data-reset>Reset progress</button>'; toast('Progress reset.'); return go(); }
-  if (d.resetno !== undefined) { $('#reset-box').innerHTML = '<button type="button" class="link" data-reset>Reset progress</button>'; return; }
+  if (d.reset !== undefined) return openReset();
+  if (d.resetyes !== undefined) { S = JSON.parse(JSON.stringify(DEF)); save(); MK.hist = []; mkSaveHist(); applySettings(); closeModal(); LN.phase = 'path'; LN.lv = null; toast('Progress reset.'); return go(); }
 });
 document.addEventListener('keydown', e => {
   if (view !== 'characters' || C.screen !== 'session') return;
@@ -5033,7 +5459,7 @@ document.addEventListener('keydown', e => {
 });
 
 function applySettings() {
-  document.body.classList.toggle('hide-py', !S.settings.pinyin);
+  document.body.classList.toggle('hide-py', !S.settings.pinyin); applyTheme();
   const op = $('#opt-py'), os = $('#opt-strict'); if (op) op.checked = S.settings.pinyin; if (os) os.checked = S.settings.strict;
 }
 document.addEventListener('change', e => {
@@ -5041,12 +5467,742 @@ document.addEventListener('change', e => {
   if (e.target.id === 'opt-strict') { S.settings.strict = e.target.checked; save(); }
   if (e.target.id === 'opt-nolisten') { S.settings.noListen = e.target.checked; save(); toast(e.target.checked ? 'Listening exercises are hidden.' : 'Listening exercises are back.'); go(); }
 });
+/* ================= Games ================= */
+// Lives inside the app's scope (build.py puts this file into app.js), so it can use S, save, ziQ, speak and so on.
+// Records: S.games = { run: { best: { beginner: n, … }, plays: n } }. Old keys are never touched.
+
+const GM = { screen: 'menu', sel: 'seen', diff: 'normal', run: null, last: null, ch: null, chErr: '' };
+const RUN_DIFFS = [
+  { id: 'beginner', label: 'Beginner', t0: 9, every: 0, lives: 3, desc: 'Same speed the whole time' },
+  { id: 'easy', label: 'Easy', t0: 8, every: 10, lives: 3, desc: 'A bit faster every 10 walls' },
+  { id: 'normal', label: 'Normal', t0: 7, every: 5, lives: 3, desc: 'Faster every 5 walls' },
+  { id: 'hard', label: 'Hard', t0: 5, every: 5, lives: 3, desc: 'Fast from the start' },
+  { id: 'shaolin', label: 'Shaolin', t0: 5, every: 5, lives: 1, desc: 'Hard, one life' }
+];
+const RUN_MIN_T = 2.6, RUN_STEP = 0.93, RUN_SPAWN = 0.6;
+const runDiff = id => RUN_DIFFS.find(d => d.id === id) || RUN_DIFFS[2];
+const gmRec = () => { S.games = S.games || {}; S.games.run = S.games.run || { best: {}, plays: 0 }; return S.games.run; };
+// sound that can really play: the recorded voice (ready or still loading), or a Chinese device voice
+const canHear = () => !noListenOn() && ((recWanted() && (REC.st === 'ready' || REC.st === 'loading')) || (hasSpeech && !!zhVoice()));
+
+/* ----- random numbers from a seed, so a challenge gets exactly the same walls ----- */
+function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const newSeed = () => Math.floor(Math.random() * 2147483646) + 1;
+
+/* ----- which characters ----- */
+const ziSeen = () => Object.keys(ZI_OF).filter(c => ziLevel(c) >= 0);
+function runChars(sel) {
+  const seen = ziSeen();
+  if (sel === 'weak') return seen.slice().sort((a, b) => ziLevel(a) - ziLevel(b) || ZI_POS[a] - ZI_POS[b]).slice(0, 15);
+  if (/^u\d$/.test(sel)) return [...(ZI_UNIT[+sel.slice(1)] || [])];
+  // "all I've seen": with fewer than 8 seen, start with the first unit
+  return seen.length >= 8 ? seen : [...new Set([...seen, ...(ZI_UNIT[0] || [])])];
+}
+
+/* ----- questions ----- */
+// The answers are written on the walls, so they must be short. Lengths are counted, not measured, so every device builds the same walls.
+const optLen = s => [...String(s)].reduce((n, ch) => n + (isHzC(ch) ? 1.8 : 1), 0);
+const hzish = s => { const a = [...String(s)]; return a.filter(isHzC).length * 2 >= a.length; };
+function runFit(s) {
+  s = String(s || '').trim(); if (!s) return false;
+  if (hzish(s)) return [...s].length <= 8;
+  return optLen(s) <= 18 && s.split(/\s+/).every(w => optLen(w) <= 11);
+}
+function runShort(m) {
+  let s = String(m || '').replace(/\(.*?\)/g, '').split(';')[0].trim();
+  if (optLen(s) > 18) s = s.split(',')[0].trim();
+  return s;
+}
+function runFromZi(q, k, c) {
+  const raw = q.o.slice(0, 3), opts = (k === 'mean' || k === 'word') ? raw.map(runShort) : raw.slice();
+  if (opts.length < 3 || new Set(opts).size < 3 || !opts.every(runFit)) return null;
+  const ord = shuffle([0, 1, 2]);
+  const text = k === 'listen' ? 'Which character do you hear?' : q.q;
+  return { key: k + c, kind: k, zi: c, q: text, say: k === 'listen' ? c : null, alt: k === 'listen' ? `Which character is read <b>${esc(ziInfo(c).p)}</b>?` : '', o: ord.map(i => opts[i]), ci: ord.indexOf(0), hear: k === 'listen' ? c : (q.x ? q.x.split(' ')[0] : c) };
+}
+function runLevelQs(maxU, listen) {
+  return LEVELS.filter(l => !l.zi && l.unit <= maxU).flatMap(l => (l.quiz || []).map((it, i) => ({ id: l.id, i, it })))
+    .filter(({ it }) => ((it.t === 'mc' && it.q) || (listen && it.t === 'listen' && it.say)) && it.c === 0 && it.o && it.o.length >= 3 && it.o.slice(0, 3).every(runFit) && new Set(it.o.slice(0, 3)).size === 3);
+}
+function runFromLevel(L) {
+  const it = L.it, ord = shuffle([0, 1, 2]);
+  const lis = it.t === 'listen';
+  return { key: L.id + ':' + L.i, kind: lis ? 'llisten' : 'lmc', zi: null, q: lis ? 'What do you hear?' : it.q, say: lis ? it.say : null, alt: lis ? `What is <span class="hzf">${esc(it.say)}</span>?` : '', o: ord.map(i => it.o[i]), ci: ord.indexOf(0), hear: lis ? it.say : null, long: !lis && String(it.q).replace(/<[^>]+>/g, '').length > 60 };
+}
+// Builds the walls for a run. Only the characters, the seed and the listening flag decide them, never the player's own progress.
+function runBuild(chars, seed, listen, n = 160) {
+  const rng = mulberry(seed), orig = Math.random; Math.random = rng;
+  try {
+    const maxU = Math.max(0, ...chars.map(c => ZI_OF[c] || 0));
+    const pool = Object.keys(ZI_OF).filter(c => ZI_OF[c] <= maxU);
+    const lq = runLevelQs(maxU, listen);
+    const kinds = listen ? ['mean', 'which', 'py', 'pyhz', 'listen', 'word'] : ['mean', 'which', 'py', 'pyhz', 'word'];
+    const out = []; let deck = [], guard = 0;
+    while (out.length < n && guard++ < n * 10) {
+      let item = null;
+      if (lq.length && rng() < 0.22) item = runFromLevel(lq[Math.floor(rng() * lq.length)]);
+      else {
+        if (!deck.length) deck = shuffle(chars);
+        const c = deck.pop();
+        for (const k of shuffle(kinds.filter(k => !(ziBound(c) && (k === 'mean' || k === 'which'))))) {
+          const q = ziQ(c, k, pool, maxU); const it = q && runFromZi(q, k, c);
+          if (it) { item = it; break; }
+        }
+      }
+      if (item && !out.slice(-3).some(x => x.key === item.key)) out.push(item);
+    }
+    return out;
+  } finally { Math.random = orig; }
+}
+
+/* ----- challenge links: everything travels in the link, there is no server ----- */
+const b64e = s => btoa(String.fromCharCode(...new TextEncoder().encode(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const b64d = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0)));
+const cleanName = s => String(s || '').replace(/[<>&"]/g, '').trim().slice(0, 24);
+const cleanScore = n => Math.max(0, Math.min(9999999, Math.floor(+n || 0)));
+function chEncode(o) { return b64e(JSON.stringify(o)); }
+function chDecode(code) {
+  try {
+    const o = JSON.parse(b64d(code));
+    if (!o || o.v !== 1 || o.g !== 'run') return null;
+    const z = [...new Set([...String(o.z || '')].filter(c => c in ZI_OF))].slice(0, 200);
+    if (z.length < 3) return null;
+    const p = o.prev && typeof o.prev === 'object' ? { n: cleanName(o.prev.n) || 'A friend', p: cleanScore(o.prev.p) } : null;
+    return { v: 1, g: 'run', d: runDiff(o.d).id, s: Math.max(1, Math.floor(+o.s || 1)) % 2147483647 || 1, z, l: !!o.l, n: cleanName(o.n) || 'A friend', p: cleanScore(o.p), prev: p };
+  } catch (e) { return null; }
+}
+function chLink(o) { return location.href.split('#')[0] + '#games?c=' + chEncode(o); }
+function chFromHash() {
+  const m = location.hash.match(/[?&]c=([A-Za-z0-9_-]+)/); if (!m) return null;
+  return chDecode(m[1]);
+}
+
+/* ================= Games page ================= */
+function renderGames() {
+  if (GM.run && GM.screen === 'run') return runMount();
+  const inc = chFromHash();
+  if (inc) { GM.ch = inc; GM.screen = 'challenge'; history.replaceState(null, '', '#games'); }
+  else if (/[?&]c=/.test(location.hash)) { GM.chErr = 'This challenge link doesn’t work. Ask your friend to send it again.'; GM.ch = null; GM.screen = 'menu'; history.replaceState(null, '', '#games'); }
+  setFocus(false);
+  if (GM.screen === 'challenge' && GM.ch) return gmChallengeCard();
+  if (GM.screen === 'over' && GM.last) return runOver();
+  if (GM.screen === 'setup') return runSetup();
+  GM.screen = 'menu';
+  main.innerHTML = `<div class="gm-hero">${pandaSvg('yay', 'gm-panda jump-loop')}<div><h1 class="view-title">Games</h1><p class="lead">Learn characters while you play. Every right answer helps a little with the characters in My characters.</p></div></div>
+    ${GM.chErr ? `<p class="gm-err">${esc(GM.chErr)}</p>` : ''}
+    <div class="gm-list">
+      <button type="button" class="gm-card gm-run" data-gm="setup">${runCardArt()}<span class="gm-ct"><b>Panda Run</b><span>Run through the right wall. Characters, sounds and sentences.</span>${gmBestLine()}</span></button>
+      <div class="gm-card gm-off"><span class="gm-art gm-art-rain hzf" aria-hidden="true">雨</span><span class="gm-ct"><b>Character rain</b><span>Catch the character you hear before it lands.</span><em>Coming soon</em></span></div>
+      <div class="gm-card gm-off"><span class="gm-art gm-art-feed hzf" aria-hidden="true">竹</span><span class="gm-ct"><b>Feed the panda</b><span>Build the word the panda says.</span><em>Coming soon</em></span></div>
+    </div>
+    ${gmBestAny() ? '<p class="gm-chrow"><button type="button" class="btn sm" data-gm="chbest">🏆 Challenge a friend with your best score</button></p>' : ''}`;
+  GM.chErr = '';
+}
+function gmRecordsHtml() {
+  const rows = RUN_DIFFS.map(d => ({ d, b: (gmRec().best || {})[d.id], ok: !!gmBestSrc(d.id) })).filter(r => r.b);
+  if (!rows.length) return '';
+  return `<h2 class="mg-h">Your best scores</h2><div class="pr-recs">${rows.map(r => `<div class="pr-rec"><span class="pr-rec-d${r.d.id === 'shaolin' ? ' sh' : ''}">${esc(r.d.label)}</span><b>${r.b}</b>${r.ok ? `<button type="button" class="btn sm" data-gm="chbest" data-gmd="${r.d.id}">Challenge a friend</button>` : ''}</div>`).join('')}</div>`;
+}
+function gmBestLine() { const b = gmRec().best || {}, top = RUN_DIFFS.filter(d => b[d.id]).map(d => `${d.label} ${b[d.id]}`); return top.length ? `<small>Best: ${esc(top.join(' · '))}</small>` : ''; }
+function runCardArt() {
+  return `<svg class="gm-art" viewBox="0 0 120 90" aria-hidden="true"><rect width="120" height="90" rx="10" fill="#CDE8DA"/><path d="M0 90L48 28h24l48 62z" fill="#E9DDC2"/><path d="M56 28L44 90M64 28L76 90" stroke="#fff" stroke-width="2" stroke-dasharray="5 5"/><g transform="translate(62 30)"><rect x="-9" y="0" width="18" height="12" fill="#C8442F"/><path d="M-9 4h18M-9 8h18M-4 0v4M3 4v4M-1 8v4" stroke="#F3C6B5" stroke-width=".8"/></g><g transform="translate(60 70)"><ellipse cx="-6" cy="12" rx="5" ry="4" fill="#222"/><ellipse cx="6" cy="10" rx="5" ry="4" fill="#222"/><ellipse cx="0" cy="2" rx="11" ry="12" fill="#fff" stroke="#222" stroke-width="1.5"/><circle cx="0" cy="-12" r="9" fill="#fff" stroke="#222" stroke-width="1.5"/><circle cx="-7" cy="-19" r="3.5" fill="#222"/><circle cx="7" cy="-19" r="3.5" fill="#222"/></g><g stroke="#3E8E5A" stroke-width="4" stroke-linecap="round"><path d="M10 88V20M22 88V34M108 88V22"/></g></svg>`;
+}
+
+/* ----- Panda Run: setup ----- */
+function runSetup() {
+  GM.screen = 'setup';
+  const seen = ziSeen(), b = gmRec().best || {};
+  const sels = [['seen', 'All I’ve seen', seen.length >= 8 ? `${seen.length} characters` : 'Start with Unit 0'], ['weak', 'My weakest', seen.length >= 6 ? '15 characters' : 'Play a 字 level first'], ...lUnits().map(u => ['u' + u, `Unit ${u}`, `${(ZI_UNIT[u] || []).length} characters`])];
+  if (GM.sel === 'weak' && seen.length < 6) GM.sel = 'seen';
+  main.innerHTML = `<div class="sess-head"><button type="button" class="link" data-gm="menu">← Games</button><b>Panda Run</b></div>
+    <div class="pr-setup">
+      <div class="pr-intro">${runCardArt()}<p>Walls come towards the panda, each with an answer. Move to the lane with the right one and the panda runs straight through it. A wrong wall costs a life. Five right in a row bring a life back.</p></div>
+      <h2 class="mg-h">Characters</h2>
+      <div class="pr-sel">${sels.map(([id, l, sub]) => `<button type="button" class="pr-opt" data-gmsel="${id}" aria-pressed="${GM.sel === id}"${id === 'weak' && seen.length < 6 ? ' disabled' : ''}><b>${esc(l)}</b><span>${esc(sub)}</span></button>`).join('')}</div>
+      <h2 class="mg-h">Difficulty</h2>
+      <div class="pr-diffs">${RUN_DIFFS.map(d => `<button type="button" class="pr-opt pr-d-${d.id}" data-gmdiff="${d.id}" aria-pressed="${GM.diff === d.id}">${d.id === 'shaolin' ? FLAME_SVG + MONK_SVG.replace('class="monk"', 'class="monk pr-monk"') : ''}<b>${esc(d.label)}</b><span>${esc(d.desc)}</span>${b[d.id] ? `<small>Best: ${b[d.id]}</small>` : ''}</button>`).join('')}</div>
+      ${gmRecordsHtml()}
+      <details class="howto" data-howto="run"${howOpen('run')}><summary>How to play</summary>
+        <p><b>On a computer:</b> click a lane to jump there. Click higher up, on the road or a wall, to give your <b>final answer</b> straight away: the panda speeds up and you get bonus points for speed. Or use the arrow keys or A and D, and ↑ or W for the final answer. <b>Esc</b> or <b>P</b> pauses, <b>R</b> plays the sound again.</p>
+        <p><b>On a phone:</b> swipe left or right, or tap a lane. Tap a wall or swipe up for your final answer.</p>
+        <p>If you don’t give a final answer, the panda takes the lane it’s in when it reaches the wall. Points: 100 for each right wall, a speed bonus for early answers, and more for every right answer in a row. ${canHear() ? '' : '<b>Sound is off</b>, so there are no listening walls.'}</p></details>
+      <div class="card-actions"><button type="button" class="btn primary big" data-gm="start">Start running</button></div>
+    </div>`;
+}
+const FLAME_SVG = '<svg class="pr-flame" viewBox="0 0 40 52" aria-hidden="true"><path d="M20 2C24 14 36 18 34 34C33 45 26 50 20 50C12 50 5 44 6 33C7 24 13 22 14 14C17 20 18 23 21 24C23 18 21 10 20 2Z" fill="#FFB43B"/><path d="M20 22C23 30 29 32 28 40C27 46 23 48 20 48C15 48 12 44 12 39C13 33 17 32 18 27C19 30 20 31 21 31C22 28 21 25 20 22Z" fill="#FFE27A"/></svg>';
+
+/* ----- incoming challenge ----- */
+function gmChallengeCard() {
+  const c = GM.ch, d = runDiff(c.d);
+  main.innerHTML = `<div class="sess-head"><button type="button" class="link" data-gm="menu">← Games</button><b>Panda Run challenge</b></div>
+    <div class="pr-ch">${pandaSvg('yay', 'pr-ch-panda jump-loop')}<div>
+      ${c.prev ? `<p class="pr-ch-prev">You scored <b>${c.prev.p}</b>. ${esc(c.n)} answered with <b>${c.p}</b>.</p>` : ''}
+      <h1 class="view-title">${esc(c.n)} challenges you!</h1>
+      <p class="lead">Score to beat: <b>${c.p}</b> on <b>${esc(d.label)}</b>. ${c.prev ? `New walls with the same ${c.z.length} characters.` : `You get exactly the same walls, with ${c.z.length} characters.`}</p>
+      ${c.l && !canHear() ? '<p class="small muted">Some walls ask what you hear. With sound off you see the pinyin instead.</p>' : ''}
+      <div class="card-actions"><button type="button" class="btn primary big" data-gm="chstart">Accept the challenge</button><button type="button" class="btn" data-gm="menu">Not now</button></div>
+    </div></div>`;
+}
+
+/* ================= Panda Run: the game ================= */
+let RUN_RAF = 0;
+function runStart(opts) {
+  const d = runDiff(opts.diff);
+  const listen = opts.listen;
+  const qs = runBuild(opts.chars, opts.seed, listen);
+  if (qs.length < 5) { toast('Not enough characters for a run yet.'); return; }
+  GM.run = { d, chars: opts.chars, seed: opts.seed, listen, ch: opts.ch || null, qs, i: -1, lives: d.lives, max: d.lives, score: 0, streak: 0, bestStreak: 0, right: 0, wrong: 0, walls: 0,
+    lane: 1, px: 1, wall: null, phase: 'gap', pt: 0, clock: 0, dist: 0, paused: false, parts: [], flash: null, missed: [], helped: {}, stun: 0, over: false, lastT: 0, ptr: null };
+  GM.screen = 'run'; setFocus(true);
+  runMount(); runNext();
+}
+function runMount() {
+  const R = GM.run;
+  main.innerHTML = `<div class="pr-game" id="pr-game"><canvas id="pr-cv" aria-label="Panda Run"></canvas>
+    <div class="pr-hud"><div class="pr-top"><span class="pr-lives" id="pr-lives"></span><span class="pr-score" id="pr-score"></span><button type="button" class="icon-btn pr-pause" data-gm="pause" aria-label="Pause">⏸</button></div>
+      <div class="pr-q" id="pr-q" aria-live="polite"></div><div class="pr-pop" id="pr-pop"></div></div>
+    <div class="pr-paused" id="pr-paused" hidden><div><h2>Paused</h2><div class="card-actions"><button type="button" class="btn primary" data-gm="resume">Keep running</button><button type="button" class="btn" data-gm="quit">End run</button></div></div></div></div>`;
+  setFocus(true); runSize(); runHud(); runQ();
+  $('#pr-paused').hidden = !R.paused;
+  const g = $('#pr-game');
+  g.addEventListener('pointerdown', runPtrDown); g.addEventListener('pointerup', runPtrUp); g.addEventListener('pointercancel', () => { if (GM.run) GM.run.ptr = null; });
+  document.addEventListener('keydown', runKey, true);
+  window.addEventListener('resize', runSize);
+  document.addEventListener('visibilitychange', runVis);
+  cancelAnimationFrame(RUN_RAF); R.lastT = performance.now(); RUN_RAF = requestAnimationFrame(runFrame);
+}
+// stops the loop and all listeners (leaving the page, ending the run)
+function gmStop() {
+  cancelAnimationFrame(RUN_RAF); RUN_RAF = 0;
+  document.removeEventListener('keydown', runKey, true);
+  window.removeEventListener('resize', runSize);
+  document.removeEventListener('visibilitychange', runVis);
+  if (GM.run && view !== 'games') { GM.run = null; GM.screen = 'menu'; }
+}
+function runVis() { if (document.hidden && GM.run) runPause(true); }
+function runSize() {
+  const cv = $('#pr-cv'), g = $('#pr-game'); if (!cv || !g) return;
+  const top = g.getBoundingClientRect().top + window.scrollY;
+  const h = Math.max(380, Math.min(innerHeight - (isPhone() ? Math.max(8, top) : top + 16), 900)), w = g.clientWidth;
+  g.style.height = h + 'px';
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); cv.style.width = w + 'px'; cv.style.height = h + 'px';
+  GM.run && (GM.run.W = w, GM.run.H = h, GM.run.dpr = dpr);
+}
+function runT(R) {
+  const d = R.d, steps = d.every ? Math.floor(R.walls / d.every) : 0;
+  let t = Math.max(RUN_MIN_T, d.t0 * Math.pow(RUN_STEP, steps));
+  const q = R.wall && R.wall.q;
+  if (q && (q.long || (q.kind === 'word'))) t *= 1.35;
+  if (q && q.say) t *= 1.15;
+  return t;
+}
+function runNext() {
+  const R = GM.run; if (!R) return;
+  R.i++; if (R.i >= R.qs.length) R.qs = R.qs.concat(runBuild(R.chars, R.seed + R.qs.length, R.listen));
+  const q = R.qs[R.i];
+  R.wall = { q, d: RUN_SPAWN, dash: false, born: R.clock, hit: null };
+  R.wall.T = runT(R);
+  R.phase = 'run';
+  runQ();
+  if (q.say && canHear()) setTimeout(() => { if (GM.run === R && R.wall && R.wall.q === q) speak(q.say); }, 250);
+}
+function runQ() {
+  const R = GM.run, el = $('#pr-q'); if (!R || !el || !R.wall) return;
+  const q = R.wall.q, alt = q.say && !canHear();
+  el.innerHTML = `${q.say && !alt ? `<button type="button" class="pr-say" data-gm="say" aria-label="Play the sound again">🔊</button>` : ''}<span>${alt ? q.alt : q.q}</span>`;
+}
+function runHud() {
+  const R = GM.run; if (!R) return;
+  const l = $('#pr-lives'), s = $('#pr-score');
+  if (l) l.innerHTML = Array.from({ length: R.max }, (_, k) => `<i class="${k < R.lives ? 'on' : ''}">♥</i>`).join('') + (R.streak >= 2 ? `<span class="pr-streak">×${R.streak}</span>` : '');
+  if (s) s.textContent = R.score;
+}
+function runPop(t, cls) { const p = $('#pr-pop'); if (!p) return; p.textContent = t; p.className = 'pr-pop on ' + (cls || ''); clearTimeout(runPop.t); runPop.t = setTimeout(() => { p.className = 'pr-pop'; }, 1100); }
+
+/* ----- input: one pointer path for mouse, pen and touch ----- */
+function runMove(lane) { const R = GM.run; if (!R || R.paused || R.phase !== 'run' || R.wall.dash) return; R.lane = Math.max(0, Math.min(2, lane)); }
+function runCommit() { const R = GM.run; if (!R || R.paused || R.phase !== 'run' || R.wall.dash) return; R.wall.dash = true; R.wall.bonus = Math.max(0, Math.min(1, (R.wall.d - 0.08) / (RUN_SPAWN - 0.08))); }
+function runPtrDown(e) {
+  if (e.target.closest('button')) return;
+  const R = GM.run; if (!R) return;
+  R.ptr = { x: e.clientX, y: e.clientY, id: e.pointerId };
+  e.preventDefault();
+}
+function runPtrUp(e) {
+  const R = GM.run; if (!R || !R.ptr || R.ptr.id !== e.pointerId) return;
+  if (e.target.closest('button')) { R.ptr = null; return; }
+  const dx = e.clientX - R.ptr.x, dy = e.clientY - R.ptr.y; R.ptr = null;
+  if (R.paused) return;
+  if (Math.abs(dx) > 34 && Math.abs(dx) > Math.abs(dy)) return runMove(R.lane + (dx > 0 ? 1 : -1));
+  if (dy < -34 && Math.abs(dy) > Math.abs(dx)) return runCommit();
+  const cv = $('#pr-cv'), r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  const lane = runLaneAt(x, y);
+  runMove(lane);
+  if (y < R.H * 0.64) runCommit();
+}
+function runKey(e) {
+  const R = GM.run; if (!R || view !== 'games' || !$('#pr-cv')) return;
+  if (!$('#modal').hidden || TUT.on) return;
+  const k = e.key;
+  if (k === 'Escape' || k === 'p' || k === 'P') { e.preventDefault(); return runPause(!R.paused); }
+  if (R.paused) return;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') { e.preventDefault(); return runMove(R.lane - 1); }
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') { e.preventDefault(); return runMove(R.lane + 1); }
+  if (k === 'ArrowUp' || k === 'w' || k === 'W' || k === ' ') { e.preventDefault(); return runCommit(); }
+  if ((k === 'r' || k === 'R') && R.wall && R.wall.q.say && canHear()) { e.preventDefault(); speak(R.wall.q.say); }
+}
+function runPause(on) {
+  const R = GM.run; if (!R || R.over) return;
+  R.paused = !!on; const p = $('#pr-paused'); if (p) p.hidden = !R.paused;
+  if (!R.paused) R.lastT = performance.now();
+}
+
+/* ----- the loop: everything is timed on the game clock, so pausing stops it all ----- */
+function runFrame(now) {
+  const R = GM.run, cv = $('#pr-cv');
+  if (!R || !cv) { RUN_RAF = 0; return; }
+  // a window, the menu or the tutorial on top: pause
+  if (!R.paused && !R.over && (!$('#modal').hidden || document.body.classList.contains('drawer-open') || TUT.on)) runPause(true);
+  const dt = Math.min(0.05, Math.max(0, (now - R.lastT) / 1000)); R.lastT = now;
+  if (!R.paused) runStep(R, dt);
+  runDraw(R, cv);
+  RUN_RAF = requestAnimationFrame(runFrame);
+}
+function runStep(R, dt) {
+  R.clock += dt; R.pt += dt;
+  R.px += (R.lane - R.px) * Math.min(1, dt * 18);
+  R.parts = R.parts.filter(p => (p.life -= dt) > 0);
+  R.parts.forEach(p => { p.vy += 1.6 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.vr * dt; });
+  const w = R.wall;
+  if (R.phase === 'run' && w) {
+    const v = w.dash ? 1 / 0.28 : RUN_SPAWN / w.T;
+    w.d -= v * dt; R.dist += v * dt;
+    if (w.d <= 0) { w.d = 0; runHit(R); }
+  } else if (R.phase === 'break') { R.dist += dt / Math.max(1.4, R.wall ? R.wall.T * 0.5 : 2); if (R.pt > 0.55) runNext(); }
+  else if (R.phase === 'stun') { if (R.pt > 1.7) { if (R.lives <= 0) { R.phase = 'pancake'; R.pt = 0; sfx('splat'); } else runNext(); } }
+  else if (R.phase === 'pancake') { if (R.pt > 1.9 && !R.over) runEnd(); }
+}
+function runHit(R) {
+  const w = R.wall, q = w.q, ok = R.lane === q.ci;
+  R.walls++; R.pt = 0;
+  if (ok) {
+    R.right++; R.streak++; R.bestStreak = Math.max(R.bestStreak, R.streak);
+    const bonus = w.dash ? Math.round(100 * (w.bonus || 0)) : 0;
+    const pts = Math.round((100 + bonus) * (1 + Math.min(R.streak - 1, 10) * 0.1));
+    R.score += pts;
+    let msg = `+${pts}`;
+    if (R.streak % 5 === 0) { if (R.lives < R.max) { R.lives++; msg += ' · ♥ back!'; } else { R.score += 250; msg += ' · +250 full health'; } sfx('life', 0.18); }
+    runPop(msg, 'good');
+    R.phase = 'break'; runBurst(R); sfx('break');
+    if (q.zi && !R.helped[q.zi]) { R.helped[q.zi] = 1; runHelp(q.zi); }
+    // the effect first, the Chinese a moment later
+    if (q.hear && canHear()) setTimeout(() => { if (GM.run === R) speak(q.hear); }, 300);
+  } else {
+    R.wrong++; R.streak = 0; R.lives--; sfx('hurt');
+    w.hit = R.lane; R.phase = 'stun';
+    if (q.zi && !R.missed.includes(q.zi)) R.missed.push(q.zi);
+    runPop(R.lives > 0 ? 'Ouch! The right one is green.' : 'Ouch!', 'bad');
+    if (q.hear && canHear()) setTimeout(() => { if (GM.run === R) speak(q.hear); }, 400);
+  }
+  runHud();
+}
+// a small plus for a character answered right: once per run, and never up to "known" (games alone don't make a character known)
+function runHelp(c) { const z = (S.zi || {})[c]; if (!z) return; if (z.s < 3.5) { z.s = Math.min(3.5, z.s + 0.5); z.at = Date.now(); } }
+function runBurst(R) {
+  for (let k = 0; k < 16; k++) R.parts.push({ x: (k % 4 - 1.5) * 0.22, y: -0.35 - Math.floor(k / 4) * 0.18, vx: (Math.random() - 0.5) * 1.6, vy: -0.6 - Math.random() * 0.8, r: 0, vr: (Math.random() - 0.5) * 8, life: 0.7 + Math.random() * 0.3 });
+}
+function runEnd() {
+  const R = GM.run; R.over = true; save();
+  const rec = gmRec(); rec.plays = (rec.plays || 0) + 1;
+  const prev = rec.best[R.d.id] || 0, isBest = R.score > prev;
+  if (isBest) { rec.best[R.d.id] = R.score; rec.runs = rec.runs || {}; rec.runs[R.d.id] = { s: R.seed, z: R.chars.join(''), l: R.listen ? 1 : 0, at: Date.now() }; }
+  save(); sfx(isBest && R.score > 0 ? 'record' : 'end');
+  GM.last = { score: R.score, best: Math.max(prev, R.score), isBest: isBest && prev > 0, firstBest: isBest && !prev, d: R.d, walls: R.walls, right: R.right, bestStreak: R.bestStreak, missed: R.missed.slice(), chars: R.chars, seed: R.seed, listen: R.listen, ch: R.ch };
+  gmStop(); GM.run = null; GM.screen = 'over'; setFocus(false);
+  runOver();
+}
+function runOver() {
+  const L = GM.last, c = L.ch, pct = L.walls ? Math.round(L.right / L.walls * 100) : 0;
+  const vs = c ? (L.score > c.p ? `You beat ${esc(c.n)}! ${L.score} to ${c.p}.` : L.score === c.p ? `A draw with ${esc(c.n)}: ${L.score} each.` : `${esc(c.n)} wins this time: ${c.p} to ${L.score}.`) : '';
+  main.innerHTML = `<div class="sess-head"><button type="button" class="link" data-gm="menu">← Games</button><b>Panda Run</b></div>
+    <div class="pr-over">${pandaSvg(L.score > 0 ? 'yay' : 'idle', 'pr-over-panda')}<div>
+      <h1 class="view-title">${L.isBest || L.firstBest ? 'New best score!' : 'Run over'}</h1>
+      <p class="pr-big">${L.score}</p>
+      <p class="muted">${esc(L.d.label)} · ${L.right} of ${L.walls} walls right (${pct}%) · best streak ${L.bestStreak} · your best ${L.best}</p>
+      ${vs ? `<p class="pr-vs">${vs}</p>` : ''}
+      ${L.missed.length ? `<div class="pr-missed"><b>Characters to practise</b><div>${L.missed.map(m => `<span class="zi-m hzf lv${ziBand(m)}" title="${esc(ziInfo(m).p + ' ' + ziInfo(m).m)}">${esc(m)}</span>`).join('')}</div><button type="button" class="btn sm" data-gm="practise">Practise these</button></div>` : ''}
+      <div class="card-actions"><button type="button" class="btn primary" data-gm="again">Run again</button><button type="button" class="btn" data-gm="${c ? 'sendback' : 'share'}">${c ? 'Send back a challenge' : 'Challenge a friend'}</button><button type="button" class="btn" data-share="run" data-score="${L.score}" data-diff="${esc(L.d.label)}" data-right="${L.right}" data-walls="${L.walls}">Share result</button><button type="button" class="btn" data-gm="menu">Games</button></div>
+    </div></div>`;
+}
+
+/* ----- drawing ----- */
+const RUN_COL = { sky: ['#BFE3F0', '#EAF5EC'], skyD: ['#1C2E36', '#2E4744'], hill: '#A9CDB6', hillD: '#25403A', road: '#E6D7B6', roadD: '#4A4436', edge: '#C7B48C', line: '#FFFFFF', bamboo: '#3E8E5A', node: '#2E6E45', leaf: '#5DB37A' };
+const runDark = () => document.documentElement.dataset.theme === 'dark' || (document.documentElement.dataset.theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+// depth d: 0 at the panda, 1 where walls appear; the road goes on behind them up to the horizon
+const runS = d => 1 / (1 + d);
+let RUN_HZ = '';
+const RUN_HZF = () => RUN_HZ || (RUN_HZ = (getComputedStyle(document.documentElement).getPropertyValue('--hz') || '').trim() || 'serif');
+function runGeo(R) {
+  const W = R.W, H = R.H, yH = H * 0.26, yN = H * 0.86, roadW = W * 1.06;
+  return { W, H, yH, yN, roadW, y: d => yH + (yN - yH) * runS(d), x: (lane, d) => W / 2 + (lane - 1) * roadW / 3 * runS(d), half: d => roadW / 2 * runS(d) };
+}
+function runLaneAt(x, y) {
+  const R = GM.run, G = runGeo(R);
+  const s = Math.max(0.2, Math.min(1, (y - G.yH) / (G.yN - G.yH)));
+  const rel = (x - G.W / 2) / (G.roadW / 3 * s);
+  return Math.max(0, Math.min(2, Math.round(rel + 1)));
+}
+function runDraw(R, cv) {
+  const ctx = cv.getContext('2d'), G = runGeo(R), { W, H, yH, yN } = G, dark = runDark();
+  ctx.setTransform(R.dpr, 0, 0, R.dpr, 0, 0);
+  // sky and hills
+  const sk = ctx.createLinearGradient(0, 0, 0, yH + 40); const sc = dark ? RUN_COL.skyD : RUN_COL.sky; sk.addColorStop(0, sc[0]); sk.addColorStop(1, sc[1]);
+  ctx.fillStyle = sk; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = dark ? RUN_COL.hillD : RUN_COL.hill;
+  ctx.beginPath(); ctx.moveTo(0, yH + 6); for (let k = 0; k <= 8; k++) ctx.lineTo(W * k / 8, yH - 8 - ((k * 37) % 23) - (k % 2 ? 14 : 0)); ctx.lineTo(W, yH + 6); ctx.fill();
+  // ground
+  ctx.fillStyle = dark ? '#1F3A2D' : '#BFDDB0'; ctx.fillRect(0, yH, W, H - yH);
+  // road
+  const far = 7, yF = G.y(far);
+  ctx.fillStyle = dark ? RUN_COL.roadD : RUN_COL.road;
+  ctx.beginPath(); ctx.moveTo(W / 2 - G.half(far), yF); ctx.lineTo(W / 2 + G.half(far), yF); ctx.lineTo(W / 2 + G.half(-0.15), G.y(-0.15)); ctx.lineTo(W / 2 - G.half(-0.15), G.y(-0.15)); ctx.fill();
+  // lane lines that move with the run
+  ctx.strokeStyle = dark ? 'rgba(255,255,255,.35)' : RUN_COL.line; ctx.lineCap = 'round';
+  const ph = (R.dist % 0.5);
+  for (let dd = -ph; dd < far; dd += 0.5) {
+    const a = Math.max(-0.15, dd), b = Math.min(far, dd + 0.22); if (b <= a) continue;
+    [-0.5, 0.5].forEach(l => { ctx.lineWidth = 3 * runS(a); ctx.beginPath(); ctx.moveTo(G.x(1 + l * 1, a) , G.y(a)); ctx.lineTo(G.x(1 + l * 1, b), G.y(b)); ctx.stroke(); });
+  }
+  // bamboo on both sides, far to near
+  const bph = R.dist % 0.7, stalks = [];
+  for (let dd = far - bph; dd > -0.3; dd -= 0.7) stalks.push(dd);
+  stalks.forEach(dd => [-1, 1].forEach(side => runBamboo(ctx, G, dd, side, dark)));
+  // the wall (behind the panda), or the panda flat on it
+  const w = R.wall;
+  if (w && R.phase !== 'break') runWalls(ctx, G, R, w);
+  // bricks flying after a right answer
+  R.parts.forEach(p => { const s = 1, x = G.x(R.px, 0) + p.x * G.roadW / 3, y = yN + p.y * H * 0.3; ctx.save(); ctx.translate(x, y); ctx.rotate(p.r); ctx.globalAlpha = Math.min(1, p.life * 2); ctx.fillStyle = '#C8442F'; ctx.fillRect(-9 * s, -5 * s, 18 * s, 10 * s); ctx.restore(); });
+  ctx.globalAlpha = 1;
+  if (R.phase !== 'pancake') runPanda(ctx, G.x(R.px, 0), yN, Math.min(W, H) / 640, R);
+  else runPancake(ctx, G, R);
+}
+function runBamboo(ctx, G, d, side, dark) {
+  const s = runS(d), x = G.W / 2 + side * (G.half(d) + 26 * s), y = G.y(d), h = G.H * 0.5 * s, wd = Math.max(2, 9 * s);
+  ctx.globalAlpha = Math.min(1, 0.35 + s);
+  ctx.fillStyle = dark ? '#2F6B47' : RUN_COL.bamboo; ctx.fillRect(x - wd / 2, y - h, wd, h);
+  ctx.fillStyle = dark ? '#24543A' : RUN_COL.node; for (let k = 1; k < 4; k++) ctx.fillRect(x - wd / 2 - 1, y - h * k / 4, wd + 2, Math.max(1, 2 * s));
+  ctx.fillStyle = dark ? '#3E8A5C' : RUN_COL.leaf; ctx.beginPath(); ctx.ellipse(x + side * 10 * s, y - h * 0.8, 12 * s, 3.5 * s, side * 0.5, 0, Math.PI * 2); ctx.fill();
+  ctx.globalAlpha = 1;
+}
+function runWalls(ctx, G, R, w) {
+  const d = Math.max(0, w.d), s = runS(d), fade = Math.min(1, (R.clock - w.born) / 0.35);
+  const lw = G.roadW / 3 * s, wh = G.H * 0.26 * s, y = G.y(d);
+  for (let lane = 0; lane < 3; lane++) {
+    const x = G.x(lane, d), ww = lw * 0.9;
+    ctx.globalAlpha = fade;
+    const isRight = lane === w.q.ci, show = R.phase === 'stun' || R.phase === 'pancake';
+    // bricks
+    ctx.fillStyle = show && isRight ? '#2E9E5B' : '#C8442F'; ctx.fillRect(x - ww / 2, y - wh, ww, wh);
+    ctx.strokeStyle = show && isRight ? '#9FE3B8' : '#F0B8A6'; ctx.lineWidth = Math.max(0.6, 1.2 * s);
+    const rows = 5, bh = wh / rows;
+    for (let r = 1; r < rows; r++) { ctx.beginPath(); ctx.moveTo(x - ww / 2, y - wh + r * bh); ctx.lineTo(x + ww / 2, y - wh + r * bh); ctx.stroke(); }
+    for (let r = 0; r < rows; r++) { const off = r % 2 ? ww / 6 : 0; for (let k = 1; k < 3; k++) { const bx = x - ww / 2 + off + k * ww / 3; if (bx < x + ww / 2 - 2) { ctx.beginPath(); ctx.moveTo(bx, y - wh + r * bh); ctx.lineTo(bx, y - wh + (r + 1) * bh); ctx.stroke(); } } }
+    // the sign with the answer
+    runSign(ctx, x, y - wh * 0.62, ww * 0.96, wh * 0.62, s * Math.min(1.7, Math.max(1, G.W / 430)), w.q.o[lane], show && isRight, show && lane === w.hit && !isRight);
+  }
+  ctx.globalAlpha = 1;
+}
+function runSign(ctx, x, cy, maxW, maxH, s, text, good, bad) {
+  const hz = hzish(text), short = [...text].length <= 3, base = hz ? (short ? 44 : 30) : 22;
+  let fs = Math.max(hz ? 12 : 9, base * s * 1.1), lines = [text];
+  const font = f => `${hz ? '700' : '600'} ${f}px ${hz ? RUN_HZF() : 'system-ui, sans-serif'}`;
+  ctx.font = font(fs);
+  if (ctx.measureText(text).width > maxW * 0.88) {
+    // too wide: two lines (words for English, half and half for Chinese), then a smaller font
+    if (hz) { const a = [...text], mid = Math.ceil(a.length / 2); if (a.length > 3) lines = [a.slice(0, mid).join(''), a.slice(mid).join('')]; }
+    else { const ws = text.split(' '), mid = Math.ceil(ws.length / 2); if (ws.length > 1) lines = [ws.slice(0, mid).join(' '), ws.slice(mid).join(' ')]; }
+    while (fs > (hz ? 10 : 8) && Math.max(...lines.map(l => ctx.measureText(l).width)) > maxW * 0.88) { fs -= 1; ctx.font = font(fs); }
+  }
+  const lh = fs * 1.15, tw = Math.max(...lines.map(l => ctx.measureText(l).width)), pw = Math.min(maxW, tw + 14 * Math.max(0.6, s)), ph = lines.length * lh + 8 * Math.max(0.6, s);
+  ctx.fillStyle = good ? '#E8FFF0' : bad ? '#FFE3DF' : '#FFF7E3'; ctx.strokeStyle = good ? '#1E7742' : bad ? '#AE3328' : '#7A2420'; ctx.lineWidth = Math.max(1, 2 * s);
+  const r = 6 * s; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x - pw / 2, cy - ph / 2, pw, ph, r) : ctx.rect(x - pw / 2, cy - ph / 2, pw, ph); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#2A1A14'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  lines.forEach((l, k) => ctx.fillText(l, x, cy - ph / 2 + 4 * Math.max(0.6, s) + lh * (k + 0.5)));
+}
+// the panda from behind: running, or dizzy after a wrong wall
+function runPanda(ctx, x, y, k, R) {
+  const t = R.clock, stun = R.phase === 'stun', run = !R.paused && (R.phase === 'run' || R.phase === 'break');
+  const step = run ? Math.sin(t * (R.wall && R.wall.dash ? 26 : 14)) : 0, bob = Math.abs(step) * 4 * k;
+  ctx.save(); ctx.translate(x, y - bob); ctx.scale(k, k);
+  if (stun) ctx.rotate(Math.sin(t * 9) * 0.12);
+  ctx.fillStyle = 'rgba(0,0,0,.15)'; ctx.beginPath(); ctx.ellipse(0, 4 + bob / k, 40, 9, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#222'; // legs
+  ctx.beginPath(); ctx.ellipse(-17, -10 - step * 8, 13, 16, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(17, -10 + step * 8, 13, 16, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.strokeStyle = '#222'; ctx.lineWidth = 3; // body
+  ctx.beginPath(); ctx.ellipse(0, -50, 36, 40, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#222'; // arms swinging
+  ctx.save(); ctx.translate(-32, -66); ctx.rotate(0.5 + step * 0.6); ctx.beginPath(); ctx.ellipse(0, 12, 11, 22, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  ctx.save(); ctx.translate(32, -66); ctx.rotate(-0.5 + step * 0.6); ctx.beginPath(); ctx.ellipse(0, 12, 11, 22, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  ctx.beginPath(); ctx.ellipse(0, -84, 30, 9, 0, 0, Math.PI * 2); ctx.fill(); // shoulders
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, -112, 30, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); // head
+  ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-23, -136, 11, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(23, -136, 11, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, -16, 6, 0, Math.PI * 2); ctx.fill(); // tail
+  if (stun) { ctx.fillStyle = '#FFC83D'; for (let j = 0; j < 3; j++) { const a = t * 5 + j * 2.1; runStar(ctx, Math.cos(a) * 34, -150 + Math.sin(a) * 9, 7); } }
+  ctx.restore();
+}
+function runStar(ctx, x, y, r) { ctx.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.45 : r; ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); } ctx.closePath(); ctx.fill(); }
+// out of lives: the panda goes flat on the wall like a pancake, arms and legs spread out
+function runPancake(ctx, G, R) {
+  const x = G.x(R.lane, 0), k = Math.min(G.W, G.H) / 640, y = G.yN - 92 * k, t = Math.min(1, R.pt / 0.22);
+  ctx.save(); ctx.translate(x, y); ctx.scale(k * (1 + 0.45 * t), k * (1 - 0.32 * t));
+  ctx.fillStyle = '#222';
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => { ctx.save(); ctx.rotate(a * b * 0.7); ctx.beginPath(); ctx.ellipse(a * 52, b * 34, 22, 12, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore(); });
+  ctx.fillStyle = '#fff'; ctx.strokeStyle = '#222'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.ellipse(0, 10, 46, 44, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, -52, 30, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-24, -76, 11, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(24, -76, 11, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = '#FFC83D'; for (let j = 0; j < 4; j++) { const a = R.clock * 4 + j * 1.6; runStar(ctx, x + Math.cos(a) * 56 * k, y - 100 * k + Math.sin(a) * 12 * k, 9 * k); }
+}
+
+/* ----- buttons ----- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  const g = t.dataset.gm, d = t.dataset;
+  if (d.gmsel) { GM.sel = d.gmsel; return runSetup(); }
+  if (d.gmdiff) { GM.diff = d.gmdiff; return runSetup(); }
+  if (!g) return;
+  if (g === 'menu') { gmStop(); GM.run = null; GM.screen = 'menu'; GM.ch = null; return renderGames(); }
+  if (g === 'setup') { GM.screen = 'setup'; return runSetup(); }
+  if (g === 'start') { GM.ch = null; return runStart({ diff: GM.diff, chars: runChars(GM.sel), seed: newSeed(), listen: canHear() }); }
+  if (g === 'chstart' && GM.ch) { const c = GM.ch; return runStart({ diff: c.d, chars: c.z, seed: c.s, listen: c.l, ch: c }); }
+  if (g === 'again' && GM.last) { const L = GM.last; return runStart({ diff: L.d.id, chars: L.chars, seed: newSeed(), listen: L.listen }); }
+  if (g === 'pause') return runPause(true);
+  if (g === 'resume') return runPause(false);
+  if (g === 'quit') { const R = GM.run; if (R) { R.lives = 0; R.over = false; R.paused = false; runEnd(); } return; }
+  if (g === 'say' && GM.run && GM.run.wall && GM.run.wall.q.say) return speak(GM.run.wall.q.say);
+  if (g === 'practise' && GM.last && GM.last.missed.length) { const lv = ziWeakLevel(10); return lStart('zi-weak', { ...lv, zi: GM.last.missed.slice(0, 20), unit: Math.max(...GM.last.missed.map(c => ZI_OF[c] || 0)), title: 'Characters from Panda Run' }); }
+  if (g === 'share' || g === 'sendback') return gmShare(g === 'sendback');
+  if (g === 'chbest') { const src = d.gmd ? gmBestSrc(d.gmd) : gmBestAny(); if (src) gmShare(false, src); return; }
+  if (g === 'copylink') { const i = $('#gm-link'); if (i) { i.select(); try { navigator.clipboard.writeText(i.value).then(() => toast('Link copied.'), () => document.execCommand('copy')); } catch (er) { document.execCommand('copy'); toast('Link copied.'); } } return; }
+  if (g === 'sharelink') { const i = $('#gm-link'); if (i && navigator.share) navigator.share({ title: 'Panda Run challenge', text: $('#gm-msg') ? $('#gm-msg').textContent : '', url: i.value }).catch(() => {}); return; }
+});
+document.addEventListener('input', e => { if (e.target.id === 'gm-name') { setName(e.target.value); gmLinkUpdate(); } });
+// the challenge window: the link carries the walls, the score to beat and, when sending back, the friend's result
+// src: { d (difficulty), chars, seed, listen, score, ch (the challenge this run answered, if any) }
+function gmShare(back, src) {
+  src = src || GM.last; if (!src) return;
+  GM.share = { back, src, seed: back ? newSeed() : src.seed };
+  const m = $('#modal');
+  m.innerHTML = `<div class="modal-box help-box gm-sh" role="dialog" aria-modal="true" aria-label="Challenge a friend">
+    <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
+    <h1 class="view-title">${back ? 'Send back a challenge' : 'Challenge a friend'}</h1>
+    <p>${back ? 'Your friend gets new walls with the same characters and sees both of your scores.' : 'Your friend gets exactly the same walls and tries to beat your score.'} When they finish, they can send a challenge back to you.</p>
+    <label class="set-line"><span>Your name</span>${nameInput('gm-name', 'Your name')}</label>
+    <p class="gm-msg" id="gm-msg"></p>
+    <input class="in gm-link" id="gm-link" readonly>
+    <div class="card-actions"><button type="button" class="btn primary" data-gm="copylink">Copy link</button>${navigator.share ? '<button type="button" class="btn" data-gm="sharelink">Share…</button>' : ''}</div>
+    <p class="small muted">Send the link in any chat. Nothing is uploaded: everything is in the link.</p></div>`;
+  m.hidden = false; document.body.classList.add('modal-open');
+  gmLinkUpdate();
+}
+function gmLinkUpdate() {
+  const sh = GM.share, i = $('#gm-link'); if (!sh || !i) return; const L = sh.src;
+  const name = cleanName(userName()) || 'A friend';
+  const o = { v: 1, g: 'run', d: L.d.id, s: sh.seed, z: L.chars.join(''), l: L.listen ? 1 : 0, n: name, p: L.score };
+  if (sh.back && L.ch) o.prev = { n: L.ch.n, p: L.ch.p };
+  i.value = chLink(o);
+  const msg = $('#gm-msg'); if (msg) msg.textContent = `${name} scored ${L.score} in Panda Run (${L.d.label}). Can you beat it?`;
+}
+// your best run on a difficulty, ready to send as a challenge (the walls are rebuilt from its seed)
+function gmBestSrc(id) {
+  const rec = gmRec(), r = (rec.runs || {})[id], b = (rec.best || {})[id];
+  if (!r || !b) return null;
+  const z = [...String(r.z || '')].filter(c => c in ZI_OF); if (z.length < 3) return null;
+  return { d: runDiff(id), chars: z, seed: r.s, listen: !!r.l, score: b, ch: null };
+}
+function gmBestAny() { const b = gmRec().best || {}; const ids = RUN_DIFFS.map(d => d.id).filter(id => gmBestSrc(id)).sort((x, y) => (b[y] || 0) - (b[x] || 0)); return ids.length ? gmBestSrc(ids[0]) : null; }
+
+/* ================= Daily practice ================= */
+// A short round every day (6–12 questions) with what you are starting to forget:
+// characters that are due (weaker ones come back sooner), Learn questions you got wrong, and words you missed.
+// S.daily = { days: ['2026-11-16', …], best, total }  ·  S.lmiss = { 'u1-3:4': time }  (new keys; old keys untouched)
+
+const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const dayShift = (k, n) => { const [y, m, d] = k.split('-').map(Number); return dayKey(new Date(y, m - 1, d + n)); };
+function dailyState() {
+  const D = S.daily || {}, days = new Set(D.days || []), today = dayKey();
+  const doneToday = days.has(today);
+  // the streak is alive if you practised today or yesterday
+  let k = doneToday ? today : dayShift(today, -1), streak = 0;
+  while (days.has(k)) { streak++; k = dayShift(k, -1); }
+  const now = new Date(), mon = dayShift(today, -((now.getDay() + 6) % 7));
+  const week = Array.from({ length: 7 }, (_, i) => days.has(dayShift(mon, i)));
+  const todayIdx = (now.getDay() + 6) % 7;
+  return { doneToday, streak, best: Math.max(D.best || 0, streak), week, todayIdx, broken: !streak && (D.days || []).length > 0, total: D.total || 0 };
+}
+function dailyDone() {
+  S.daily = S.daily || { days: [], best: 0, total: 0 };
+  const today = dayKey(), first = !S.daily.days.includes(today);
+  if (first) S.daily.days = [...S.daily.days, today].slice(-120);
+  S.daily.total = (S.daily.total || 0) + 1;
+  const st = dailyState(); S.daily.best = Math.max(S.daily.best || 0, st.streak);
+  save();
+  return { first, streak: st.streak };
+}
+
+// how many days until a character comes back, by its strength (0–5)
+const DAILY_GAP = [1, 1, 2, 4, 7, 14];
+function dailyDueChars() {
+  const now = Date.now(), out = [];
+  Object.entries(S.zi || {}).forEach(([c, z]) => {
+    if (!(c in ZI_OF) || !z) return;
+    const gap = DAILY_GAP[Math.max(0, Math.min(5, Math.floor(z.s)))] * 864e5, over = (now - (z.at || 0)) / gap;
+    if (over >= 1) out.push({ c, over, s: z.s });
+  });
+  return out.sort((a, b) => a.s - b.s || b.over - a.over).map(x => x.c);
+}
+function dailyCharQ(c) {
+  const u = Math.max(...Object.keys(S.zi || {}).filter(x => x in ZI_OF).map(x => ZI_OF[x]), ZI_OF[c] || 0);
+  const pool = Object.keys(ZI_OF).filter(x => ZI_OF[x] <= u), noL = noListenOn() || !canListen();
+  for (const k of shuffle(ziKinds(c, Math.max(0, ziLevel(c))).filter(k => !(noL && k === 'listen')))) {
+    const q = ziQ(c, k, pool, u);
+    if (q && q.o.length >= 3 && new Set(q.o).size === q.o.length) return { ...q, kind: k };
+  }
+  return null;
+}
+function dailyWordQ(v) {
+  const others = shuffle(VOCAB.filter(x => (x.tag === '' || x.tag === 'ext') && x.e !== v.e && x.h !== v.h)).slice(0, 3);
+  if (others.length < 3) return null;
+  return { t: 'mc', q: `What does <span class="hzf big-in">${esc(v.h)}</span> mean?`, o: [v.e, ...others.map(x => x.e)], c: 0, wordH: v.h, x: v.p };
+}
+function dailyItems() {
+  const noL = noListenOn() || !canListen();
+  const chars = dailyDueChars().slice(0, 8).map(dailyCharQ).filter(Boolean);
+  const lq = Object.keys(S.lmiss || {}).sort((a, b) => S.lmiss[a] - S.lmiss[b]).map(id => {
+    const [lid, i] = id.split(':'), lv = LEVELS.find(l => l.id === lid), q = lv && lv.quiz[+i];
+    if (!q || q.t === 'draw' || q.t === 'match' || (noL && (q.t === 'listen' || q.t === 'tone'))) return null;
+    return { ...q };
+  }).filter(Boolean).slice(0, 3);
+  const words = Object.entries(S.cards || {}).filter(([, st]) => st && st.bad && (st.streak || 0) < 2).map(([h]) => VOCAB.find(v => v.h === h && (v.tag === '' || v.tag === 'ext'))).filter(Boolean);
+  const wq = shuffle(words).slice(0, 3).map(dailyWordQ).filter(Boolean);
+  let items = [...chars, ...lq, ...wq].slice(0, 12);
+  // fewer than 6 due: top up with your weakest characters
+  if (items.length < 6) {
+    const have = new Set(items.map(q => q.zi).filter(Boolean));
+    const weak = Object.keys(S.zi || {}).filter(c => c in ZI_OF && !have.has(c)).sort((a, b) => ziLevel(a) - ziLevel(b) || (S.zi[a].at || 0) - (S.zi[b].at || 0));
+    for (const c of weak) { if (items.length >= 6) break; const q = dailyCharQ(c); if (q) items.push(q); }
+  }
+  return items.length >= 3 ? shuffle(items) : [];
+}
+// a quick estimate of the round size (no questions built), for the cards
+function dailyCount() {
+  const due = dailyDueChars().length, lm = Object.keys(S.lmiss || {}).length, wd = Object.values(S.cards || {}).filter(st => st && st.bad && (st.streak || 0) < 2).length;
+  const seen = Object.keys(S.zi || {}).length;
+  const n = Math.min(8, due) + Math.min(3, lm) + Math.min(3, wd);
+  return Math.min(12, Math.max(n, Math.min(6, seen + Math.min(3, lm) + Math.min(3, wd))));
+}
+function dailyStart() {
+  const items = dailyItems(); if (!items.length) { toast('Play a level in Learn first.'); return; }
+  const u = Math.max(0, ...items.map(q => (q.zi ? ZI_OF[q.zi] : 0) || 0));
+  const lv = { id: 'daily', virtual: true, daily: true, unit: u, icon: '🔥', title: 'Daily practice', zi: null, cards: [], quiz: [], items };
+  closeModal(); LN.lv = lv; LN.ci = 0; setFocus(true);
+  lStartQuiz();
+  if (view !== 'learn') location.hash = 'learn';
+  window.scrollTo({ top: 0 });
+}
+const FLAME_SM = '<svg class="dp-flame" viewBox="0 0 40 52" aria-hidden="true"><path d="M20 2C24 14 36 18 34 34C33 45 26 50 20 50C12 50 5 44 6 33C7 24 13 22 14 14C17 20 18 23 21 24C23 18 21 10 20 2Z"/><path class="in" d="M20 22C23 30 29 32 28 40C27 46 23 48 20 48C15 48 12 44 12 39C13 33 17 32 18 27C19 30 20 31 21 31C22 28 21 25 20 22Z"/></svg>';
+function dailyWeekHtml(st) {
+  return `<span class="dp-week" aria-label="This week">${['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((l, i) => `<i class="${st.week[i] ? 'on' : ''}${i === st.todayIdx ? ' now' : ''}" title="${['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i]}">${st.week[i] ? '✓' : l}</i>`).join('')}</span>`;
+}
+// the card on top of Learn (and, smaller, in the side column)
+function dailyCardHtml(small) {
+  const st = dailyState(), seen = Object.keys(S.zi || {}).length > 0 || Object.keys(S.learn || {}).length > 0;
+  const flame = `<span class="dp-fl${st.streak ? ' on' : ''}">${FLAME_SM}<b>${st.streak}</b></span>`;
+  if (!seen) return `<section class="dp-card off${small ? ' sm' : ''}">${flame}<div class="dp-tx"><h2>Daily practice</h2><p>Starts after your first level: a few minutes a day with what you’re starting to forget.</p></div></section>`;
+  const n = st.doneToday ? 0 : dailyCount(), mins = Math.max(1, Math.round(n * 15 / 60));
+  const line = st.doneToday ? `Done for today ✓ ${st.streak > 1 ? `· ${st.streak} days in a row` : ''}` : n ? (small ? `${n} questions · ~${mins} min` : `${n} questions · about ${mins} min`) : 'Nothing to practise yet';
+  const sub = st.doneToday ? 'Come back tomorrow to keep your streak.' : st.broken ? 'New streak starts today.' : st.streak ? `Keep your ${st.streak}-day streak going!` : 'A few minutes a day with what you’re starting to forget.';
+  return `<section class="dp-card${st.doneToday ? ' done' : ''}${small ? ' sm' : ''}">${flame}
+    <div class="dp-tx"><h2>Daily practice</h2><p class="dp-line">${esc(line)}</p><p class="dp-sub">${esc(sub)}</p>${dailyWeekHtml(st)}</div>
+    <div class="dp-act">${st.doneToday ? `<button type="button" class="btn sm" data-daily="start">One more round</button>` : `<button type="button" class="btn primary" data-daily="start"${n ? '' : ' disabled'}>Start</button>`}${st.streak ? `<button type="button" class="link dp-share" data-share="streak">Share my streak</button>` : ''}${!small && st.best > st.streak ? `<span class="dp-best">Best: ${st.best} days</span>` : ''}</div></section>`;
+}
+// the end of a daily round
+function dailyDoneHtml(r) {
+  const st = dailyState(), d = r.daily || {};
+  return `<section class="qc-result ln-res dp-res">${pandaSvg(r.pct >= 70 ? 'yay' : 'happy', 'qc-final jump-loop')}
+    <div class="dp-big">${FLAME_SM}<b>${st.streak}</b></div>
+    <p class="qc-msg">${d.first ? (st.streak > 1 ? `${st.streak} days in a row! 加油！` : 'Daily practice done! See you tomorrow.') : 'One more round done. Great work!'}</p>
+    ${dailyWeekHtml(st)}
+    <p class="muted">${r.right} of ${r.count} right the first time.${st.best > st.streak ? ` Best streak: ${st.best} days.` : ''}</p>
+    <div class="card-actions qc-endbtns"><button type="button" class="btn primary" data-share="streak">Share my streak</button><button type="button" class="btn" data-daily="start">One more round</button><button type="button" class="btn" data-lpath>Back to the path</button></div></section>`;
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-daily]'); if (b && b.dataset.daily === 'start') dailyStart(); });
+
+/* ================= Side column (wide computers) and quick settings ================= */
+// Learning: listening exercises, pinyin, tones, voice speed. App: sound effects, theme.
+const qsw = (k, on, label, sub) => `<button type="button" class="qs-row" data-qset="${k}" role="switch" aria-checked="${on}"><span class="qs-l"><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</span><span class="qs-sw" aria-hidden="true"></span></button>`;
+function quickSettingsHtml() {
+  const rate = (S.settings && S.settings.rate) || 0.6;
+  return `<div class="qs-grp"><h3>Learning</h3>
+    ${qsw('listen', !noListenOn(), '🎧 Listening exercises', 'Questions where you listen')}
+    ${qsw('py', !!S.settings.pinyin, 'Pinyin', 'Under Chinese sentences')}
+    ${qsw('strict', !!S.settings.strict, 'Tones must be right', '')}
+    <div class="qs-line"><b>🗣 Voice speed</b><div class="seg" role="group" aria-label="Voice speed">${VOICE_RATES.map(([l, r]) => `<button type="button" aria-pressed="${rate === r}" data-rate="${r}">${l}</button>`).join('')}</div></div></div>
+    <div class="qs-grp"><h3>App</h3>
+    ${qsw('sfx', sfxOn(), '🔔 Sound effects', 'Ding for right, bonk for wrong')}
+    <div class="qs-line"><b>Theme</b>${themeSeg()}</div></div>`;
+}
+function openQuick() {
+  const m = $('#modal');
+  m.innerHTML = `<div class="modal-box help-box qs-box" role="dialog" aria-modal="true" aria-label="Quick settings">
+    <button type="button" class="icon-btn modal-x" data-modalclose aria-label="Close">✕</button>
+    <h1 class="view-title">Quick settings</h1>${quickSettingsHtml()}
+    <p class="qs-all"><button type="button" class="link" data-settings>All settings: name, voice and backup</button></p></div>`;
+  m.classList.add('sheet'); m.hidden = false; document.body.classList.add('modal-open');
+}
+const railOn = () => matchMedia('(min-width:1600px)').matches;
+function qsUpdate() { $$('[data-qset]').forEach(b => { const k = b.dataset.qset, on = k === 'listen' ? !noListenOn() : k === 'sfx' ? sfxOn() : !!S.settings[k]; b.setAttribute('aria-checked', String(on)); }); }
+document.addEventListener('click', e => {
+  const q = e.target.closest('[data-qset]');
+  if (q) {
+    const k = q.dataset.qset, on = q.getAttribute('aria-checked') !== 'true';
+    if (k === 'sfx') setSfx(on);
+    else if (k === 'listen') { S.settings.noListen = !on; save(); toast(on ? 'Listening exercises are back.' : 'Listening exercises are hidden.'); if (!document.body.classList.contains('sess')) go(); }
+    else { S.settings[k] = on; save(); applySettings(); }
+    qsUpdate(); return;
+  }
+  const h = e.target.closest('[data-qs]');
+  if (h) { if (railOn()) openSettings(); else openQuick(); return; }
+  const r = e.target.closest('[data-railrun]');
+  if (r) { GM.screen = 'setup'; GM.run = null; if (location.hash !== '#games') location.hash = 'games'; else renderGames(); }
+});
+function renderRail() {
+  const el = $('#rail'), elL = $('#rail-l'); if (!el) return;
+  if (!railOn()) { el.hidden = true; el.innerHTML = ''; if (elL) { elL.hidden = true; elL.innerHTML = ''; } return; }
+  el.hidden = false;
+  if (elL) { elL.hidden = false; elL.innerHTML = `<p class="rl-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Quick settings</p><section class="rl-box rl-qs">${quickSettingsHtml()}</section>`; }
+  const rec = lRec(), seen = Object.keys(S.zi || {}).filter(c => c in ZI_OF), weak = seen.slice().sort((a, b) => ziLevel(a) - ziLevel(b)).slice(0, 5);
+  const b = gmRec().best || {}, top = RUN_DIFFS.filter(d => b[d.id]).sort((x, y) => b[y.id] - b[x.id])[0];
+  el.innerHTML = `<p class="rl-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Your day</p>${dailyCardHtml(true)}
+    ${rec ? `<section class="rl-box"><h3>Continue</h3><button type="button" class="rl-next" data-lopen="${rec.id}"><span class="lp-ic hzf">${esc(rec.icon)}</span><span><small>Next up</small><b>${esc(rec.title)}</b></span></button></section>` : ''}
+    ${weak.length ? `<section class="rl-box"><h3>Weakest characters</h3><div class="rl-zi">${weak.map(c => `<span class="zi-m hzf lv${ziBand(c)}" title="${esc(ziInfo(c).p + ' ' + ziInfo(c).m)}">${esc(c)}</span>`).join('')}</div><button type="button" class="btn sm" data-zistart="10">Practise</button></section>` : ''}
+    ${`<section class="rl-box rl-run"><h3>Panda Run</h3><p>${top ? `Best: <b>${b[top.id]}</b> (${esc(top.label)})` : 'Run through the right wall!'}</p><button type="button" class="btn sm" data-railrun>Play</button></section>`}`;
+}
+var railT = 0;
+function railSoon() { cancelAnimationFrame(railT); railT = requestAnimationFrame(renderRail); }
+window.addEventListener('resize', railSoon);
+
 renderVoice();
 let rT; window.addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { if (view === 'writing') { const b = $('#w-box'); if (b && Math.abs(b.clientWidth - W.size) > 8 && W.mode !== 'free') mountWriter(); } }, 200); });
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (view === 'writing') renderWriting(); }); } catch (e) { /* old browser */ }
 applySettings(); hdrStatus(); renderMsgBtn();
 go();
 checkNotes();
+requestAnimationFrame(() => { hdrMeasure(); hdrH(); });
+window.addEventListener('resize', () => { if (document.body.classList.contains('focus')) hdrPlace(); else hdrMeasure(); hdrH(); });
 })();
 
 </script>
