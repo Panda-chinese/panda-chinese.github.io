@@ -4436,8 +4436,6 @@ function lPath() {
     <nav class="lp-jump" id="lp-jump" aria-label="Units">${[...new Set(LEVELS.map(l => l.unit))].map(u => { const ls = LEVELS.filter(l => l.unit === u), got = ls.reduce((s, l) => s + ((prog[l.id] || {}).stars || 0), 0); return `<button type="button" class="lp-jb" data-lunit="${u}"><b>Unit ${u}</b><span>★ ${got}/${ls.length * 3}</span></button>`; }).join('')}</nav>
     <div class="lp-wrap"><div class="lp-map" id="lp-map"></div></div>`;
   lLayout(); lJumpActive();
-  const r = $('.lp-node.rec');
-  if (r) setTimeout(() => { const b = r.getBoundingClientRect(); if (b.bottom > innerHeight - 40) r.scrollIntoView({ block: 'center' }); }, 60);
 }
 const lvHasListen = lv => lv.zi ? true : (lv.checkpoint ? LEVELS.filter(x => x.unit === lv.unit && !x.checkpoint) : [lv]).some(x => x.quiz.some(q => q.t === 'tone' || q.t === 'listen'));
 // The path shows one unit at a time as a "snake" board: rows go left to right, then right to left.
@@ -5390,6 +5388,7 @@ function go() {
   closeDrawer(); renderNav();
   stopAudio(); gmStop();
   VIEWS[view]();
+  window.scrollTo(0, 0);
   railSoon();
 }
 window.addEventListener('hashchange', go);
