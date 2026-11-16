@@ -3425,7 +3425,7 @@ function openSettings() {
     <h1 class="view-title">Settings</h1>
     <label class="set-line"><span>Your name</span>${nameInput('opt-name', 'Your name')}</label>
     <h2>Learning</h2>
-    <label class="set-opt"><input type="checkbox" id="opt-py" ${S.settings.pinyin ? 'checked' : ''}><span><b>Pinyin under Chinese</b><small>Shows the pinyin under Chinese sentences in the exercises.</small></span></label>
+    <label class="set-opt"><input type="checkbox" id="opt-py" ${S.settings.pinyin ? 'checked' : ''}><span><b>Pinyin under characters</b><small>In exercises, tests and grammar.</small></span></label>
     <label class="set-opt"><input type="checkbox" id="opt-strict" ${S.settings.strict ? 'checked' : ''}><span><b>Tones must be right</b><small>When this is on, a pinyin answer with a wrong tone counts as a mistake.</small></span></label>
     <label class="set-opt"><input type="checkbox" id="opt-nolisten" ${S.settings.noListen ? 'checked' : ''}><span><b>🎧 No listening exercises</b><small>Hides the exercises where you have to listen. Useful when you can’t use sound right now.</small></span></label>
     ${voiceSettingsHtml()}
@@ -6167,7 +6167,7 @@ function quickSettingsHtml() {
   const rate = (S.settings && S.settings.rate) || 0.6;
   return `<div class="qs-grp"><h3>Learning</h3>
     ${qsw('listen', !noListenOn(), '🎧 Listening exercises', 'Questions where you listen')}
-    ${qsw('py', !!S.settings.pinyin, 'Pinyin', 'Under Chinese sentences')}
+    ${qsw('pinyin', !!S.settings.pinyin, 'Pinyin under characters', 'In exercises, tests and grammar')}
     ${qsw('strict', !!S.settings.strict, 'Tones must be right', '')}
     <div class="qs-line"><b>🗣 Voice speed</b><div class="seg" role="group" aria-label="Voice speed">${VOICE_RATES.map(([l, r]) => `<button type="button" aria-pressed="${rate === r}" data-rate="${r}">${l}</button>`).join('')}</div></div></div>
     <div class="qs-grp"><h3>App</h3>
