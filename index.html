@@ -986,6 +986,10 @@ button.gm-card:hover{border-color:var(--jade)}
 .pr-pop.on{opacity:1;transform:none}
 .pr-pop.good{color:#1E7742}
 .pr-pop.bad{color:#AE3328}
+.pr-cue{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) scale(.8);display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.95);color:#1B5E4A;border-radius:999px;padding:10px 22px;font-size:22px;box-shadow:0 6px 24px rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:3}
+.pr-cue span{font-size:26px}
+.pr-cue.on{opacity:1;transform:translate(-50%,-50%) scale(1);animation:prCue .75s ease-in-out}
+@keyframes prCue{0%{transform:translate(-50%,-50%) scale(.85)}35%{transform:translate(-50%,-50%) scale(1.08)}100%{transform:translate(-50%,-50%) scale(1)}}
 .pr-paused{position:absolute;inset:0;background:rgba(10,20,16,.55);display:grid;place-items:center;color:#fff;text-align:center}
 .pr-paused[hidden]{display:none}
 .pr-paused h2{color:#fff;font-size:28px;margin:0 0 12px}
@@ -2325,6 +2329,7 @@ const SFX_P = {
   hurt: (c, t) => { sfxTone(c, t, 330, 140, 0.28, 'square', 0.035); sfxNoise(c, t, 0.12, 600, 0.08); },
   life: (c, t) => { [660, 880, 1100].forEach((f, k) => sfxTone(c, t + k * 0.07, f, f, 0.12, 'sine', 0.07)); },
   splat: (c, t) => { sfxNoise(c, t, 0.32, 500, 0.2); sfxTone(c, t, 140, 60, 0.3, 'sine', 0.12); },
+  listen: (c, t) => { sfxTone(c, t, 784, 784, 0.2, 'sine', 0.08); sfxTone(c, t + 0.16, 1175, 1175, 0.32, 'sine', 0.08); },
   record: (c, t) => { [523, 659, 784, 1047, 784, 1047].forEach((f, k) => sfxTone(c, t + k * 0.11, f, f, k === 5 ? 0.4 : 0.16, 'triangle', 0.07)); }
 };
 function sfx(name, delay = 0) {
@@ -4868,7 +4873,7 @@ function closeDrawer() {
 
 /* ----- patch notes and welcome ----- */
 const NOTES = [
-  { v: '0.8.0', date: '16 November 2026', items: ['New: Daily practice on the Learn page. A few minutes a day with the characters and words you’re starting to forget. Keep your streak going and share it as a picture.', 'Dark mode: choose Light, Dark or Auto (follows your device) in Settings.', 'Sound effects for right and wrong answers. You can switch them off in Settings.', 'Quick settings: tap the settings line under the header to switch listening, pinyin, sounds and theme. On big screens they’re in a column on the right.', 'New: Games! In Panda Run the panda runs towards walls with answers on them: pick the right lane and it runs straight through. Five difficulties, from Beginner to Shaolin.', 'Challenge a friend: send a link, your friend gets the same walls and tries to beat your score, then sends a challenge back. You can also share your result as a picture.', 'Two new tabs: Words and Games. Words has the word quizzes, My characters and Writing in one place.', 'Bigger page buttons under the tabs on computers, so every page is easy to find.', 'The header no longer hides by itself on computers. On phones, ⌃ hides it again during an exercise.', 'Reset progress is now in Settings, with a window that explains what gets deleted and offers a backup first.', 'Small fixes: the tutorial is easier to tap on small phones, and the panda’s “Next up!” no longer covers the unit title.'] },
+  { v: '0.8.0', date: '16 November 2026', items: ['New game: Panda Run in the Games tab. Challenge your friends!', 'Daily practice with a streak on the Learn page.', 'Dark mode and sound effects.', 'New Words tab and quick settings.', 'Small fixes.'] },
   { v: '0.7.9', date: '14 November 2026', items: ['New 字 levels in Learn for reading characters: what they mean, how they sound, and how to tell look-alike characters apart.', 'Every unit now has a character review that brings back the characters you know least.', 'New on the Learn page: “My characters” shows every character and how well you know it, and lets you practise your weakest ones: 10 or 20 at a time, or until you get them all right.', 'Pinyin is hidden for characters you already know well. Tap a word to show it.'] },
   { v: '0.7.8', date: '14 November 2026', items: ['Dialogues now have different voices: every character in the texts speaks with their own voice.', 'A new “Play the dialogue” button plays a whole conversation.', 'On Slow, single characters and short words are spoken extra slowly, so the tones are clearer.'] },
   { v: '0.7.7', date: '14 November 2026', items: ['Found a mistake? A new window shows the e-mail address and a button to send a message.', 'The tutorial lets you choose where to start: all units and levels are open.'] },
@@ -5661,6 +5666,7 @@ function runMount() {
   main.innerHTML = `<div class="pr-game" id="pr-game"><canvas id="pr-cv" aria-label="Panda Run"></canvas>
     <div class="pr-hud"><div class="pr-top"><span class="pr-lives" id="pr-lives"></span><span class="pr-score" id="pr-score"></span><button type="button" class="icon-btn pr-pause" data-gm="pause" aria-label="Pause">⏸</button></div>
       <div class="pr-q" id="pr-q" aria-live="polite"></div><div class="pr-pop" id="pr-pop"></div></div>
+    <div class="pr-cue" id="pr-cue" aria-hidden="true"><span>🎧</span><b>Listen!</b></div>
     <div class="pr-paused" id="pr-paused" hidden><div><h2>Paused</h2><div class="card-actions"><button type="button" class="btn primary" data-gm="resume">Keep running</button><button type="button" class="btn" data-gm="quit">End run</button></div></div></div></div>`;
   setFocus(true); runSize(); runHud(); runQ();
   $('#pr-paused').hidden = !R.paused;
@@ -5703,10 +5709,19 @@ function runNext() {
   const q = R.qs[R.i];
   R.wall = { q, d: RUN_SPAWN, dash: false, born: R.clock, hit: null };
   R.wall.T = runT(R);
-  R.phase = 'run';
   runQ();
-  if (q.say && canHear()) setTimeout(() => { if (GM.run === R && R.wall && R.wall.q === q) speak(q.say); }, 250);
+  // a sound wall waits: first the last answer's voice ends, then a short pause, then "Listen!", then the sound; only then the wall moves
+  if (q.say && canHear()) { R.phase = 'listen'; R.lt = 0; R.lstep = 0; } else R.phase = 'run';
 }
+// says the right answer after a wall and remembers that the voice is busy, so a sound wall can wait for it
+function runVoice(R, text, delay) {
+  R.voiceBusy = true; R.voiceAt = R.clock; const my = R.voiceN = (R.voiceN || 0) + 1;
+  setTimeout(() => {
+    if (GM.run !== R || R.voiceN !== my) return;
+    stopAudio(); sayOne(text, seqTok).then(() => { if (GM.run === R && R.voiceN === my) R.voiceBusy = false; });
+  }, delay);
+}
+function runCue(on) { const c = $('#pr-cue'); if (c) c.classList.toggle('on', !!on); }
 function runQ() {
   const R = GM.run, el = $('#pr-q'); if (!R || !el || !R.wall) return;
   const q = R.wall.q, alt = q.say && !canHear();
@@ -5721,7 +5736,7 @@ function runHud() {
 function runPop(t, cls) { const p = $('#pr-pop'); if (!p) return; p.textContent = t; p.className = 'pr-pop on ' + (cls || ''); clearTimeout(runPop.t); runPop.t = setTimeout(() => { p.className = 'pr-pop'; }, 1100); }
 
 /* ----- input: one pointer path for mouse, pen and touch ----- */
-function runMove(lane) { const R = GM.run; if (!R || R.paused || R.phase !== 'run' || R.wall.dash) return; R.lane = Math.max(0, Math.min(2, lane)); }
+function runMove(lane) { const R = GM.run; if (!R || R.paused || (R.phase !== 'run' && R.phase !== 'listen') || R.wall.dash) return; R.lane = Math.max(0, Math.min(2, lane)); }
 function runCommit() { const R = GM.run; if (!R || R.paused || R.phase !== 'run' || R.wall.dash) return; R.wall.dash = true; R.wall.bonus = Math.max(0, Math.min(1, (R.wall.d - 0.08) / (RUN_SPAWN - 0.08))); }
 function runPtrDown(e) {
   if (e.target.closest('button')) return;
@@ -5750,7 +5765,7 @@ function runKey(e) {
   if (k === 'ArrowLeft' || k === 'a' || k === 'A') { e.preventDefault(); return runMove(R.lane - 1); }
   if (k === 'ArrowRight' || k === 'd' || k === 'D') { e.preventDefault(); return runMove(R.lane + 1); }
   if (k === 'ArrowUp' || k === 'w' || k === 'W' || k === ' ') { e.preventDefault(); return runCommit(); }
-  if ((k === 'r' || k === 'R') && R.wall && R.wall.q.say && canHear()) { e.preventDefault(); speak(R.wall.q.say); }
+  if ((k === 'r' || k === 'R') && R.phase === 'run' && R.wall && R.wall.q.say && canHear()) { e.preventDefault(); speak(R.wall.q.say); }
 }
 function runPause(on) {
   const R = GM.run; if (!R || R.over) return;
@@ -5779,6 +5794,11 @@ function runStep(R, dt) {
     const v = w.dash ? 1 / 0.28 : RUN_SPAWN / w.T;
     w.d -= v * dt; R.dist += v * dt;
     if (w.d <= 0) { w.d = 0; runHit(R); }
+  } else if (R.phase === 'listen' && w) {
+    R.lt += dt;
+    if (R.lstep === 0 && (!R.voiceBusy || R.clock - (R.voiceAt || 0) > 6)) { R.lstep = 1; R.lt = 0; }
+    else if (R.lstep === 1 && R.lt > 0.6) { R.lstep = 2; R.lt = 0; runCue(true); sfx('listen'); }
+    else if (R.lstep === 2 && R.lt > 0.75) { runCue(false); R.phase = 'run'; R.voiceBusy = false; speak(w.q.say); }
   } else if (R.phase === 'break') { R.dist += dt / Math.max(1.4, R.wall ? R.wall.T * 0.5 : 2); if (R.pt > 0.55) runNext(); }
   else if (R.phase === 'stun') { if (R.pt > 1.7) { if (R.lives <= 0) { R.phase = 'pancake'; R.pt = 0; sfx('splat'); } else runNext(); } }
   else if (R.phase === 'pancake') { if (R.pt > 1.9 && !R.over) runEnd(); }
@@ -5797,13 +5817,13 @@ function runHit(R) {
     R.phase = 'break'; runBurst(R); sfx('break');
     if (q.zi && !R.helped[q.zi]) { R.helped[q.zi] = 1; runHelp(q.zi); }
     // the effect first, the Chinese a moment later
-    if (q.hear && canHear()) setTimeout(() => { if (GM.run === R) speak(q.hear); }, 300);
+    if (q.hear && canHear()) runVoice(R, q.hear, 300);
   } else {
     R.wrong++; R.streak = 0; R.lives--; sfx('hurt');
     w.hit = R.lane; R.phase = 'stun';
     if (q.zi && !R.missed.includes(q.zi)) R.missed.push(q.zi);
     runPop(R.lives > 0 ? 'Ouch! The right one is green.' : 'Ouch!', 'bad');
-    if (q.hear && canHear()) setTimeout(() => { if (GM.run === R) speak(q.hear); }, 400);
+    if (q.hear && canHear()) runVoice(R, q.hear, 400);
   }
   runHud();
 }
@@ -5982,7 +6002,7 @@ document.addEventListener('click', e => {
   if (g === 'pause') return runPause(true);
   if (g === 'resume') return runPause(false);
   if (g === 'quit') { const R = GM.run; if (R) { R.lives = 0; R.over = false; R.paused = false; runEnd(); } return; }
-  if (g === 'say' && GM.run && GM.run.wall && GM.run.wall.q.say) return speak(GM.run.wall.q.say);
+  if (g === 'say' && GM.run && GM.run.phase === 'run' && GM.run.wall && GM.run.wall.q.say) return speak(GM.run.wall.q.say);
   if (g === 'practise' && GM.last && GM.last.missed.length) { const lv = ziWeakLevel(10); return lStart('zi-weak', { ...lv, zi: GM.last.missed.slice(0, 20), unit: Math.max(...GM.last.missed.map(c => ZI_OF[c] || 0)), title: 'Characters from Panda Run' }); }
   if (g === 'share' || g === 'sendback') return gmShare(g === 'sendback');
   if (g === 'chbest') { const src = d.gmd ? gmBestSrc(d.gmd) : gmBestAny(); if (src) gmShare(false, src); return; }
